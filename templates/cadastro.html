@@ -1,0 +1,390 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>CodeUp - Cadastro</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        }
+        
+        body {
+            background-color: #000000;
+            color: #f0f0f0;
+            min-height: 100vh;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            padding: 20px;
+            background-image: 
+                radial-gradient(circle at 20% 30%, rgba(255, 215, 0, 0.05) 0%, transparent 20%),
+                radial-gradient(circle at 80% 70%, rgba(255, 215, 0, 0.05) 0%, transparent 20%);
+        }
+        
+        .register-container {
+            width: 100%;
+            max-width: 500px;
+            background-color: #111111;
+            border-radius: 20px;
+            border: 3px solid #FFD700;
+            box-shadow: 0 10px 30px rgba(255, 215, 0, 0.2);
+            overflow: hidden;
+            padding: 40px 35px;
+        }
+        
+        .logo-section {
+            text-align: center;
+            margin-bottom: 30px;
+        }
+        
+        .logo {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 15px;
+            margin-bottom: 10px;
+        }
+        
+        .logo-icon {
+            background-color: #FFD700;
+            color: #000000;
+            width: 50px;
+            height: 50px;
+            border-radius: 10px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 2rem;
+            font-weight: bold;
+        }
+        
+        .logo-text {
+            font-size: 2.5rem;
+            font-weight: 900;
+            color: #FFD700;
+            letter-spacing: 2px;
+        }
+        
+        .logo-subtitle {
+            color: #cccccc;
+            font-size: 1rem;
+        }
+        
+        .form-title {
+            color: #FFD700;
+            text-align: center;
+            font-size: 1.8rem;
+            margin-bottom: 30px;
+        }
+        
+        .form-group {
+            margin-bottom: 20px;
+        }
+        
+        .form-label {
+            display: block;
+            color: #FFD700;
+            margin-bottom: 8px;
+            font-weight: 600;
+        }
+        
+        .input-container {
+            position: relative;
+            display: flex;
+            align-items: center;
+        }
+        
+        .input-icon {
+            position: absolute;
+            left: 15px;
+            color: #FFD700;
+            font-size: 1.1rem;
+        }
+        
+        .form-input {
+            width: 100%;
+            padding: 14px 14px 14px 45px;
+            background-color: #1a1a1a;
+            border: 2px solid #333333;
+            border-radius: 10px;
+            color: #ffffff;
+            font-size: 1rem;
+            transition: all 0.3s;
+        }
+        
+        .form-input:focus {
+            outline: none;
+            border-color: #FFD700;
+            box-shadow: 0 0 0 3px rgba(255, 215, 0, 0.2);
+        }
+        
+        .password-strength {
+            margin-top: 5px;
+            height: 5px;
+            background-color: #333;
+            border-radius: 3px;
+            overflow: hidden;
+        }
+        
+        .strength-bar {
+            height: 100%;
+            width: 0%;
+            background-color: #FFD700;
+            transition: width 0.3s;
+        }
+        
+        .terms {
+            display: flex;
+            align-items: flex-start;
+            gap: 10px;
+            margin: 25px 0;
+        }
+        
+        .terms-checkbox {
+            margin-top: 3px;
+        }
+        
+        .terms-label {
+            color: #cccccc;
+            font-size: 0.9rem;
+            line-height: 1.4;
+        }
+        
+        .terms-link {
+            color: #FFD700;
+            text-decoration: none;
+        }
+        
+        .terms-link:hover {
+            text-decoration: underline;
+        }
+        
+        .register-button {
+            width: 100%;
+            background-color: #FFD700;
+            color: #000000;
+            border: none;
+            padding: 16px;
+            font-size: 1.2rem;
+            font-weight: bold;
+            border-radius: 10px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            margin-bottom: 25px;
+        }
+        
+        .register-button:hover {
+            background-color: #FFC000;
+            transform: translateY(-2px);
+            box-shadow: 0 8px 20px rgba(255, 215, 0, 0.3);
+        }
+        
+        .login-section {
+            text-align: center;
+            margin-top: 20px;
+        }
+        
+        .login-text {
+            color: #cccccc;
+            margin-bottom: 8px;
+        }
+        
+        .login-link {
+            color: #FFD700;
+            text-decoration: none;
+            font-weight: bold;
+        }
+        
+        .login-link:hover {
+            color: #ffffff;
+            text-decoration: underline;
+        }
+        
+        .back-link {
+            display: block;
+            text-align: center;
+            margin-top: 30px;
+            color: #FFD700;
+            text-decoration: none;
+        }
+        
+        .back-link:hover {
+            text-decoration: underline;
+        }
+        
+        @media (max-width: 500px) {
+            .register-container {
+                padding: 30px 25px;
+            }
+            
+            .logo {
+                flex-direction: column;
+                gap: 10px;
+            }
+            
+            .logo-text {
+                font-size: 2rem;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="register-container">
+        <div class="logo-section">
+            <div class="logo">
+                <div class="logo-icon">
+                    <i class="fas fa-code"></i>
+                </div>
+                <div class="logo-text">CODEUP</div>
+            </div>
+            <div class="logo-subtitle">Crie sua conta gratuitamente</div>
+        </div>
+        
+        <h1 class="form-title">C A D A S T R O</h1>
+        
+        <form id="registerForm">
+            <div class="form-group">
+                <label class="form-label" for="name">Nome completo</label>
+                <div class="input-container">
+                    <i class="fas fa-user input-icon"></i>
+                    <input type="text" id="name" class="form-input" placeholder="Seu nome completo" required>
+                </div>
+            </div>
+            
+            <div class="form-group">
+                <label class="form-label" for="email">E-mail</label>
+                <div class="input-container">
+                    <i class="fas fa-envelope input-icon"></i>
+                    <input type="email" id="email" class="form-input" placeholder="seu@email.com" required>
+                </div>
+            </div>
+            
+            <div class="form-group">
+                <label class="form-label" for="password">Senha</label>
+                <div class="input-container">
+                    <i class="fas fa-lock input-icon"></i>
+                    <input type="password" id="password" class="form-input" placeholder="••••••••" required>
+                </div>
+                <div class="password-strength">
+                    <div class="strength-bar" id="strengthBar"></div>
+                </div>
+            </div>
+            
+            <div class="form-group">
+                <label class="form-label" for="confirmPassword">Confirmar senha</label>
+                <div class="input-container">
+                    <i class="fas fa-lock input-icon"></i>
+                    <input type="password" id="confirmPassword" class="form-input" placeholder="••••••••" required>
+                </div>
+            </div>
+            
+            <div class="terms">
+                <input type="checkbox" id="terms" class="terms-checkbox" required>
+                <label for="terms" class="terms-label">
+                    Concordo com os <a href="#" class="terms-link">Termos de Serviço</a> e 
+                    <a href="#" class="terms-link">Política de Privacidade</a> da CodeUp
+                </label>
+            </div>
+            
+            <button type="submit" class="register-button">CRIAR CONTA</button>
+        </form>
+        
+        <div class="login-section">
+            <div class="login-text">Já tem uma conta?</div>
+            <a href="login.html" class="login-link">FAÇA LOGIN AQUI</a>
+        </div>
+        
+        <a href="index.html" class="back-link">
+            <i class="fas fa-arrow-left"></i> Voltar para página inicial
+        </a>
+    </div>
+
+    <script>
+        // Validação de força da senha
+        document.getElementById('password').addEventListener('input', function() {
+            const password = this.value;
+            const strengthBar = document.getElementById('strengthBar');
+            let strength = 0;
+            
+            if (password.length >= 8) strength += 25;
+            if (/[A-Z]/.test(password)) strength += 25;
+            if (/[0-9]/.test(password)) strength += 25;
+            if (/[^A-Za-z0-9]/.test(password)) strength += 25;
+            
+            strengthBar.style.width = strength + '%';
+            
+            if (strength < 50) {
+                strengthBar.style.backgroundColor = '#ff4444';
+            } else if (strength < 75) {
+                strengthBar.style.backgroundColor = '#ffaa00';
+            } else {
+                strengthBar.style.backgroundColor = '#00ff00';
+            }
+        });
+        
+        // Validação do formulário
+        document.getElementById('registerForm').addEventListener('submit', function(e) {
+            e.preventDefault();
+            
+            const name = document.getElementById('name').value;
+            const email = document.getElementById('email').value;
+            const password = document.getElementById('password').value;
+            const confirmPassword = document.getElementById('confirmPassword').value;
+            const terms = document.getElementById('terms').checked;
+            
+            // Validações
+            if (!name || !email || !password || !confirmPassword) {
+                alert('Por favor, preencha todos os campos!');
+                return;
+            }
+            
+            if (!email.includes('@')) {
+                alert('Por favor, insira um e-mail válido!');
+                return;
+            }
+            
+            if (password !== confirmPassword) {
+                alert('As senhas não coincidem!');
+                return;
+            }
+            
+            if (password.length < 6) {
+                alert('A senha deve ter pelo menos 6 caracteres!');
+                return;
+            }
+            
+            if (!terms) {
+                alert('Você precisa aceitar os termos de serviço!');
+                return;
+            }
+            
+            // Simulação de cadastro
+            const registerButton = document.querySelector('.register-button');
+            const originalText = registerButton.textContent;
+            
+            registerButton.innerHTML = '<i class="fas fa-spinner fa-spin"></i> CRIANDO CONTA...';
+            registerButton.disabled = true;
+            
+            setTimeout(() => {
+                alert(`Conta criada com sucesso!\nBem-vindo(a) ${name}!`);
+                window.location.href = 'login.html';
+                registerButton.textContent = originalText;
+                registerButton.disabled = false;
+            }, 2000);
+        });
+        
+        // Link para termos
+        document.querySelectorAll('.terms-link').forEach(link => {
+            link.addEventListener('click', function(e) {
+                e.preventDefault();
+                alert('Termos de Serviço (demonstração)\n\nAo criar uma conta, você concorda com nossos termos...');
+            });
+        });
+    </script>
+</body>
+</html>

@@ -1,0 +1,12 @@
+{
+  "name": "codeup",
+  "version": "1.0.0",
+  "description": "Plataforma de Programação CodeUp",
+  "main": "index.js",
+  "scripts": {
+    "start": "live-server ."
+  },
+  "dependencies": {
+    "live-server": "^1.2.2"
+  }
+}

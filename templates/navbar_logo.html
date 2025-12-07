@@ -1,0 +1,121 @@
+﻿<!-- Navbar -->
+<nav class="navbar navbar-expand-lg navbar-dark shadow">
+    <div class="container">
+        <!-- Logo CodeUp -->
+        <a class="navbar-brand" href="{% url 'home' %}">
+            {% if user.is_authenticated %}
+                <!-- Logo para usuários logados -->
+                <img src="/static/images/logo.png" 
+                     alt="CodeUp Logo" 
+                     height="40"
+                     class="d-inline-block align-top me-2">
+            {% else %}
+                <!-- Logo para visitantes -->
+                <img src="/static/images/logo.png" 
+                     alt="CodeUp Logo" 
+                     height="40"
+                     class="d-inline-block align-top me-2">
+            {% endif %}
+            <span class="fw-bold d-none d-md-inline">CodeUp</span>
+        </a>
+        
+        <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav">
+            <span class="navbar-toggler-icon"></span>
+        </button>
+        
+        <div class="collapse navbar-collapse" id="navbarNav">
+            <ul class="navbar-nav me-auto">
+                <li class="nav-item">
+                    <a class="nav-link" href="{% url 'home' %}">
+                        <i class="fas fa-home me-1"></i> Home
+                    </a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="{% url 'lista_trilhas' %}">
+                        <i class="fas fa-road me-1"></i> Trilhas
+                    </a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="{% url 'lista_exercicios' %}">
+                        <i class="fas fa-tasks me-1"></i> Exercícios
+                    </a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="{% url 'ranking' %}">
+                        <i class="fas fa-trophy me-1"></i> Ranking
+                    </a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="{% url 'dashboard_estatisticas' %}">
+                        <i class="fas fa-chart-line me-1"></i> Estatísticas
+                    </a>
+                </li>
+                {% if user.tipo == 'PROFESSOR' %}
+                <li class="nav-item">
+                    <a class="nav-link" href="/admin/">
+                        <i class="fas fa-cog me-1"></i> Admin
+                    </a>
+                </li>
+                {% endif %}
+            </ul>
+            
+            <div class="d-flex align-items-center gap-3">
+                <!-- Toggle Dark Mode -->
+                <button id="darkModeToggle" class="btn btn-sm btn-outline-light" 
+                        data-bs-toggle="tooltip" data-bs-placement="bottom" title="Alternar tema">
+                    <i class="fas fa-moon"></i>
+                </button>
+                
+                {% if user.is_authenticated %}
+                    <div class="dropdown">
+                        <button class="btn btn-outline-light dropdown-toggle d-flex align-items-center" 
+                                type="button" id="userMenu" data-bs-toggle="dropdown">
+                            {% if user.foto_perfil %}
+                                <img src="{{ user.foto_perfil.url }}" class="rounded-circle me-2" 
+                                     width="32" height="32" alt="Foto">
+                            {% else %}
+                                <div class="rounded-circle bg-primary d-flex align-items-center 
+                                            justify-content-center me-2" 
+                                     style="width: 32px; height: 32px;">
+                                    <i class="fas fa-user text-white"></i>
+                                </div>
+                            {% endif %}
+                            <span class="me-2">{{ user.username }}</span>
+                            <span class="badge badge-level">Nível {{ user.nivel|default:"1" }}</span>
+                        </button>
+                        <ul class="dropdown-menu dropdown-menu-end">
+                            <li>
+                                <a class="dropdown-item" href="{% url 'dashboard' %}">
+                                    <i class="fas fa-tachometer-alt me-2"></i> Dashboard
+                                </a>
+                            </li>
+                            <li>
+                                <a class="dropdown-item" href="{% url 'perfil' %}">
+                                    <i class="fas fa-user me-2"></i> Meu Perfil
+                                </a>
+                            </li>
+                            <li>
+                                <a class="dropdown-item" href="{% url 'dashboard_estatisticas' %}">
+                                    <i class="fas fa-chart-bar me-2"></i> Estatísticas
+                                </a>
+                            </li>
+                            <li><hr class="dropdown-divider"></li>
+                            <li>
+                                <a class="dropdown-item" href="{% url 'logout' %}">
+                                    <i class="fas fa-sign-out-alt me-2"></i> Sair
+                                </a>
+                            </li>
+                        </ul>
+                    </div>
+                {% else %}
+                    <a href="{% url 'login' %}" class="btn btn-outline-light me-2">
+                        <i class="fas fa-sign-in-alt me-1"></i> Entrar
+                    </a>
+                    <a href="{% url 'registrar' %}" class="btn btn-primary">
+                        <i class="fas fa-user-plus me-1"></i> Cadastrar
+                    </a>
+                {% endif %}
+            </div>
+        </div>
+    </div>
+</nav>

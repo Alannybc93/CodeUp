@@ -1,0 +1,129 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>CodeUp - Plataforma de Programação</title>
+    <style>
+        body {
+            background-color: #000;
+            color: #fff;
+            font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 0;
+        }
+        .header {
+            background-color: #111;
+            padding: 30px;
+            text-align: center;
+            border-bottom: 3px solid #FFD700;
+        }
+        .logo {
+            font-size: 3rem;
+            color: #FFD700;
+            font-weight: bold;
+            margin-bottom: 10px;
+        }
+        .container {
+            max-width: 1200px;
+            margin: 50px auto;
+            padding: 0 20px;
+            text-align: center;
+        }
+        h1 {
+            color: #FFD700;
+            font-size: 2.5rem;
+        }
+        .features {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 30px;
+            margin: 50px 0;
+        }
+        .feature {
+            background-color: #111;
+            border: 2px solid #333;
+            border-radius: 10px;
+            padding: 30px;
+            transition: all 0.3s;
+        }
+        .feature:hover {
+            border-color: #FFD700;
+            transform: translateY(-5px);
+        }
+        .feature h3 {
+            color: #FFD700;
+        }
+        .buttons {
+            margin-top: 40px;
+        }
+        .btn {
+            display: inline-block;
+            padding: 15px 30px;
+            margin: 0 10px;
+            background-color: #FFD700;
+            color: #000;
+            text-decoration: none;
+            border-radius: 8px;
+            font-weight: bold;
+            font-size: 1.1rem;
+            transition: all 0.3s;
+        }
+        .btn:hover {
+            background-color: #FFC000;
+            transform: translateY(-3px);
+        }
+        .btn-secondary {
+            background-color: transparent;
+            color: #FFD700;
+            border: 2px solid #FFD700;
+        }
+        .btn-secondary:hover {
+            background-color: rgba(255, 215, 0, 0.1);
+        }
+    </style>
+</head>
+<body>
+    <div class="header">
+        <div class="logo">CODEUP</div>
+        <p>Plataforma de Programação</p>
+    </div>
+    
+    <div class="container">
+        <h1>Aprenda Programação de Forma Prática</h1>
+        <p style="font-size: 1.2rem; color: #ccc; max-width: 800px; margin: 0 auto;">
+            Domine as tecnologias mais requisitadas do mercado com nossa plataforma interativa. 
+            Do básico ao avançado, temos o caminho certo para sua carreira em tecnologia.
+        </p>
+        
+        <div class="features">
+            <div class="feature">
+                <h3>Trilhas de Aprendizado</h3>
+                <p>Cursos completos com módulos progressivos e projetos reais.</p>
+                <a href="/trilhas/" style="color: #FFD700;">Explorar Trilhas →</a>
+            </div>
+            <div class="feature">
+                <h3>Exercícios Práticos</h3>
+                <p>Desafios de programação com correção automática e feedback.</p>
+                <a href="/exercicios/" style="color: #FFD700;">Resolver Exercícios →</a>
+            </div>
+            <div class="feature">
+                <h3>Comunidade Ativa</h3>
+                <p>Conecte-se com outros programadores e tire dúvidas em tempo real.</p>
+                <a href="#" style="color: #FFD700;">Juntar-se à Comunidade →</a>
+            </div>
+        </div>
+        
+        <div class="buttons">
+            {% if user.is_authenticated %}
+                <p style="color: #FFD700; font-size: 1.2rem;">Olá, {{ user.username }}!</p>
+                <a href="/trilhas/" class="btn">Continuar Aprendendo</a>
+                <a href="{% url 'logout' %}" class="btn-secondary">Sair</a>
+            {% else %}
+                <a href="{% url 'login' %}" class="btn">Fazer Login</a>
+                <a href="{% url 'cadastro' %}" class="btn-secondary">Cadastrar-se</a>
+            {% endif %}
+        </div>
+    </div>
+</body>
+</html>

@@ -1,0 +1,513 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>{{ trilha.titulo }} - CodeUp</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        :root {
+            --primary-color: #FFD700;
+            --bg-dark: #000000;
+            --bg-card: #111111;
+            --border-color: #333333;
+            --text-light: #f0f0f0;
+            --text-muted: #777777;
+        }
+        
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        }
+        
+        body {
+            background-color: var(--bg-dark);
+            color: var(--text-light);
+            min-height: 100vh;
+        }
+        
+        .header {
+            background-color: var(--bg-dark);
+            padding: 20px 40px;
+            border-bottom: 3px solid var(--primary-color);
+        }
+        
+        .header-content {
+            max-width: 1200px;
+            margin: 0 auto;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+        
+        .logo {
+            font-size: 2rem;
+            font-weight: 900;
+            color: var(--primary-color);
+        }
+        
+        .nav-links a {
+            color: var(--primary-color);
+            text-decoration: none;
+            margin-left: 20px;
+            font-weight: 600;
+        }
+        
+        .container {
+            max-width: 1200px;
+            margin: 40px auto;
+            padding: 0 20px;
+        }
+        
+        .back-link {
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            color: var(--primary-color);
+            text-decoration: none;
+            margin-bottom: 30px;
+            font-weight: 600;
+        }
+        
+        .back-link:hover {
+            text-decoration: underline;
+        }
+        
+        .trilha-header {
+            background-color: var(--bg-card);
+            border: 2px solid var(--border-color);
+            border-radius: 15px;
+            padding: 30px;
+            margin-bottom: 40px;
+            position: relative;
+            overflow: hidden;
+        }
+        
+        .trilha-header::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 5px;
+            background-color: var(--primary-color);
+        }
+        
+        .trilha-title {
+            display: flex;
+            align-items: center;
+            gap: 20px;
+            margin-bottom: 20px;
+        }
+        
+        .trilha-icon {
+            font-size: 3rem;
+            color: var(--primary-color);
+        }
+        
+        .trilha-title-text h1 {
+            color: var(--primary-color);
+            font-size: 2.5rem;
+            margin-bottom: 5px;
+        }
+        
+        .trilha-meta {
+            display: flex;
+            gap: 20px;
+            flex-wrap: wrap;
+            margin: 20px 0;
+        }
+        
+        .meta-badge {
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            padding: 8px 16px;
+            background-color: rgba(255, 215, 0, 0.1);
+            border: 1px solid var(--primary-color);
+            border-radius: 20px;
+            color: var(--primary-color);
+        }
+        
+        .trilha-description {
+            color: var(--text-muted);
+            line-height: 1.8;
+            font-size: 1.1rem;
+            margin-bottom: 30px;
+        }
+        
+        .action-buttons {
+            display: flex;
+            gap: 15px;
+            margin-top: 30px;
+        }
+        
+        .btn-primary {
+            background-color: var(--primary-color);
+            color: #000;
+            border: none;
+            padding: 12px 30px;
+            border-radius: 8px;
+            font-weight: bold;
+            cursor: pointer;
+            text-decoration: none;
+            display: inline-flex;
+            align-items: center;
+            gap: 10px;
+        }
+        
+        .btn-primary:hover {
+            background-color: #FFC000;
+            transform: translateY(-2px);
+        }
+        
+        .btn-secondary {
+            background-color: transparent;
+            color: var(--primary-color);
+            border: 2px solid var(--primary-color);
+            padding: 10px 28px;
+            border-radius: 8px;
+            font-weight: bold;
+            cursor: pointer;
+            text-decoration: none;
+            display: inline-flex;
+            align-items: center;
+            gap: 10px;
+        }
+        
+        .btn-secondary:hover {
+            background-color: rgba(255, 215, 0, 0.1);
+        }
+        
+        .modulos-section {
+            margin-top: 40px;
+        }
+        
+        .section-title {
+            color: var(--primary-color);
+            font-size: 1.8rem;
+            margin-bottom: 20px;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+        
+        .modulos-list {
+            display: flex;
+            flex-direction: column;
+            gap: 15px;
+        }
+        
+        .modulo-card {
+            background-color: var(--bg-card);
+            border: 2px solid var(--border-color);
+            border-radius: 10px;
+            padding: 20px;
+            display: flex;
+            align-items: center;
+            gap: 20px;
+            transition: all 0.3s;
+        }
+        
+        .modulo-card:hover {
+            border-color: var(--primary-color);
+            transform: translateX(5px);
+        }
+        
+        .modulo-number {
+            width: 50px;
+            height: 50px;
+            background-color: var(--primary-color);
+            color: #000;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: bold;
+            font-size: 1.2rem;
+            flex-shrink: 0;
+        }
+        
+        .modulo-content {
+            flex: 1;
+        }
+        
+        .modulo-title {
+            color: var(--primary-color);
+            font-size: 1.3rem;
+            margin-bottom: 5px;
+        }
+        
+        .modulo-description {
+            color: var(--text-muted);
+            margin-bottom: 10px;
+        }
+        
+        .modulo-meta {
+            display: flex;
+            gap: 15px;
+            font-size: 0.9rem;
+            color: var(--text-muted);
+        }
+        
+        .modulo-action {
+            margin-left: auto;
+        }
+        
+        .progress-container {
+            margin: 30px 0;
+            padding: 20px;
+            background-color: var(--bg-card);
+            border-radius: 10px;
+            border: 2px solid var(--border-color);
+        }
+        
+        .progress-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 10px;
+        }
+        
+        .progress-bar {
+            height: 10px;
+            background-color: var(--border-color);
+            border-radius: 5px;
+            overflow: hidden;
+        }
+        
+        .progress-fill {
+            height: 100%;
+            background-color: var(--primary-color);
+            border-radius: 5px;
+            transition: width 0.3s ease;
+        }
+        
+        .empty-state {
+            text-align: center;
+            padding: 40px 20px;
+            color: var(--text-muted);
+        }
+        
+        .empty-state i {
+            font-size: 4rem;
+            color: var(--border-color);
+            margin-bottom: 20px;
+        }
+        
+        @media (max-width: 768px) {
+            .trilha-title {
+                flex-direction: column;
+                align-items: flex-start;
+                gap: 10px;
+            }
+            
+            .trilha-title-text h1 {
+                font-size: 2rem;
+            }
+            
+            .action-buttons {
+                flex-direction: column;
+            }
+            
+            .modulo-card {
+                flex-direction: column;
+                align-items: flex-start;
+            }
+            
+            .modulo-action {
+                margin-left: 0;
+                margin-top: 15px;
+                width: 100%;
+            }
+        }
+    </style>
+</head>
+<body>
+    <header class="header">
+        <div class="header-content">
+            <div class="logo">CODEUP</div>
+            <nav class="nav-links">
+                <a href="/">Home</a>
+                <a href="/trilhas/">Trilhas</a>
+                <a href="/exercicios/">Exercícios</a>
+                {% if user.is_authenticated %}
+                    <a href="/dashboard/">Dashboard</a>
+                    <a href="{% url 'logout' %}">Sair</a>
+                {% else %}
+                    <a href="{% url 'login' %}">Login</a>
+                    <a href="{% url 'cadastro' %}">Cadastro</a>
+                {% endif %}
+            </nav>
+        </div>
+    </header>
+    
+    <main class="container">
+        <a href="/trilhas/" class="back-link">
+            <i class="fas fa-arrow-left"></i> Voltar para Trilhas
+        </a>
+        
+        <div class="trilha-header">
+            <div class="trilha-title">
+                <div class="trilha-icon">
+                    <i class="fas fa-{{ trilha.icone }}"></i>
+                </div>
+                <div class="trilha-title-text">
+                    <h1>{{ trilha.titulo }}</h1>
+                    <span class="meta-badge">
+                        <i class="fas fa-signal"></i>
+                        {{ trilha.get_dificuldade_display }}
+                    </span>
+                </div>
+            </div>
+            
+            <p class="trilha-description">{{ trilha.descricao }}</p>
+            
+            <div class="trilha-meta">
+                <span class="meta-badge">
+                    <i class="fas fa-clock"></i>
+                    {{ trilha.tempo_estimado }} horas
+                </span>
+                <span class="meta-badge">
+                    <i class="fas fa-layer-group"></i>
+                    {{ trilha.modulos.count }} módulos
+                </span>
+                <span class="meta-badge">
+                    <i class="fas fa-star"></i>
+                    {{ trilha.pontos_recompensa }} pontos
+                </span>
+                <span class="meta-badge" style="background-color: {{ trilha.cor }}20; border-color: {{ trilha.cor }}; color: {{ trilha.cor }}">
+                    <i class="fas fa-palette"></i>
+                    {{ trilha.get_dificuldade_display }}
+                </span>
+            </div>
+            
+            {% if user.is_authenticated %}
+                {% if progresso %}
+                    <div class="progress-container">
+                        <div class="progress-header">
+                            <span>Seu Progresso</span>
+                            <span>{{ progresso.percentual_concluido|default:0|floatformat:0 }}%</span>
+                        </div>
+                        <div class="progress-bar">
+                            <div class="progress-fill" style="width: {{ progresso.percentual_concluido|default:0 }}%"></div>
+                        </div>
+                        <div style="margin-top: 10px; color: var(--text-muted); font-size: 0.9rem;">
+                            {% if progresso.concluido %}
+                                <i class="fas fa-trophy" style="color: var(--primary-color);"></i>
+                                Parabéns! Você completou esta trilha.
+                            {% elif progresso.modulo_atual %}
+                                <i class="fas fa-play-circle" style="color: var(--primary-color);"></i>
+                                Continue no módulo: {{ progresso.modulo_atual.titulo }}
+                            {% endif %}
+                        </div>
+                    </div>
+                {% endif %}
+                
+                <div class="action-buttons">
+                    {% if progresso and progresso.modulo_atual and not progresso.concluido %}
+                        <a href="{% url 'trilhas_modulo' trilha.id progresso.modulo_atual.id %}" class="btn-primary">
+                            <i class="fas fa-play-circle"></i> Continuar Aprendendo
+                        </a>
+                    {% elif progresso and progresso.concluido %}
+                        <a href="#" class="btn-primary">
+                            <i class="fas fa-trophy"></i> Ver Certificado
+                        </a>
+                    {% else %}
+                        <a href="{% url 'trilhas_iniciar' trilha.id %}" class="btn-primary">
+                            <i class="fas fa-play"></i> Iniciar Trilha
+                        </a>
+                    {% endif %}
+                    
+                    <a href="#" class="btn-secondary">
+                        <i class="fas fa-bookmark"></i> Favoritar
+                    </a>
+                </div>
+            {% else %}
+                <div class="action-buttons">
+                    <a href="{% url 'login' %}?next={% url 'trilhas_iniciar' trilha.id %}" class="btn-primary">
+                        <i class="fas fa-lock"></i> Faça login para começar
+                    </a>
+                </div>
+            {% endif %}
+        </div>
+        
+        <div class="modulos-section">
+            <h2 class="section-title">
+                <i class="fas fa-list-ol"></i>
+                Módulos da Trilha
+            </h2>
+            
+            {% if trilha.modulos.count > 0 %}
+                <div class="modulos-list">
+                    {% for modulo in modulos %}
+                    <div class="modulo-card">
+                        <div class="modulo-number">{{ modulo.ordem }}</div>
+                        <div class="modulo-content">
+                            <h3 class="modulo-title">{{ modulo.titulo }}</h3>
+                            <p class="modulo-description">{{ modulo.descricao }}</p>
+                            <div class="modulo-meta">
+                                <span>
+                                    <i class="fas fa-clock"></i>
+                                    {{ modulo.duracao }} minutos
+                                </span>
+                                <span>
+                                    <i class="fas fa-book"></i>
+                                    Teoria + Prática
+                                </span>
+                            </div>
+                        </div>
+                        <div class="modulo-action">
+                            {% if user.is_authenticated %}
+                                {% if progresso and progresso.modulo_atual and progresso.modulo_atual.id == modulo.id %}
+                                    <a href="{% url 'trilhas_modulo' trilha.id modulo.id %}" class="btn-primary" style="padding: 8px 20px;">
+                                        <i class="fas fa-play"></i> Continuar
+                                    </a>
+                                {% elif progresso and progresso.concluido %}
+                                    <a href="{% url 'trilhas_modulo' trilha.id modulo.id %}" class="btn-secondary" style="padding: 8px 20px;">
+                                        <i class="fas fa-redo"></i> Revisar
+                                    </a>
+                                {% else %}
+                                    <a href="{% url 'trilhas_modulo' trilha.id modulo.id %}" class="btn-secondary" style="padding: 8px 20px;">
+                                        <i class="fas fa-play"></i> Iniciar
+                                    </a>
+                                {% endif %}
+                            {% else %}
+                                <a href="{% url 'login' %}?next={% url 'trilhas_modulo' trilha.id modulo.id %}" class="btn-secondary" style="padding: 8px 20px;">
+                                    <i class="fas fa-lock"></i> Bloqueado
+                                </a>
+                            {% endif %}
+                        </div>
+                    </div>
+                    {% endfor %}
+                </div>
+            {% else %}
+                <div class="empty-state">
+                    <i class="fas fa-book-open"></i>
+                    <h3>Nenhum módulo disponível ainda</h3>
+                    <p>Os módulos desta trilha estarão disponíveis em breve!</p>
+                </div>
+            {% endif %}
+        </div>
+    </main>
+    
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            // Adicionar animação aos cards
+            const cards = document.querySelectorAll('.modulo-card');
+            cards.forEach((card, index) => {
+                card.style.opacity = '0';
+                card.style.transform = 'translateX(-20px)';
+                
+                setTimeout(() => {
+                    card.style.transition = 'all 0.5s ease';
+                    card.style.opacity = '1';
+                    card.style.transform = 'translateX(0)';
+                }, index * 100);
+            });
+        });
+    </script>
+</body>
+</html>

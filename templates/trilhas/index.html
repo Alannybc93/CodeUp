@@ -1,0 +1,383 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Trilhas - CodeUp</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        :root {
+            --primary-color: #FFD700;
+            --bg-dark: #000000;
+            --bg-card: #111111;
+            --border-color: #333333;
+            --text-light: #f0f0f0;
+            --text-muted: #777777;
+        }
+        
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        }
+        
+        body {
+            background-color: var(--bg-dark);
+            color: var(--text-light);
+            min-height: 100vh;
+        }
+        
+        .header {
+            background-color: var(--bg-dark);
+            padding: 20px 40px;
+            border-bottom: 3px solid var(--primary-color);
+        }
+        
+        .header-content {
+            max-width: 1200px;
+            margin: 0 auto;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+        
+        .logo {
+            font-size: 2rem;
+            font-weight: 900;
+            color: var(--primary-color);
+        }
+        
+        .nav-links a {
+            color: var(--primary-color);
+            text-decoration: none;
+            margin-left: 20px;
+            font-weight: 600;
+        }
+        
+        .container {
+            max-width: 1200px;
+            margin: 40px auto;
+            padding: 0 20px;
+        }
+        
+        .page-title {
+            color: var(--primary-color);
+            font-size: 2.5rem;
+            margin-bottom: 10px;
+        }
+        
+        .page-subtitle {
+            color: var(--text-muted);
+            font-size: 1.2rem;
+            margin-bottom: 40px;
+        }
+        
+        .trilhas-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(350px, 1fr));
+            gap: 30px;
+            margin-top: 30px;
+        }
+        
+        .trilha-card {
+            background-color: var(--bg-card);
+            border: 2px solid var(--border-color);
+            border-radius: 15px;
+            padding: 25px;
+            transition: all 0.3s ease;
+            position: relative;
+            overflow: hidden;
+        }
+        
+        .trilha-card:hover {
+            border-color: var(--primary-color);
+            transform: translateY(-5px);
+            box-shadow: 0 10px 30px rgba(255, 215, 0, 0.1);
+        }
+        
+        .trilha-card::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 5px;
+            background-color: var(--primary-color);
+        }
+        
+        .trilha-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: start;
+            margin-bottom: 15px;
+        }
+        
+        .trilha-titulo {
+            color: var(--primary-color);
+            font-size: 1.5rem;
+            font-weight: bold;
+            margin-bottom: 10px;
+        }
+        
+        .trilha-icone {
+            font-size: 2rem;
+            color: var(--primary-color);
+        }
+        
+        .trilha-descricao {
+            color: var(--text-muted);
+            line-height: 1.6;
+            margin-bottom: 20px;
+            min-height: 60px;
+        }
+        
+        .trilha-meta {
+            display: flex;
+            gap: 15px;
+            margin-bottom: 20px;
+            flex-wrap: wrap;
+        }
+        
+        .meta-item {
+            display: flex;
+            align-items: center;
+            gap: 5px;
+            color: var(--text-muted);
+            font-size: 0.9rem;
+        }
+        
+        .dificuldade-badge {
+            display: inline-block;
+            padding: 4px 12px;
+            border-radius: 20px;
+            font-size: 0.8rem;
+            font-weight: bold;
+        }
+        
+        .dificuldade-iniciante {
+            background-color: rgba(0, 255, 0, 0.1);
+            color: #00ff00;
+        }
+        
+        .dificuldade-intermediario {
+            background-color: rgba(255, 215, 0, 0.1);
+            color: #FFD700;
+        }
+        
+        .dificuldade-avancado {
+            background-color: rgba(255, 0, 0, 0.1);
+            color: #ff4444;
+        }
+        
+        .progresso-container {
+            margin-bottom: 20px;
+        }
+        
+        .progresso-label {
+            display: flex;
+            justify-content: space-between;
+            margin-bottom: 5px;
+            font-size: 0.9rem;
+        }
+        
+        .progresso-bar {
+            height: 8px;
+            background-color: var(--border-color);
+            border-radius: 4px;
+            overflow: hidden;
+        }
+        
+        .progresso-fill {
+            height: 100%;
+            background-color: var(--primary-color);
+            border-radius: 4px;
+            transition: width 0.3s ease;
+        }
+        
+        .btn-trilar {
+            display: block;
+            width: 100%;
+            background-color: var(--primary-color);
+            color: #000;
+            text-align: center;
+            padding: 12px;
+            border-radius: 8px;
+            text-decoration: none;
+            font-weight: bold;
+            transition: all 0.3s;
+        }
+        
+        .btn-trilar:hover {
+            background-color: #FFC000;
+            transform: translateY(-2px);
+        }
+        
+        .btn-continuar {
+            background-color: transparent;
+            color: var(--primary-color);
+            border: 2px solid var(--primary-color);
+        }
+        
+        .btn-continuar:hover {
+            background-color: rgba(255, 215, 0, 0.1);
+        }
+        
+        .empty-state {
+            text-align: center;
+            padding: 60px 20px;
+            color: var(--text-muted);
+        }
+        
+        .empty-state i {
+            font-size: 4rem;
+            color: var(--border-color);
+            margin-bottom: 20px;
+        }
+        
+        @media (max-width: 768px) {
+            .trilhas-grid {
+                grid-template-columns: 1fr;
+            }
+            
+            .header {
+                padding: 15px 20px;
+            }
+            
+            .header-content {
+                flex-direction: column;
+                gap: 15px;
+            }
+            
+            .nav-links a {
+                margin: 0 10px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <header class="header">
+        <div class="header-content">
+            <div class="logo">CODEUP</div>
+            <nav class="nav-links">
+                <a href="/">Home</a>
+                <a href="/trilhas/" class="active">Trilhas</a>
+                <a href="/exercicios/">Exercícios</a>
+                {% if user.is_authenticated %}
+                    <a href="/dashboard/">Dashboard</a>
+                    <a href="{% url 'logout' %}">Sair</a>
+                {% else %}
+                    <a href="{% url 'login' %}">Login</a>
+                    <a href="{% url 'cadastro' %}">Cadastro</a>
+                {% endif %}
+            </nav>
+        </div>
+    </header>
+    
+    <main class="container">
+        <h1 class="page-title">Trilhas de Aprendizado</h1>
+        <p class="page-subtitle">Escolha uma trilha e comece sua jornada em programação</p>
+        
+        {% if trilhas %}
+            <div class="trilhas-grid">
+                {% for trilha in trilhas %}
+                <div class="trilha-card">
+                    <div class="trilha-header">
+                        <div>
+                            <h3 class="trilha-titulo">{{ trilha.titulo }}</h3>
+                            <span class="dificuldade-badge dificuldade-{{ trilha.dificuldade }}">
+                                {{ trilha.get_dificuldade_display }}
+                            </span>
+                        </div>
+                        <div class="trilha-icone">
+                            <i class="fas fa-{{ trilha.icone }}"></i>
+                        </div>
+                    </div>
+                    
+                    <p class="trilha-descricao">{{ trilha.descricao }}</p>
+                    
+                    <div class="trilha-meta">
+                        <div class="meta-item">
+                            <i class="fas fa-clock"></i>
+                            <span>{{ trilha.tempo_estimado }}h</span>
+                        </div>
+                        <div class="meta-item">
+                            <i class="fas fa-layer-group"></i>
+                            <span>{{ trilha.get_modulos_count }} módulos</span>
+                        </div>
+                        <div class="meta-item">
+                            <i class="fas fa-star"></i>
+                            <span>{{ trilha.pontos_recompensa }} pontos</span>
+                        </div>
+                    </div>
+                    
+                    {% if user.is_authenticated %}
+                        <!-- Verificar se há progresso para esta trilha -->
+                        {% for key, progresso in progressos.items %}
+                            {% if key == trilha.id %}
+                                <!-- Trilha em progresso -->
+                                <div class="progresso-container">
+                                    <div class="progresso-label">
+                                        <span>Progresso</span>
+                                        <span>{{ progresso.percentual_concluido|floatformat:0 }}%</span>
+                                    </div>
+                                    <div class="progresso-bar">
+                                        <div class="progresso-fill" style="width: {{ progresso.percentual_concluido }}%"></div>
+                                    </div>
+                                </div>
+                                
+                                {% if progresso.concluido %}
+                                    <a href="{% url 'trilhas_detalhe' trilha.id %}" class="btn-trilar">
+                                        <i class="fas fa-trophy"></i> Concluída - Ver Certificado
+                                    </a>
+                                {% elif progresso.modulo_atual %}
+                                    <a href="{% url 'trilhas_modulo' trilha.id progresso.modulo_atual.id %}" class="btn-trilar btn-continuar">
+                                        <i class="fas fa-play-circle"></i> Continuar Trilha
+                                    </a>
+                                {% else %}
+                                    <a href="{% url 'trilhas_iniciar' trilha.id %}" class="btn-trilar">
+                                        <i class="fas fa-play"></i> Iniciar Trilha
+                                    </a>
+                                {% endif %}
+                            {% endif %}
+                        {% empty %}
+                            <!-- Sem progresso para esta trilha -->
+                            <a href="{% url 'trilhas_iniciar' trilha.id %}" class="btn-trilar">
+                                <i class="fas fa-play"></i> Iniciar Trilha
+                            </a>
+                        {% endfor %}
+                    {% else %}
+                        <a href="{% url 'login' %}?next={% url 'trilhas_iniciar' trilha.id %}" class="btn-trilar">
+                            <i class="fas fa-lock"></i> Faça login para começar
+                        </a>
+                    {% endif %}
+                </div>
+                {% endfor %}
+            </div>
+        {% else %}
+            <div class="empty-state">
+                <i class="fas fa-book-open"></i>
+                <h3>Nenhuma trilha disponível no momento</h3>
+                <p>Estamos preparando novas trilhas de aprendizado. Volte em breve!</p>
+            </div>
+        {% endif %}
+    </main>
+    
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            // Adicionar animação aos cards
+            const cards = document.querySelectorAll('.trilha-card');
+            cards.forEach((card, index) => {
+                card.style.opacity = '0';
+                card.style.transform = 'translateY(20px)';
+                
+                setTimeout(() => {
+                    card.style.transition = 'all 0.5s ease';
+                    card.style.opacity = '1';
+                    card.style.transform = 'translateY(0)';
+                }, index * 100);
+            });
+        });
+    </script>
+</body>
+</html>

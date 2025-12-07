@@ -1,0 +1,41 @@
+/* ===== LOGO STYLES ===== */
+.navbar-brand img {
+    transition: transform 0.3s ease;
+}
+
+.navbar-brand:hover img {
+    transform: scale(1.1);
+}
+
+/* Para logo em SVG */
+.logo-svg {
+    filter: brightness(0) invert(1); /* Torna branca */
+}
+
+/* Dark mode adjustments */
+body.dark-mode .logo-svg {
+    filter: none; /* Mantém cores originais */
+}
+
+/* Responsividade da logo */
+@media (max-width: 768px) {
+    .navbar-brand img {
+        height: 32px;
+    }
+    
+    .navbar-brand span {
+        font-size: 1.1rem;
+    }
+}
+
+/* Logo no footer */
+.footer-logo {
+    height: 50px;
+    margin-bottom: 1rem;
+    opacity: 0.8;
+    transition: opacity 0.3s ease;
+}
+
+.footer-logo:hover {
+    opacity: 1;
+}
