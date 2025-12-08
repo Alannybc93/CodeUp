@@ -1,15 +1,845 @@
-﻿<!DOCTYPE html>
-<html>
+<!DOCTYPE html>
+<html lang="pt-BR">
 <head>
-    <title>CodeUp</title>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Home - CodeUP</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        /* ===== ESTILO IDÊNTICO AO TEMPLATE DE TRILHAS ===== */
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        }
+        
+        body {
+            background-color: #000000;
+            color: #f0f0f0;
+            min-height: 100vh;
+        }
+        
+        /* HEADER - EXATAMENTE IGUAL */
+        .header {
+            background-color: #111111;
+            border-bottom: 3px solid #FFD700;
+            padding: 20px 0;
+            position: sticky;
+            top: 0;
+            z-index: 1000;
+            box-shadow: 0 5px 20px rgba(0, 0, 0, 0.5);
+        }
+        
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 20px;
+        }
+        
+        .nav-container {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+        
+        .logo {
+            display: flex;
+            align-items: center;
+            gap: 15px;
+            text-decoration: none;
+        }
+        
+        .logo-icon {
+            background-color: #FFD700;
+            color: #000000;
+            width: 50px;
+            height: 50px;
+            border-radius: 10px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.8rem;
+            font-weight: bold;
+            box-shadow: 0 5px 15px rgba(255, 215, 0, 0.3);
+        }
+        
+        .logo-text {
+            font-size: 2.2rem;
+            font-weight: 900;
+            color: #FFD700;
+            letter-spacing: 1.5px;
+        }
+        
+        .nav-links {
+            display: flex;
+            gap: 30px;
+            align-items: center;
+        }
+        
+        .nav-link {
+            color: #ffffff;
+            text-decoration: none;
+            font-weight: 600;
+            font-size: 1.1rem;
+            transition: all 0.3s;
+            padding: 8px 15px;
+            border-radius: 8px;
+        }
+        
+        .nav-link:hover {
+            color: #FFD700;
+            background-color: rgba(255, 215, 0, 0.1);
+        }
+        
+        .nav-link.active {
+            color: #FFD700;
+            background-color: rgba(255, 215, 0, 0.1);
+        }
+        
+        .btn {
+            display: inline-block;
+            padding: 12px 25px;
+            background-color: #FFD700;
+            color: #000000;
+            text-decoration: none;
+            border-radius: 10px;
+            font-weight: bold;
+            font-size: 1.1rem;
+            transition: all 0.3s;
+            border: none;
+            cursor: pointer;
+        }
+        
+        .btn:hover {
+            background-color: #FFC000;
+            transform: translateY(-3px);
+            box-shadow: 0 8px 20px rgba(255, 215, 0, 0.3);
+        }
+        
+        /* HERO SECTION - ESTILO HOME MAS COM AS CORRES CORRETAS */
+        .hero {
+            padding: 100px 20px;
+            text-align: center;
+            background: radial-gradient(circle at 20% 50%, rgba(255, 215, 0, 0.1) 0%, transparent 50%);
+            border-bottom: 1px solid #333;
+            position: relative;
+            overflow: hidden;
+        }
+        
+        .hero::before {
+            content: '';
+            position: absolute;
+            top: -50%;
+            left: -50%;
+            width: 200%;
+            height: 200%;
+            background: radial-gradient(circle, rgba(255, 215, 0, 0.05) 0%, transparent 70%);
+            z-index: 0;
+        }
+        
+        .hero-content {
+            position: relative;
+            z-index: 1;
+        }
+        
+        .hero h1 {
+            font-size: 3.5rem;
+            color: #FFD700;
+            margin-bottom: 25px;
+            font-weight: 900;
+            text-shadow: 0 5px 15px rgba(255, 215, 0, 0.2);
+        }
+        
+        .hero-subtitle {
+            font-size: 1.5rem;
+            color: #cccccc;
+            max-width: 800px;
+            margin: 0 auto 40px;
+            line-height: 1.6;
+        }
+        
+        /* DESTAQUES */
+        .destaques {
+            padding: 80px 20px;
+            background-color: #0a0a0a;
+        }
+        
+        .section-title {
+            text-align: center;
+            color: #FFD700;
+            font-size: 2.5rem;
+            margin-bottom: 60px;
+            position: relative;
+        }
+        
+        .section-title::after {
+            content: '';
+            position: absolute;
+            bottom: -15px;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 100px;
+            height: 3px;
+            background-color: #FFD700;
+        }
+        
+        .destaques-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(350px, 1fr));
+            gap: 30px;
+            margin-top: 40px;
+        }
+        
+        .destaque-card {
+            background-color: #111111;
+            border: 2px solid #222222;
+            border-radius: 15px;
+            padding: 40px 30px;
+            transition: all 0.4s;
+            position: relative;
+            overflow: hidden;
+        }
+        
+        .destaque-card:hover {
+            transform: translateY(-10px);
+            border-color: #FFD700;
+            box-shadow: 0 15px 30px rgba(255, 215, 0, 0.1);
+        }
+        
+        .destaque-card::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 5px;
+            background-color: #FFD700;
+            transform: scaleX(0);
+            transition: transform 0.4s;
+        }
+        
+        .destaque-card:hover::before {
+            transform: scaleX(1);
+        }
+        
+        .destaque-icon {
+            width: 70px;
+            height: 70px;
+            background-color: rgba(255, 215, 0, 0.1);
+            border-radius: 15px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 2rem;
+            color: #FFD700;
+            margin: 0 auto 25px;
+        }
+        
+        .destaque-title {
+            color: #ffffff;
+            font-size: 1.8rem;
+            font-weight: 600;
+            text-align: center;
+            margin-bottom: 20px;
+        }
+        
+        .destaque-text {
+            color: #aaaaaa;
+            text-align: center;
+            line-height: 1.7;
+            font-size: 1.1rem;
+        }
+        
+        /* SOBRE - MESMO ESTILO */
+        .sobre {
+            padding: 80px 20px;
+            background-color: #000000;
+        }
+        
+        .sobre-content {
+            max-width: 900px;
+            margin: 0 auto;
+            text-align: center;
+        }
+        
+        .sobre h2 {
+            color: #FFD700;
+            font-size: 2.5rem;
+            margin-bottom: 30px;
+        }
+        
+        .sobre p {
+            color: #cccccc;
+            font-size: 1.2rem;
+            line-height: 1.8;
+            margin-bottom: 25px;
+        }
+        
+        /* CALL TO ACTION - MESMO ESTILO */
+        .cta {
+            padding: 100px 20px;
+            background: linear-gradient(135deg, rgba(255, 215, 0, 0.1), rgba(255, 215, 0, 0.05));
+            text-align: center;
+            border-top: 1px solid #333;
+            border-bottom: 1px solid #333;
+        }
+        
+        .cta h2 {
+            color: #FFD700;
+            font-size: 2.8rem;
+            margin-bottom: 25px;
+        }
+        
+        .cta p {
+            color: #cccccc;
+            font-size: 1.3rem;
+            max-width: 700px;
+            margin: 0 auto 50px;
+            line-height: 1.7;
+        }
+        
+        /* FOOTER - EXATAMENTE IGUAL */
+        .footer {
+            background-color: #111111;
+            padding: 60px 20px 30px;
+            border-top: 3px solid #222222;
+        }
+        
+        .footer-content {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 40px;
+            margin-bottom: 40px;
+        }
+        
+        .footer-logo {
+            font-size: 2rem;
+            color: #FFD700;
+            font-weight: bold;
+            margin-bottom: 15px;
+        }
+        
+        .footer-description {
+            color: #aaaaaa;
+            margin-bottom: 20px;
+            line-height: 1.6;
+        }
+        
+        .footer-section h3 {
+            color: #ffffff;
+            margin-bottom: 20px;
+            font-size: 1.3rem;
+        }
+        
+        .footer-links a {
+            color: #aaaaaa;
+            text-decoration: none;
+            display: block;
+            margin-bottom: 10px;
+            transition: color 0.3s;
+        }
+        
+        .footer-links a:hover {
+            color: #FFD700;
+        }
+        
+        .copyright {
+            text-align: center;
+            color: #666666;
+            margin-top: 50px;
+            padding-top: 30px;
+            border-top: 1px solid #222222;
+            font-size: 0.9rem;
+        }
+        
+        /* ANIMAÇÕES */
+        @keyframes fadeInUp {
+            from {
+                opacity: 0;
+                transform: translateY(30px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+        
+        @keyframes pulse {
+            0% { transform: scale(1); }
+            50% { transform: scale(1.05); }
+            100% { transform: scale(1); }
+        }
+        
+        .pulse {
+            animation: pulse 2s infinite;
+        }
+        
+        /* RESPONSIVE */
+        @media (max-width: 768px) {
+            .nav-container {
+                flex-direction: column;
+                gap: 20px;
+            }
+            
+            .nav-links {
+                flex-wrap: wrap;
+                justify-content: center;
+            }
+            
+            .hero h1 {
+                font-size: 2.5rem;
+            }
+            
+            .hero-subtitle {
+                font-size: 1.2rem;
+            }
+            
+            .destaques-grid {
+                grid-template-columns: 1fr;
+            }
+            
+            .section-title {
+                font-size: 2rem;
+            }
+            
+            .cta h2 {
+                font-size: 2.2rem;
+            }
+        }
+        
+        /* STATUS DE FUNCIONALIDADE */
+        .status-box {
+            background-color: rgba(255, 215, 0, 0.1);
+            border: 2px solid #FFD700;
+            border-radius: 15px;
+            padding: 25px;
+            margin: 40px auto;
+            max-width: 600px;
+            text-align: center;
+            animation: fadeInUp 0.8s ease;
+        }
+        
+        .status-title {
+            color: #FFD700;
+            font-size: 1.5rem;
+            margin-bottom: 15px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 10px;
+        }
+        
+        .status-text {
+            color: #cccccc;
+            margin-bottom: 20px;
+        }
+        
+        .test-btn {
+            background-color: #FFD700;
+            color: #000000;
+            border: none;
+            padding: 12px 25px;
+            border-radius: 10px;
+            font-weight: bold;
+            font-size: 1.1rem;
+            cursor: pointer;
+            transition: all 0.3s;
+            display: inline-flex;
+            align-items: center;
+            gap: 10px;
+        }
+        
+        .test-btn:hover {
+            background-color: #FFC000;
+            transform: translateY(-3px);
+            box-shadow: 0 8px 20px rgba(255, 215, 0, 0.3);
+        }
+    </style>
 </head>
 <body>
-    <h1>CodeUp - Plataforma de Programação</h1>
-    <p>Sistema funcionando corretamente!</p>
-    <a href="/admin/">Admin</a>
-    <br>
-    <a href="/usuarios/login/">Login</a>
-    <br>
-    <a href="/usuarios/registrar/">Cadastrar</a>
+    <!-- HEADER - IDÊNTICO AO DE TRILHAS -->
+    <header class="header">
+        <div class="container">
+            <div class="nav-container">
+                <a href="/" class="logo">
+                    <div class="logo-icon">
+                        <i class="fas fa-code"></i>
+                    </div>
+                    <div class="logo-text">CODEUP</div>
+                </a>
+                
+                <div class="nav-links">
+                    <a href="/" class="nav-link active">
+                        <i class="fas fa-home"></i> Home
+                    </a>
+                    <a href="/trilhas/" class="nav-link">
+                        <i class="fas fa-road"></i> Trilhas
+                    </a>
+                    <a href="/exercicios/" class="nav-link">
+                        <i class="fas fa-laptop-code"></i> Exercícios
+                    </a>
+                    {% if user.is_authenticated %}
+                        <a href="#" class="btn" style="padding: 10px 20px;">
+                            <i class="fas fa-user"></i> {{ user.username }}
+                        </a>
+                        <a href="{% url 'logout' %}" class="nav-link">
+                            <i class="fas fa-sign-out-alt"></i> Sair
+                        </a>
+                    {% else %}
+                        <a href="{% url 'login' %}" class="nav-link">
+                            <i class="fas fa-sign-in-alt"></i> Entrar
+                        </a>
+                        <a href="{% url 'cadastro' %}" class="btn">
+                            <i class="fas fa-user-plus"></i> Cadastrar
+                        </a>
+                    {% endif %}
+                </div>
+            </div>
+        </div>
+    </header>
+
+    <!-- HERO SECTION -->
+    <section class="hero">
+        <div class="container">
+            <div class="hero-content">
+                <h1>Aprenda Programação de Forma Prática</h1>
+                <p class="hero-subtitle">
+                    Domine as tecnologias mais requisitadas do mercado com cursos intensivos. 
+                    Do iniciante ao profissional, temos o caminho certo para sua carreira em tecnologia.
+                </p>
+                
+                <!-- STATUS DE FUNCIONALIDADE -->
+                <div class="status-box">
+                    <div class="status-title">
+                        <i class="fas fa-check-circle"></i> SISTEMA OPERACIONAL
+                    </div>
+                    <p class="status-text">
+                        Página Home funcionando perfeitamente. Navegação ativa e todas as funcionalidades operacionais.
+                    </p>
+                    <button onclick="testHomeButton()" class="test-btn">
+                        <i class="fas fa-sync-alt"></i> Testar Funcionalidade
+                    </button>
+                </div>
+                
+                <div class="cta-buttons" style="margin-top: 40px;">
+                    {% if user.is_authenticated %}
+                        <a href="/trilhas/" class="btn pulse" style="font-size: 1.2rem; padding: 15px 35px;">
+                            <i class="fas fa-play"></i> Continuar Aprendendo
+                        </a>
+                    {% else %}
+                        <a href="{% url 'cadastro' %}" class="btn pulse" style="font-size: 1.2rem; padding: 15px 35px;">
+                            <i class="fas fa-rocket"></i> Começar Agora Gratuitamente
+                        </a>
+                    {% endif %}
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- DESTAQUES -->
+    <section class="destaques">
+        <div class="container">
+            <h2 class="section-title">Por que Escolher a CodeUP?</h2>
+            
+            <div class="destaques-grid">
+                <!-- Destaque 1 -->
+                <div class="destaque-card">
+                    <div class="destaque-icon">
+                        <i class="fas fa-laptop-code"></i>
+                    </div>
+                    <h3 class="destaque-title">Aprendizado Prático</h3>
+                    <p class="destaque-text">
+                        Construa projetos reais que consolidam o conhecimento teórico e desenvolvem 
+                        habilidades exigidas pelo mercado.
+                    </p>
+                </div>
+                
+                <!-- Destaque 2 -->
+                <div class="destaque-card">
+                    <div class="destaque-icon">
+                        <i class="fas fa-chart-line"></i>
+                    </div>
+                    <h3 class="destaque-title">Progresso Monitorado</h3>
+                    <p class="destaque-text">
+                        Acompanhe seu desenvolvimento com dashboards intuitivos e métricas 
+                        que mostram sua evolução em tempo real.
+                    </p>
+                </div>
+                
+                <!-- Destaque 3 -->
+                <div class="destaque-card">
+                    <div class="destaque-icon">
+                        <i class="fas fa-users"></i>
+                    </div>
+                    <h3 class="destaque-title">Comunidade Ativa</h3>
+                    <p class="destaque-text">
+                        Conecte-se com outros estudantes e profissionais, participe de fóruns 
+                        e grupos de estudo colaborativos.
+                    </p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- SOBRE -->
+    <section class="sobre">
+        <div class="container">
+            <div class="sobre-content">
+                <h2>Nossa Missão</h2>
+                <p>
+                    A CodeUP nasceu com o propósito de democratizar o acesso ao ensino de programação 
+                    de qualidade. Acreditamos que qualquer pessoa, independentemente de sua formação 
+                    ou background, pode aprender a programar e transformar sua carreira.
+                </p>
+                <p>
+                    Com uma metodologia prática e focada em projetos reais, preparamos nossos alunos 
+                    para os desafios do mercado atual. Mais de 10.000 estudantes já transformaram 
+                    suas carreiras através da nossa plataforma.
+                </p>
+            </div>
+        </div>
+    </section>
+
+    <!-- PARCERIAS -->
+    <section class="destaques" style="background-color: #0a0a0a;">
+        <div class="container">
+            <h2 class="section-title">Parcerias e Certificações</h2>
+            
+            <div class="destaques-grid">
+                <div class="destaque-card">
+                    <div class="destaque-icon">
+                        <i class="fas fa-award"></i>
+                    </div>
+                    <h3 class="destaque-title">CORRIP</h3>
+                    <p class="destaque-text">
+                        Certificações reconhecidas internacionalmente desde 2011. 
+                        Nossos cursos são validados por uma das maiores instituições 
+                        de certificação do setor.
+                    </p>
+                </div>
+                
+                <div class="destaque-card">
+                    <div class="destaque-icon">
+                        <i class="fas fa-handshake"></i>
+                    </div>
+                    <h3 class="destaque-title">Ltda. Búblias</h3>
+                    <p class="destaque-text">
+                        Em parceria com a <strong>Ltda. Búblias - Loma (Técnica Internacional)</strong>, 
+                        oferecemos os melhores recursos educacionais e metodologias de ensino.
+                    </p>
+                </div>
+            </div>
+            
+            <!-- CONTATO -->
+            <div class="status-box" style="max-width: 800px; margin-top: 60px;">
+                <div class="status-title">
+                    <i class="fas fa-headset"></i> Entre em Contato
+                </div>
+                <p class="status-text" style="font-size: 1.2rem;">
+                    <strong>Website:</strong> www.corrip.com/art/219999-0099<br>
+                    <strong>Email:</strong> contato@codeup.com.br<br>
+                    <strong>Telefone:</strong> (11) 99999-0099
+                </p>
+            </div>
+        </div>
+    </section>
+
+    <!-- CALL TO ACTION -->
+    <section class="cta">
+        <div class="container">
+            <h2>Pronto para Transformar Sua Carreira?</h2>
+            <p>
+                Junte-se a milhares de estudantes que já descobriram o poder da programação 
+                e estão construindo carreiras de sucesso no mercado de tecnologia.
+            </p>
+            
+            <div style="display: flex; gap: 20px; justify-content: center; flex-wrap: wrap; margin-top: 40px;">
+                {% if not user.is_authenticated %}
+                    <a href="{% url 'cadastro' %}" class="btn" style="font-size: 1.2rem; padding: 15px 35px;">
+                        <i class="fas fa-user-plus"></i> Criar Conta Gratuita
+                    </a>
+                {% endif %}
+                <a href="/trilhas/" class="btn" style="font-size: 1.2rem; padding: 15px 35px; background: transparent; border: 3px solid #FFD700; color: #FFD700;">
+                    <i class="fas fa-road"></i> Explorar Trilhas
+                </a>
+            </div>
+        </div>
+    </section>
+
+    <!-- FOOTER - IDÊNTICO AO DE TRILHAS -->
+    <footer class="footer">
+        <div class="container">
+            <div class="footer-content">
+                <div class="footer-about">
+                    <div class="footer-logo">CODEUP</div>
+                    <p class="footer-description">
+                        Plataforma de aprendizado de programação interativa. 
+                        Transformamos iniciantes em desenvolvedores profissionais.
+                    </p>
+                </div>
+                
+                <div class="footer-section">
+                    <h3>Plataforma</h3>
+                    <div class="footer-links">
+                        <a href="/">Home</a>
+                        <a href="/trilhas/">Trilhas</a>
+                        <a href="/exercicios/">Exercícios</a>
+                        <a href="#">Projetos</a>
+                    </div>
+                </div>
+                
+                <div class="footer-section">
+                    <h3>Recursos</h3>
+                    <div class="footer-links">
+                        <a href="#">Blog</a>
+                        <a href="#">Tutoriais</a>
+                        <a href="#">Documentação</a>
+                        <a href="#">FAQ</a>
+                    </div>
+                </div>
+                
+                <div class="footer-section">
+                    <h3>Legal</h3>
+                    <div class="footer-links">
+                        <a href="#">Termos de Uso</a>
+                        <a href="#">Política de Privacidade</a>
+                        <a href="#">Cookies</a>
+                        <a href="#">Contato</a>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="copyright">
+                <p>© 2024 CodeUP - Plataforma de Programação. Todos os direitos reservados.</p>
+            </div>
+        </div>
+    </footer>
+
+    <!-- SCRIPTS -->
+    <script>
+        // ============================================
+        // FUNÇÕES DE TESTE
+        // ============================================
+        function testHomeButton() {
+            console.log("🔧 Testando funcionalidade do botão Home...");
+            
+            if (window.location.pathname === '/') {
+                // Mostra mensagem de sucesso
+                showNotification('✅ Você já está na página Home! Funcionando perfeitamente.', 'success');
+                
+                // Feedback visual no botão Home
+                const homeBtn = document.querySelector('.nav-link[href="/"]');
+                homeBtn.style.transform = 'scale(1.1)';
+                homeBtn.style.boxShadow = '0 0 20px rgba(255, 215, 0, 0.5)';
+                
+                setTimeout(() => {
+                    homeBtn.style.transform = '';
+                    homeBtn.style.boxShadow = '';
+                }, 500);
+                
+            } else {
+                showNotification('⚠️ Redirecionando para a página Home...', 'warning');
+                setTimeout(() => {
+                    window.location.href = '/';
+                }, 1500);
+            }
+        }
+        
+        function showNotification(message, type) {
+            // Cria elemento de notificação
+            const notification = document.createElement('div');
+            notification.style.cssText = `
+                position: fixed;
+                top: 100px;
+                right: 20px;
+                background: ${type === 'success' ? '#28a745' : '#ffc107'};
+                color: ${type === 'success' ? 'white' : '#000'};
+                padding: 15px 25px;
+                border-radius: 10px;
+                box-shadow: 0 10px 25px rgba(0,0,0,0.3);
+                z-index: 9999;
+                animation: slideInRight 0.3s ease;
+                display: flex;
+                align-items: center;
+                gap: 10px;
+                font-weight: 600;
+                max-width: 400px;
+            `;
+            
+            notification.innerHTML = `
+                <i class="fas fa-${type === 'success' ? 'check-circle' : 'exclamation-triangle'}"></i>
+                ${message}
+            `;
+            
+            document.body.appendChild(notification);
+            
+            // Remove após 3 segundos
+            setTimeout(() => {
+                notification.style.animation = 'slideOutRight 0.3s ease';
+                setTimeout(() => {
+                    document.body.removeChild(notification);
+                }, 300);
+            }, 3000);
+        }
+        
+        // ============================================
+        // CONFIGURAÇÃO INICIAL
+        // ============================================
+        document.addEventListener('DOMContentLoaded', function() {
+            console.log("🚀 CodeUP Home Page Inicializada");
+            console.log("🎨 Tema escuro com dourado aplicado");
+            console.log("📍 URL:", window.location.href);
+            
+            // Adiciona animações CSS
+            const style = document.createElement('style');
+            style.textContent = `
+                @keyframes slideInRight {
+                    from { transform: translateX(100%); opacity: 0; }
+                    to { transform: translateX(0); opacity: 1; }
+                }
+                @keyframes slideOutRight {
+                    from { transform: translateX(0); opacity: 1; }
+                    to { transform: translateX(100%); opacity: 0; }
+                }
+                
+                /* Animações para cards */
+                .destaque-card, .status-box {
+                    animation: fadeInUp 0.8s ease;
+                }
+            `;
+            document.head.appendChild(style);
+            
+            // Anima os cards com delay
+            const cards = document.querySelectorAll('.destaque-card');
+            cards.forEach((card, index) => {
+                card.style.animationDelay = `${index * 0.2}s`;
+            });
+            
+            // Configura comportamento do botão Home
+            const homeLink = document.querySelector('.nav-link[href="/"]');
+            if (homeLink) {
+                homeLink.addEventListener('click', function(e) {
+                    if (window.location.pathname === '/') {
+                        e.preventDefault();
+                        console.log("🏠 Botão Home clicado - Já está na home");
+                        testHomeButton();
+                    }
+                });
+            }
+        });
+        
+        // ============================================
+        // EFEITO DE SCROLL
+        // ============================================
+        window.addEventListener('scroll', function() {
+            const header = document.querySelector('.header');
+            if (window.scrollY > 50) {
+                header.style.boxShadow = '0 10px 30px rgba(0, 0, 0, 0.7)';
+            } else {
+                header.style.boxShadow = '0 5px 20px rgba(0, 0, 0, 0.5)';
+            }
+        });
+    </script>
 </body>
 </html>

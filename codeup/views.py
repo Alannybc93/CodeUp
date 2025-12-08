@@ -52,4 +52,21 @@ def dashboard(request):
     if user.tipo == 'ADMIN':
         return redirect('admin_panel')
     
+   
     return render(request, 'usuarios/dashboard.html', context)
+# Configurações de Static Files
+    STATIC_URL = '/static/'
+    STATICFILES_DIRS = [
+        os.path.join(BASE_DIR, 'gamniceaco/static'),
+    ]
+    STATIC_ROOT = os.path.join(BASE_DIR, 'staticfiles')
+
+    # Templates
+    TEMPLATES = [
+        {
+            'BACKEND': 'django.template.backends.django.DjangoTemplates',
+            'DIRS': [os.path.join(BASE_DIR, 'gamniceaco/templates')],
+            'APP_DIRS': True,
+            # ...
+        },
+    ]

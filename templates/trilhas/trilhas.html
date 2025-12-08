@@ -1,0 +1,649 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Trilhas - CodeUp</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        }
+        
+        body {
+            background-color: #000000;
+            color: #f0f0f0;
+            min-height: 100vh;
+        }
+        
+        /* HEADER NO SEU ESTILO */
+        .header {
+            background-color: #111111;
+            border-bottom: 3px solid #FFD700;
+            padding: 20px 0;
+            position: sticky;
+            top: 0;
+            z-index: 1000;
+            box-shadow: 0 5px 20px rgba(0, 0, 0, 0.5);
+        }
+        
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 20px;
+        }
+        
+        .nav-container {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+        
+        .logo {
+            display: flex;
+            align-items: center;
+            gap: 15px;
+            text-decoration: none;
+        }
+        
+        .logo-icon {
+            background-color: #FFD700;
+            color: #000000;
+            width: 50px;
+            height: 50px;
+            border-radius: 10px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.8rem;
+            font-weight: bold;
+            box-shadow: 0 5px 15px rgba(255, 215, 0, 0.3);
+        }
+        
+        .logo-text {
+            font-size: 2.2rem;
+            font-weight: 900;
+            color: #FFD700;
+            letter-spacing: 1.5px;
+        }
+        
+        .nav-links {
+            display: flex;
+            gap: 30px;
+            align-items: center;
+        }
+        
+        .nav-link {
+            color: #ffffff;
+            text-decoration: none;
+            font-weight: 600;
+            font-size: 1.1rem;
+            transition: all 0.3s;
+            padding: 8px 15px;
+            border-radius: 8px;
+        }
+        
+        .nav-link:hover {
+            color: #FFD700;
+            background-color: rgba(255, 215, 0, 0.1);
+        }
+        
+        .nav-link.active {
+            color: #FFD700;
+            background-color: rgba(255, 215, 0, 0.1);
+        }
+        
+        .btn {
+            display: inline-block;
+            padding: 12px 25px;
+            background-color: #FFD700;
+            color: #000000;
+            text-decoration: none;
+            border-radius: 10px;
+            font-weight: bold;
+            font-size: 1.1rem;
+            transition: all 0.3s;
+            border: none;
+            cursor: pointer;
+        }
+        
+        .btn:hover {
+            background-color: #FFC000;
+            transform: translateY(-3px);
+            box-shadow: 0 8px 20px rgba(255, 215, 0, 0.3);
+        }
+        
+        /* HERO SECTION - ESTILO SEU */
+        .hero {
+            padding: 80px 20px;
+            text-align: center;
+            background: radial-gradient(circle at 20% 50%, rgba(255, 215, 0, 0.1) 0%, transparent 50%);
+            border-bottom: 1px solid #333;
+        }
+        
+        .hero h1 {
+            font-size: 3rem;
+            color: #FFD700;
+            margin-bottom: 20px;
+            font-weight: 900;
+        }
+        
+        .hero p {
+            font-size: 1.3rem;
+            color: #cccccc;
+            max-width: 800px;
+            margin: 0 auto 40px;
+        }
+        
+        /* TRILHAS GRID - ESTILO SEU */
+        .trilhas-section {
+            padding: 60px 20px;
+        }
+        
+        .section-title {
+            text-align: center;
+            color: #FFD700;
+            font-size: 2.5rem;
+            margin-bottom: 50px;
+            position: relative;
+        }
+        
+        .section-title::after {
+            content: '';
+            position: absolute;
+            bottom: -15px;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 100px;
+            height: 3px;
+            background-color: #FFD700;
+        }
+        
+        .trilhas-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(350px, 1fr));
+            gap: 30px;
+            margin-top: 40px;
+        }
+        
+        .trilha-card {
+            background-color: #111111;
+            border: 2px solid #222222;
+            border-radius: 15px;
+            padding: 30px;
+            transition: all 0.4s;
+            position: relative;
+            overflow: hidden;
+        }
+        
+        .trilha-card:hover {
+            transform: translateY(-10px);
+            border-color: #FFD700;
+            box-shadow: 0 15px 30px rgba(255, 215, 0, 0.1);
+        }
+        
+        .trilha-card::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 5px;
+            background-color: #FFD700;
+            transform: scaleX(0);
+            transition: transform 0.4s;
+        }
+        
+        .trilha-card:hover::before {
+            transform: scaleX(1);
+        }
+        
+        .trilha-header {
+            display: flex;
+            align-items: center;
+            gap: 15px;
+            margin-bottom: 20px;
+        }
+        
+        .trilha-icon {
+            width: 60px;
+            height: 60px;
+            background-color: rgba(255, 215, 0, 0.1);
+            border-radius: 12px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.8rem;
+            color: #FFD700;
+            flex-shrink: 0;
+        }
+        
+        .trilha-title {
+            color: #ffffff;
+            font-size: 1.5rem;
+            font-weight: 600;
+        }
+        
+        .trilha-description {
+            color: #aaaaaa;
+            margin-bottom: 25px;
+            line-height: 1.6;
+        }
+        
+        .trilha-meta {
+            display: flex;
+            justify-content: space-between;
+            color: #888888;
+            font-size: 0.9rem;
+            margin-bottom: 20px;
+            padding-top: 15px;
+            border-top: 1px solid #222;
+        }
+        
+        .trilha-button {
+            display: block;
+            width: 100%;
+            padding: 14px;
+            background-color: #FFD700;
+            color: #000000;
+            text-align: center;
+            text-decoration: none;
+            border-radius: 10px;
+            font-weight: bold;
+            transition: all 0.3s;
+            border: none;
+            cursor: pointer;
+        }
+        
+        .trilha-button:hover {
+            background-color: #FFC000;
+            transform: translateY(-2px);
+        }
+        
+        /* FOOTER - ESTILO SEU */
+        .footer {
+            background-color: #111111;
+            padding: 60px 20px 30px;
+            border-top: 3px solid #222222;
+            margin-top: 80px;
+        }
+        
+        .footer-content {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 40px;
+            margin-bottom: 40px;
+        }
+        
+        .footer-logo {
+            font-size: 2rem;
+            color: #FFD700;
+            font-weight: bold;
+            margin-bottom: 15px;
+        }
+        
+        .footer-description {
+            color: #aaaaaa;
+            margin-bottom: 20px;
+            line-height: 1.6;
+        }
+        
+        .footer-section h3 {
+            color: #ffffff;
+            margin-bottom: 20px;
+            font-size: 1.3rem;
+        }
+        
+        .footer-links a {
+            color: #aaaaaa;
+            text-decoration: none;
+            display: block;
+            margin-bottom: 10px;
+            transition: color 0.3s;
+        }
+        
+        .footer-links a:hover {
+            color: #FFD700;
+        }
+        
+        .copyright {
+            text-align: center;
+            color: #666666;
+            margin-top: 50px;
+            padding-top: 30px;
+            border-top: 1px solid #222222;
+            font-size: 0.9rem;
+        }
+        
+        /* RESPONSIVE */
+        @media (max-width: 768px) {
+            .nav-container {
+                flex-direction: column;
+                gap: 20px;
+            }
+            
+            .nav-links {
+                flex-wrap: wrap;
+                justify-content: center;
+            }
+            
+            .hero h1 {
+                font-size: 2.2rem;
+            }
+            
+            .trilhas-grid {
+                grid-template-columns: 1fr;
+            }
+        }
+    </style>
+</head>
+<body>
+    <!-- HEADER -->
+    <header class="header">
+        <div class="container">
+            <div class="nav-container">
+                <a href="/" class="logo">
+                    <div class="logo-icon">
+                        <i class="fas fa-code"></i>
+                    </div>
+                    <div class="logo-text">CODEUP</div>
+                </a>
+                
+                <div class="nav-links">
+                    <a href="/" class="nav-link">
+                        <i class="fas fa-home"></i> Home
+                    </a>
+                    <a href="/trilhas/" class="nav-link active">
+                        <i class="fas fa-road"></i> Trilhas
+                    </a>
+                    <a href="/exercicios/" class="nav-link">
+                        <i class="fas fa-laptop-code"></i> Exercícios
+                    </a>
+                    {% if user.is_authenticated %}
+                        <a href="#" class="btn" style="padding: 10px 20px;">
+                            <i class="fas fa-user"></i> {{ user.username }}
+                        </a>
+                        <a href="{% url 'logout' %}" class="nav-link">
+                            <i class="fas fa-sign-out-alt"></i> Sair
+                        </a>
+                    {% else %}
+                        <a href="{% url 'login' %}" class="nav-link">
+                            <i class="fas fa-sign-in-alt"></i> Entrar
+                        </a>
+                        <a href="{% url 'cadastro' %}" class="btn">
+                            <i class="fas fa-user-plus"></i> Cadastrar
+                        </a>
+                    {% endif %}
+                </div>
+            </div>
+        </div>
+    </header>
+
+    <!-- HERO -->
+    <section class="hero">
+        <div class="container">
+            <h1>Trilhas de Aprendizado</h1>
+            <p>
+                Escolha sua jornada na programação. Do básico ao avançado, 
+                temos o caminho ideal para transformar sua carreira em tecnologia.
+            </p>
+            {% if not user.is_authenticated %}
+                <a href="{% url 'cadastro' %}" class="btn" style="font-size: 1.2rem;">
+                    <i class="fas fa-rocket"></i> Começar Agora Gratuitamente
+                </a>
+            {% endif %}
+        </div>
+    </section>
+
+    <!-- TRILHAS -->
+    <section class="trilhas-section">
+        <div class="container">
+            <h2 class="section-title">Explore Nossas Trilhas</h2>
+            
+            <div class="trilhas-grid">
+                <!-- Python -->
+                <div class="trilha-card">
+                    <div class="trilha-header">
+                        <div class="trilha-icon">
+                            <i class="fab fa-python"></i>
+                        </div>
+                        <h3 class="trilha-title">Python Fundamentals</h3>
+                    </div>
+                    <p class="trilha-description">
+                        Aprenda Python do zero: sintaxe, estruturas de dados, funções, 
+                        orientação a objetos e muito mais. Ideal para iniciantes.
+                    </p>
+                    <div class="trilha-meta">
+                        <span><i class="fas fa-book"></i> 25 módulos</span>
+                        <span><i class="fas fa-clock"></i> 40 horas</span>
+                    </div>
+                    {% if user.is_authenticated %}
+                        <a href="/trilhas/python/" class="trilha-button">
+                            <i class="fas fa-play"></i> Continuar Trilha
+                        </a>
+                    {% else %}
+                        <a href="{% url 'login' %}" class="trilha-button">
+                            <i class="fas fa-play"></i> Começar Trilha
+                        </a>
+                    {% endif %}
+                </div>
+                
+                <!-- JavaScript -->
+                <div class="trilha-card">
+                    <div class="trilha-header">
+                        <div class="trilha-icon">
+                            <i class="fab fa-js-square"></i>
+                        </div>
+                        <h3 class="trilha-title">JavaScript Moderno</h3>
+                    </div>
+                    <p class="trilha-description">
+                        Domine JavaScript ES6+, manipulação do DOM, async/await, 
+                        e prepare-se para frameworks modernos como React e Vue.
+                    </p>
+                    <div class="trilha-meta">
+                        <span><i class="fas fa-book"></i> 30 módulos</span>
+                        <span><i class="fas fa-clock"></i> 50 horas</span>
+                    </div>
+                    {% if user.is_authenticated %}
+                        <a href="/trilhas/javascript/" class="trilha-button">
+                            <i class="fas fa-play"></i> Continuar Trilha
+                        </a>
+                    {% else %}
+                        <a href="{% url 'login' %}" class="trilha-button">
+                            <i class="fas fa-play"></i> Começar Trilha
+                        </a>
+                    {% endif %}
+                </div>
+                
+                <!-- SQL -->
+                <div class="trilha-card">
+                    <div class="trilha-header">
+                        <div class="trilha-icon">
+                            <i class="fas fa-database"></i>
+                        </div>
+                        <h3 class="trilha-title">Banco de Dados SQL</h3>
+                    </div>
+                    <p class="trilha-description">
+                        Comandos SQL, modelagem de dados, consultas complexas, 
+                        otimização e práticas recomendadas para desenvolvedores.
+                    </p>
+                    <div class="trilha-meta">
+                        <span><i class="fas fa-book"></i> 20 módulos</span>
+                        <span><i class="fas fa-clock"></i> 35 horas</span>
+                    </div>
+                    {% if user.is_authenticated %}
+                        <a href="/trilhas/sql/" class="trilha-button">
+                            <i class="fas fa-play"></i> Continuar Trilha
+                        </a>
+                    {% else %}
+                        <a href="{% url 'login' %}" class="trilha-button">
+                            <i class="fas fa-play"></i> Começar Trilha
+                        </a>
+                    {% endif %}
+                </div>
+                
+                <!-- Web Dev -->
+                <div class="trilha-card">
+                    <div class="trilha-header">
+                        <div class="trilha-icon">
+                            <i class="fas fa-globe"></i>
+                        </div>
+                        <h3 class="trilha-title">Desenvolvimento Web</h3>
+                    </div>
+                    <p class="trilha-description">
+                        HTML5, CSS3, JavaScript, responsividade, frameworks front-end 
+                        e back-end para criar aplicações web completas.
+                    </p>
+                    <div class="trilha-meta">
+                        <span><i class="fas fa-book"></i> 35 módulos</span>
+                        <span><i class="fas fa-clock"></i> 60 horas</span>
+                    </div>
+                    {% if user.is_authenticated %}
+                        <a href="/trilhas/web/" class="trilha-button">
+                            <i class="fas fa-play"></i> Continuar Trilha
+                        </a>
+                    {% else %}
+                        <a href="{% url 'login' %}" class="trilha-button">
+                            <i class="fas fa-play"></i> Começar Trilha
+                        </a>
+                    {% endif %}
+                </div>
+                
+                <!-- Algoritmos -->
+                <div class="trilha-card">
+                    <div class="trilha-header">
+                        <div class="trilha-icon">
+                            <i class="fas fa-brain"></i>
+                        </div>
+                        <h3 class="trilha-title">Algoritmos & Estruturas</h3>
+                    </div>
+                    <p class="trilha-description">
+                        Fundamentos de algoritmos, estruturas de dados, complexidade, 
+                        e resolução de problemas para entrevistas técnicas.
+                    </p>
+                    <div class="trilha-meta">
+                        <span><i class="fas fa-book"></i> 28 módulos</span>
+                        <span><i class="fas fa-clock"></i> 45 horas</span>
+                    </div>
+                    {% if user.is_authenticated %}
+                        <a href="/trilhas/algoritmos/" class="trilha-button">
+                            <i class="fas fa-play"></i> Continuar Trilha
+                        </a>
+                    {% else %}
+                        <a href="{% url 'login' %}" class="trilha-button">
+                            <i class="fas fa-play"></i> Começar Trilha
+                        </a>
+                    {% endif %}
+                </div>
+                
+                <!-- Data Science -->
+                <div class="trilha-card">
+                    <div class="trilha-header">
+                        <div class="trilha-icon">
+                            <i class="fas fa-chart-bar"></i>
+                        </div>
+                        <h3 class="trilha-title">Data Science</h3>
+                    </div>
+                    <p class="trilha-description">
+                        Análise de dados, visualização, machine learning básico 
+                        e bibliotecas como Pandas, NumPy e Matplotlib.
+                    </p>
+                    <div class="trilha-meta">
+                        <span><i class="fas fa-book"></i> 32 módulos</span>
+                        <span><i class="fas fa-clock"></i> 55 horas</span>
+                    </div>
+                    {% if user.is_authenticated %}
+                        <a href="/trilhas/datascience/" class="trilha-button">
+                            <i class="fas fa-play"></i> Continuar Trilha
+                        </a>
+                    {% else %}
+                        <a href="{% url 'login' %}" class="trilha-button">
+                            <i class="fas fa-play"></i> Começar Trilha
+                        </a>
+                    {% endif %}
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- FOOTER -->
+    <footer class="footer">
+        <div class="container">
+            <div class="footer-content">
+                <div class="footer-about">
+                    <div class="footer-logo">CODEUP</div>
+                    <p class="footer-description">
+                        Plataforma de aprendizado de programação interativa. 
+                        Transformamos iniciantes em desenvolvedores profissionais.
+                    </p>
+                </div>
+                
+                <div class="footer-section">
+                    <h3>Plataforma</h3>
+                    <div class="footer-links">
+                        <a href="/trilhas/">Trilhas de Aprendizado</a>
+                        <a href="/exercicios/">Exercícios Práticos</a>
+                        <a href="#">Projetos</a>
+                        <a href="#">Comunidade</a>
+                    </div>
+                </div>
+                
+                <div class="footer-section">
+                    <h3>Recursos</h3>
+                    <div class="footer-links">
+                        <a href="#">Blog</a>
+                        <a href="#">Tutoriais</a>
+                        <a href="#">Documentação</a>
+                        <a href="#">FAQ</a>
+                    </div>
+                </div>
+                
+                <div class="footer-section">
+                    <h3>Legal</h3>
+                    <div class="footer-links">
+                        <a href="#">Termos de Uso</a>
+                        <a href="#">Política de Privacidade</a>
+                        <a href="#">Cookies</a>
+                        <a href="#">Contato</a>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="copyright">
+                <p>© 2024 CodeUp - Plataforma de Programação. Todos os direitos reservados.</p>
+            </div>
+        </div>
+    </footer>
+
+    <script>
+        // Animações simples
+        document.addEventListener('DOMContentLoaded', function() {
+            const cards = document.querySelectorAll('.trilha-card');
+            cards.forEach((card, index) => {
+                card.style.animationDelay = (index * 0.1) + 's';
+                card.style.animation = 'fadeInUp 0.5s ease forwards';
+                card.style.opacity = '0';
+            });
+        });
+        
+        // Adicionar estilo de animação
+        const style = document.createElement('style');
+        style.textContent = `
+            @keyframes fadeInUp {
+                from {
+                    opacity: 0;
+                    transform: translateY(20px);
+                }
+                to {
+                    opacity: 1;
+                    transform: translateY(0);
+                }
+            }
+        `;
+        document.head.appendChild(style);
+    </script>
+</body>
+</html>

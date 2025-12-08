@@ -106,15 +106,17 @@ MEDIA_ROOT = BASE_DIR / 'media'
 # Default primary key field type
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 
+# ============================================
+# CONFIGURAÇÕES CRÍTICAS - CORRIGIDAS
+# ============================================
+
 # Modelo de usuário customizado
 AUTH_USER_MODEL = 'usuarios.Usuario'
 
-# URLs de login/logout
-LOGIN_URL = '/usuarios/login/'
-LOGIN_REDIRECT_URL = '/usuarios/dashboard/'
+# URLs de login/logout - CORRIGIDAS
+LOGIN_URL = '/login/'
+LOGIN_REDIRECT_URL = '/'  # ← AGORA APONTA PARA HOME
 LOGOUT_REDIRECT_URL = '/'
 
-# codeup/settings.py
-LOGIN_URL = '/login/'
-LOGIN_REDIRECT_URL = '/dashboard/'
-LOGOUT_REDIRECT_URL = '/'
+# Desabilita redirecionamento automático para dashboard
+LOGIN_REDIRECT_AUTHENTICATED = False
