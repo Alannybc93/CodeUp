@@ -1,0 +1,181 @@
+<!-- templates/usuarios/admin/painel.html -->
+{% extends 'base.html' %}
+{% load static %}
+
+{% block title %}Painel Administrativo - CodeUP{% endblock %}
+
+{% block content %}
+<div class="container-fluid py-4">
+    <h1 class="mb-4">👑 Painel Administrativo</h1>
+    
+    <!-- Estatísticas -->
+    <div class="row mb-4">
+        <div class="col-md-3">
+            <div class="card bg-primary text-white">
+                <div class="card-body">
+                    <h5 class="card-title">Total Usuários</h5>
+                    <h2>{{ total_usuarios }}</h2>
+                </div>
+            </div>
+        </div>
+        <div class="col-md-3">
+            <div class="card bg-success text-white">
+                <div class="card-body">
+                    <h5 class="card-title">Novos Hoje</h5>
+                    <h2>{{ novos_hoje }}</h2>
+                </div>
+            </div>
+        </div>
+        <div class="col-md-3">
+            <div class="card bg-info text-white">
+                <div class="card-body">
+                    <h5 class="card-title">Ativos</h5>
+                    <h2>{{ usuarios_ativos }}</h2>
+                </div>
+            </div>
+        </div>
+        <div class="col-md-3">
+            <div class="card bg-danger text-white">
+                <div class="card-body">
+                    <h5 class="card-title">Bloqueados</h5>
+                    <h2>{{ usuarios_bloqueados }}</h2>
+                </div>
+            </div>
+        </div>
+    </div>
+    
+    <!-- Ações Rápidas -->
+    <div class="row mb-4">
+        <div class="col-12">
+            <div class="card">
+                <div class="card-header">
+                    <h5>⚡ Ações Rápidas</h5>
+                </div>
+                <div class="card-body">
+                    <a href="{% url 'usuarios:gerenciar_usuarios' %}" class="btn btn-primary me-2">
+                        <i class="fas fa-users"></i> Gerenciar Usuários
+                    </a>
+                    <a href="#" class="btn btn-success me-2">
+                        <i class="fas fa-chart-line"></i> Relatórios
+                    </a>
+                    <a href="#" class="btn btn-warning me-2">
+                        <i class="fas fa-cog"></i> Configurações
+                    </a>
+                    <a href="#" class="btn btn-info">
+                        <i class="fas fa-bell"></i> Notificações
+                    </a>
+                </div>
+            </div>
+        </div>
+    </div>
+    
+    <!-- Usuários por Nível -->
+    <div class="row mb-4">
+        <div class="col-md-6">
+            <div class="card">
+                <div class="card-header">
+                    <h5>📊 Usuários por Nível</h5>
+                </div>
+                <div class="card-body">
+                    <table class="table">
+                        <thead>
+                            <tr>
+                                <th>Nível</th>
+                                <th>Quantidade</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            {% for nivel, quantidade in usuarios_por_nivel.items %}
+                            <tr>
+                                <td>{{ nivel }}</td>
+                                <td>{{ quantidade }}</td>
+                            </tr>
+                            {% endfor %}
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+        
+        <!-- Últimos Usuários -->
+        <div class="col-md-6">
+            <div class="card">
+                <div class="card-header">
+                    <h5>🆕 Últimos Cadastros</h5>
+                </div>
+                <div class="card-body">
+                    <table class="table table-hover">
+                        <thead>
+                            <tr>
+                                <th>Usuário</th>
+                                <th>Nível</th>
+                                <th>Data</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            {% for user in ultimos_usuarios %}
+                            <tr>
+                                <td>
+                                    <a href="{% url 'usuarios:editar_usuario_admin' user.id %}">
+                                        {{ user.username }}
+                                    </a>
+                                </td>
+                                <td>
+                                    <span class="badge bg-info">{{ user.get_nivel_nome }}</span>
+                                </td>
+                                <td>{{ user.date_joined|date:"d/m/Y H:i" }}</td>
+                            </tr>
+                            {% endfor %}
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+    </div>
+    
+    <!-- Ferramentas Avançadas -->
+    <div class="row">
+        <div class="col-12">
+            <div class="card">
+                <div class="card-header">
+                    <h5>🔧 Ferramentas Administrativas</h5>
+                </div>
+                <div class="card-body">
+                    <div class="row">
+                        <div class="col-md-4 mb-3">
+                            <div class="card h-100">
+                                <div class="card-body text-center">
+                                    <i class="fas fa-database fa-3x mb-3 text-primary"></i>
+                                    <h5>Backup de Dados</h5>
+                                    <p class="text-muted">Faça backup completo do sistema</p>
+                                    <button class="btn btn-outline-primary">Executar Backup</button>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-md-4 mb-3">
+                            <div class="card h-100">
+                                <div class="card-body text-center">
+                                    <i class="fas fa-envelope fa-3x mb-3 text-success"></i>
+                                    <h5>Email em Massa</h5>
+                                    <p class="text-muted">Envie emails para todos os usuários</p>
+                                    <button class="btn btn-outline-success">Criar Campanha</button>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-md-4 mb-3">
+                            <div class="card h-100">
+                                <div class="card-body text-center">
+                                    <i class="fas fa-chart-pie fa-3x mb-3 text-warning"></i>
+                                    <h5>Análises Avançadas</h5>
+                                    <p class="text-muted">Estatísticas detalhadas da plataforma</p>
+                                    <button class="btn btn-outline-warning">Ver Análises</button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}

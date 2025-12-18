@@ -1,0 +1,1147 @@
+<!-- usuarios/templates/usuarios/perfil.html -->
+{% extends 'base.html' %}
+{% load static %}
+
+{% block title %}Meu Perfil - CodeUP{% endblock %}
+
+{% block extra_css %}
+<style>
+    /* ============================
+       ESTILOS GERAIS
+    ============================ */
+    * {
+        margin: 0;
+        padding: 0;
+        box-sizing: border-box;
+        font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    }
+
+    body {
+        background-color: #0a0a0a;
+        color: #cccccc;
+        line-height: 1.6;
+    }
+
+    .container {
+        max-width: 1200px;
+        margin: 0 auto;
+        padding: 20px;
+    }
+
+    /* ============================
+       HEADER DO PERFIL
+    ============================ */
+    .profile-header {
+        background: linear-gradient(135deg, rgba(255, 215, 0, 0.2), rgba(255, 215, 0, 0.05));
+        color: #FFD700;
+        padding: 40px;
+        border-radius: 15px;
+        text-align: center;
+        margin-bottom: 30px;
+        border: 2px solid rgba(255, 215, 0, 0.2);
+        position: relative;
+        overflow: hidden;
+    }
+
+    .profile-header::before {
+        content: '';
+        position: absolute;
+        top: 0;
+        left: 0;
+        right: 0;
+        height: 4px;
+        background: linear-gradient(90deg, #FFD700, transparent);
+    }
+
+    .profile-header h1 {
+        font-size: 2.5rem;
+        margin-bottom: 10px;
+        text-shadow: 0 2px 10px rgba(255, 215, 0, 0.3);
+    }
+
+    .profile-header p {
+        font-size: 1.1rem;
+        opacity: 0.9;
+        max-width: 600px;
+        margin: 0 auto;
+    }
+
+    /* ============================
+       LAYOUT PRINCIPAL
+    ============================ */
+    .profile-main {
+        display: grid;
+        grid-template-columns: 1fr 2fr;
+        gap: 30px;
+        margin-bottom: 40px;
+    }
+
+    @media (max-width: 900px) {
+        .profile-main {
+            grid-template-columns: 1fr;
+        }
+    }
+
+    /* ============================
+       CARD DE PERFIL (ESQUERDA)
+    ============================ */
+    .profile-card {
+        background-color: #111111;
+        border-radius: 15px;
+        padding: 30px;
+        border: 1px solid #222222;
+        box-shadow: 0 10px 30px rgba(0, 0, 0, 0.2);
+        height: fit-content;
+        position: relative;
+    }
+
+    .profile-card::before {
+        content: '';
+        position: absolute;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 4px;
+        background: linear-gradient(90deg, #FFD700, transparent);
+        border-radius: 15px 15px 0 0;
+    }
+
+    .profile-picture-container {
+        position: relative;
+        width: 200px;
+        height: 200px;
+        margin: 0 auto 25px;
+        border-radius: 50%;
+        overflow: hidden;
+        border: 4px solid rgba(255, 215, 0, 0.2);
+        box-shadow: 0 5px 15px rgba(0, 0, 0, 0.3);
+        background-color: #222;
+    }
+
+    .profile-picture {
+        width: 100%;
+        height: 100%;
+        object-fit: cover;
+        transition: transform 0.3s;
+    }
+
+    .profile-picture:hover {
+        transform: scale(1.05);
+    }
+
+    .picture-actions {
+        position: absolute;
+        bottom: 0;
+        left: 0;
+        right: 0;
+        background-color: rgba(0, 0, 0, 0.8);
+        padding: 10px;
+        display: flex;
+        justify-content: center;
+        gap: 10px;
+        transform: translateY(100%);
+        transition: transform 0.3s ease;
+    }
+
+    .profile-picture-container:hover .picture-actions {
+        transform: translateY(0);
+    }
+
+    .btn-icon {
+        background-color: rgba(255, 215, 0, 0.2);
+        border: none;
+        color: #FFD700;
+        width: 40px;
+        height: 40px;
+        border-radius: 50%;
+        cursor: pointer;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        transition: all 0.3s;
+    }
+
+    .btn-icon:hover {
+        background-color: rgba(255, 215, 0, 0.4);
+        transform: scale(1.1);
+    }
+
+    .profile-info h2 {
+        color: #FFD700;
+        margin-bottom: 25px;
+        padding-bottom: 10px;
+        border-bottom: 1px solid rgba(255, 215, 0, 0.2);
+        font-size: 1.8rem;
+    }
+
+    .info-item {
+        margin-bottom: 15px;
+        display: flex;
+        align-items: center;
+        padding: 10px 0;
+        border-bottom: 1px solid rgba(255, 255, 255, 0.05);
+    }
+
+    .info-item:last-child {
+        border-bottom: none;
+    }
+
+    .info-item i {
+        margin-right: 15px;
+        color: #FFD700;
+        width: 20px;
+        font-size: 1.2rem;
+    }
+
+    .info-label {
+        font-weight: 600;
+        color: #aaa;
+        min-width: 120px;
+    }
+
+    .info-value {
+        color: #fff;
+        flex-grow: 1;
+    }
+
+    .edit-info {
+        background: none;
+        border: none;
+        color: #FFD700;
+        cursor: pointer;
+        margin-left: 10px;
+        font-size: 0.9rem;
+        transition: color 0.3s;
+    }
+
+    .edit-info:hover {
+        color: #fff;
+    }
+
+    /* ============================
+       LINKS SOCIAIS
+    ============================ */
+    .social-links {
+        margin-top: 30px;
+        padding-top: 25px;
+        border-top: 1px solid rgba(255, 215, 0, 0.2);
+    }
+
+    .social-links h3 {
+        color: #FFD700;
+        margin-bottom: 20px;
+        font-size: 1.5rem;
+        display: flex;
+        align-items: center;
+        gap: 10px;
+    }
+
+    .links-list {
+        list-style: none;
+    }
+
+    .links-list li {
+        margin-bottom: 10px;
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        padding: 12px 15px;
+        background-color: rgba(255, 255, 255, 0.05);
+        border-radius: 8px;
+        border-left: 3px solid #FFD700;
+        transition: all 0.3s;
+    }
+
+    .links-list li:hover {
+        background-color: rgba(255, 215, 0, 0.1);
+        transform: translateX(5px);
+    }
+
+    .link-content {
+        display: flex;
+        align-items: center;
+        gap: 10px;
+        overflow: hidden;
+    }
+
+    .link-content i {
+        color: #FFD700;
+        font-size: 1.2rem;
+    }
+
+    .link-url {
+        color: #aaa;
+        text-decoration: none;
+        white-space: nowrap;
+        overflow: hidden;
+        text-overflow: ellipsis;
+    }
+
+    .link-url:hover {
+        color: #FFD700;
+    }
+
+    .link-actions {
+        display: flex;
+        gap: 8px;
+    }
+
+    /* ============================
+       CONTEÚDO PRINCIPAL (DIREITA)
+    ============================ */
+    .profile-content {
+        display: flex;
+        flex-direction: column;
+        gap: 30px;
+    }
+
+    /* ============================
+       SEÇÕES DO PERFIL
+    ============================ */
+    .profile-section {
+        background-color: #111111;
+        border-radius: 15px;
+        padding: 30px;
+        border: 1px solid #222222;
+        box-shadow: 0 10px 30px rgba(0, 0, 0, 0.2);
+    }
+
+    .profile-section::before {
+        content: '';
+        position: absolute;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 4px;
+        background: linear-gradient(90deg, #FFD700, transparent);
+        border-radius: 15px 15px 0 0;
+    }
+
+    .section-header {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        margin-bottom: 25px;
+        padding-bottom: 15px;
+        border-bottom: 1px solid rgba(255, 215, 0, 0.2);
+    }
+
+    .section-header h2 {
+        color: #FFD700;
+        font-size: 1.8rem;
+        display: flex;
+        align-items: center;
+        gap: 10px;
+    }
+
+    .btn-add {
+        background-color: rgba(255, 215, 0, 0.2);
+        color: #FFD700;
+        border: none;
+        padding: 10px 20px;
+        border-radius: 8px;
+        cursor: pointer;
+        display: flex;
+        align-items: center;
+        gap: 8px;
+        transition: all 0.3s;
+        font-weight: 600;
+    }
+
+    .btn-add:hover {
+        background-color: rgba(255, 215, 0, 0.4);
+        transform: translateY(-2px);
+    }
+
+    /* ============================
+       FOTOS
+    ============================ */
+    .photos-grid {
+        display: grid;
+        grid-template-columns: repeat(auto-fill, minmax(150px, 1fr));
+        gap: 15px;
+        margin-top: 20px;
+    }
+
+    .photo-item {
+        position: relative;
+        border-radius: 10px;
+        overflow: hidden;
+        aspect-ratio: 1;
+        background-color: #222;
+        border: 2px solid rgba(255, 215, 0, 0.1);
+        transition: all 0.3s;
+    }
+
+    .photo-item:hover {
+        transform: translateY(-5px);
+        border-color: rgba(255, 215, 0, 0.3);
+        box-shadow: 0 10px 20px rgba(0, 0, 0, 0.3);
+    }
+
+    .photo-item img {
+        width: 100%;
+        height: 100%;
+        object-fit: cover;
+    }
+
+    .photo-actions {
+        position: absolute;
+        top: 10px;
+        right: 10px;
+        display: flex;
+        gap: 5px;
+        opacity: 0;
+        transition: opacity 0.3s;
+    }
+
+    .photo-item:hover .photo-actions {
+        opacity: 1;
+    }
+
+    /* ============================
+       ATIVIDADES
+    ============================ */
+    .activities-list {
+        list-style: none;
+    }
+
+    .activity-item {
+        padding: 20px;
+        margin-bottom: 15px;
+        background-color: rgba(255, 255, 255, 0.03);
+        border-radius: 10px;
+        border-left: 4px solid #FFD700;
+        transition: all 0.3s;
+    }
+
+    .activity-item:hover {
+        background-color: rgba(255, 215, 0, 0.05);
+        transform: translateX(5px);
+    }
+
+    .activity-header {
+        display: flex;
+        justify-content: space-between;
+        margin-bottom: 10px;
+    }
+
+    .activity-title {
+        color: #fff;
+        font-weight: 600;
+        font-size: 1.1rem;
+    }
+
+    .activity-date {
+        color: #777;
+        font-size: 0.9rem;
+    }
+
+    .activity-description {
+        color: #aaa;
+        line-height: 1.5;
+    }
+
+    /* ============================
+       AÇÕES DO PERFIL
+    ============================ */
+    .profile-actions {
+        display: flex;
+        justify-content: center;
+        gap: 20px;
+        margin-top: 40px;
+        padding-top: 30px;
+        border-top: 1px solid rgba(255, 215, 0, 0.2);
+    }
+
+    .btn-action {
+        padding: 15px 30px;
+        border-radius: 10px;
+        border: none;
+        font-weight: 600;
+        font-size: 1rem;
+        cursor: pointer;
+        display: flex;
+        align-items: center;
+        gap: 10px;
+        transition: all 0.3s;
+    }
+
+    .btn-edit {
+        background-color: rgba(255, 215, 0, 0.2);
+        color: #FFD700;
+    }
+
+    .btn-edit:hover {
+        background-color: rgba(255, 215, 0, 0.4);
+        transform: translateY(-3px);
+    }
+
+    .btn-delete {
+        background-color: rgba(255, 50, 50, 0.2);
+        color: #ff6b6b;
+    }
+
+    .btn-delete:hover {
+        background-color: rgba(255, 50, 50, 0.4);
+        transform: translateY(-3px);
+    }
+
+    /* ============================
+       MODAL
+    ============================ */
+    .modal {
+        display: none;
+        position: fixed;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        background-color: rgba(0, 0, 0, 0.8);
+        z-index: 1000;
+        justify-content: center;
+        align-items: center;
+        animation: fadeIn 0.3s;
+    }
+
+    @keyframes fadeIn {
+        from { opacity: 0; }
+        to { opacity: 1; }
+    }
+
+    .modal-content {
+        background-color: #111;
+        padding: 40px;
+        border-radius: 15px;
+        width: 90%;
+        max-width: 500px;
+        border: 2px solid #FFD700;
+        position: relative;
+        animation: slideUp 0.4s;
+    }
+
+    @keyframes slideUp {
+        from { transform: translateY(50px); opacity: 0; }
+        to { transform: translateY(0); opacity: 1; }
+    }
+
+    .modal-header {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        margin-bottom: 25px;
+        padding-bottom: 15px;
+        border-bottom: 1px solid rgba(255, 215, 0, 0.2);
+    }
+
+    .modal-header h3 {
+        color: #FFD700;
+        font-size: 1.5rem;
+    }
+
+    .close-modal {
+        background: none;
+        border: none;
+        color: #aaa;
+        font-size: 1.5rem;
+        cursor: pointer;
+        transition: color 0.3s;
+    }
+
+    .close-modal:hover {
+        color: #FFD700;
+    }
+
+    .form-group {
+        margin-bottom: 20px;
+    }
+
+    .form-group label {
+        display: block;
+        margin-bottom: 8px;
+        color: #FFD700;
+        font-weight: 600;
+    }
+
+    .form-group input,
+    .form-group textarea,
+    .form-group select {
+        width: 100%;
+        padding: 12px 15px;
+        background-color: rgba(255, 255, 255, 0.05);
+        border: 1px solid #333;
+        border-radius: 8px;
+        color: #fff;
+        font-size: 1rem;
+        transition: border 0.3s;
+    }
+
+    .form-group input:focus,
+    .form-group textarea:focus,
+    .form-group select:focus {
+        outline: none;
+        border-color: #FFD700;
+    }
+
+    .form-actions {
+        display: flex;
+        justify-content: flex-end;
+        gap: 15px;
+        margin-top: 30px;
+    }
+
+    .btn-cancel {
+        background-color: rgba(255, 255, 255, 0.05);
+        color: #aaa;
+        border: 1px solid #333;
+        padding: 12px 25px;
+        border-radius: 8px;
+        cursor: pointer;
+        transition: all 0.3s;
+    }
+
+    .btn-cancel:hover {
+        background-color: rgba(255, 255, 255, 0.1);
+        color: #fff;
+    }
+
+    .btn-save {
+        background-color: rgba(255, 215, 0, 0.2);
+        color: #FFD700;
+        border: none;
+        padding: 12px 25px;
+        border-radius: 8px;
+        cursor: pointer;
+        transition: all 0.3s;
+    }
+
+    .btn-save:hover {
+        background-color: rgba(255, 215, 0, 0.4);
+    }
+
+    /* ============================
+       NOTIFICAÇÕES
+    ============================ */
+    .notification {
+        position: fixed;
+        top: 20px;
+        right: 20px;
+        padding: 15px 25px;
+        border-radius: 8px;
+        color: white;
+        font-weight: 600;
+        z-index: 1001;
+        animation: slideInRight 0.5s, fadeOut 0.5s 2.5s;
+        box-shadow: 0 5px 15px rgba(0, 0, 0, 0.3);
+        display: flex;
+        align-items: center;
+        gap: 10px;
+    }
+
+    @keyframes slideInRight {
+        from { transform: translateX(100%); opacity: 0; }
+        to { transform: translateX(0); opacity: 1; }
+    }
+
+    @keyframes fadeOut {
+        from { opacity: 1; }
+        to { opacity: 0; }
+    }
+
+    .notification.success {
+        background-color: rgba(46, 204, 113, 0.9);
+        border-left: 5px solid #27ae60;
+    }
+
+    .notification.error {
+        background-color: rgba(231, 76, 60, 0.9);
+        border-left: 5px solid #c0392b;
+    }
+
+    .notification.warning {
+        background-color: rgba(241, 196, 15, 0.9);
+        border-left: 5px solid #f39c12;
+        color: #333;
+    }
+
+    /* ============================
+       RESPONSIVIDADE
+    ============================ */
+    @media (max-width: 768px) {
+        .profile-header h1 {
+            font-size: 2rem;
+        }
+        
+        .profile-picture-container {
+            width: 150px;
+            height: 150px;
+        }
+        
+        .section-header {
+            flex-direction: column;
+            align-items: flex-start;
+            gap: 15px;
+        }
+        
+        .profile-actions {
+            flex-direction: column;
+        }
+        
+        .btn-action {
+            width: 100%;
+            justify-content: center;
+        }
+    }
+</style>
+{% endblock %}
+
+{% block content %}
+<div class="container">
+    <!-- HEADER DO PERFIL -->
+    <header class="profile-header">
+        <h1><i class="fas fa-user-circle"></i> Meu Perfil</h1>
+        <p>Gerencie suas informações, fotos e links pessoais</p>
+    </header>
+
+    <!-- LAYOUT PRINCIPAL -->
+    <main class="profile-main">
+        <!-- COLUNA ESQUERDA - INFORMAÇÕES BÁSICAS -->
+        <div class="profile-card">
+            <!-- FOTO DE PERFIL -->
+            <div class="profile-picture-container">
+                <img src="https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=774&q=80" 
+                     alt="Foto de perfil" 
+                     class="profile-picture"
+                     id="profilePicture">
+                
+                <!-- AÇÕES DA FOTO -->
+                <div class="picture-actions">
+                    <button class="btn-icon" onclick="openModal('photoModal')">
+                        <i class="fas fa-camera"></i>
+                    </button>
+                    <button class="btn-icon" onclick="removeProfilePicture()">
+                        <i class="fas fa-trash"></i>
+                    </button>
+                </div>
+            </div>
+
+            <!-- INFORMAÇÕES DO USUÁRIO -->
+            <div class="profile-info">
+                <h2><i class="fas fa-id-card"></i> Informações Pessoais</h2>
+                
+                <!-- Dados Dinâmicos do Django -->
+                <div class="info-item">
+                    <i class="fas fa-user"></i>
+                    <span class="info-label">Nome:</span>
+                    <span class="info-value" id="userName">
+                        {% if dados.nome_completo %}
+                            {{ dados.nome_completo }}
+                        {% else %}
+                            {{ usuario.username }}
+                        {% endif %}
+                    </span>
+                    <button class="edit-info" onclick="editField('userName')">
+                        <i class="fas fa-edit"></i>
+                    </button>
+                </div>
+                
+                <div class="info-item">
+                    <i class="fas fa-envelope"></i>
+                    <span class="info-label">Email:</span>
+                    <span class="info-value" id="userEmail">{{ usuario.email }}</span>
+                    <button class="edit-info" onclick="editField('userEmail')">
+                        <i class="fas fa-edit"></i>
+                    </button>
+                </div>
+                
+                <div class="info-item">
+                    <i class="fas fa-calendar-alt"></i>
+                    <span class="info-label">Membro desde:</span>
+                    <span class="info-value" id="userSince">{{ dados.data_cadastro }}</span>
+                </div>
+                
+                <div class="info-item">
+                    <i class="fas fa-chart-line"></i>
+                    <span class="info-label">Nível:</span>
+                    <span class="info-value" id="userLevel">{{ dados.nivel }}</span>
+                </div>
+                
+                <div class="info-item">
+                    <i class="fas fa-star"></i>
+                    <span class="info-label">XP:</span>
+                    <span class="info-value" id="userXP">{{ dados.xp }}</span>
+                </div>
+            </div>
+
+            <!-- LINKS SOCIAIS -->
+            <div class="social-links">
+                <h3><i class="fas fa-link"></i> Links Sociais</h3>
+                <ul class="links-list" id="socialLinksList">
+                    {% for link in links_sociais %}
+                    <li>
+                        <div class="link-content">
+                            <i class="{{ link.icone }}"></i>
+                            <div>
+                                <div style="font-weight: 600; color: #fff;">{{ link.nome }}</div>
+                                <a href="{{ link.url }}" target="_blank" class="link-url">{{ link.url }}</a>
+                            </div>
+                        </div>
+                        <div class="link-actions">
+                            <button class="btn-icon" onclick="editLink('{{ link.id }}')">
+                                <i class="fas fa-edit"></i>
+                            </button>
+                            <button class="btn-icon" onclick="removeLink('{{ link.id }}')">
+                                <i class="fas fa-trash"></i>
+                            </button>
+                        </div>
+                    </li>
+                    {% empty %}
+                    <li style="text-align: center; color: #777; padding: 20px;">
+                        Nenhum link adicionado ainda.
+                    </li>
+                    {% endfor %}
+                </ul>
+                <button class="btn-add" onclick="openModal('linkModal')" style="margin-top: 15px; width: 100%;">
+                    <i class="fas fa-plus"></i> Adicionar Link
+                </button>
+            </div>
+        </div>
+
+        <!-- COLUNA DIREITA - CONTEÚDO PRINCIPAL -->
+        <div class="profile-content">
+            <!-- SEÇÃO DE ESTATÍSTICAS -->
+            <section class="profile-section">
+                <div class="section-header">
+                    <h2><i class="fas fa-chart-bar"></i> Minhas Estatísticas</h2>
+                </div>
+                
+                <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 20px;">
+                    <div style="background: rgba(255, 215, 0, 0.1); padding: 20px; border-radius: 10px; text-align: center;">
+                        <div style="font-size: 2.5rem; color: #FFD700; font-weight: bold;">{{ dados.trilhas_concluidas }}</div>
+                        <div style="color: #aaa;">Trilhas Concluídas</div>
+                    </div>
+                    
+                    <div style="background: rgba(255, 215, 0, 0.1); padding: 20px; border-radius: 10px; text-align: center;">
+                        <div style="font-size: 2.5rem; color: #FFD700; font-weight: bold;">{{ dados.exercicios_resolvidos }}</div>
+                        <div style="color: #aaa;">Exercícios Resolvidos</div>
+                    </div>
+                    
+                    <div style="background: rgba(255, 215, 0, 0.1); padding: 20px; border-radius: 10px; text-align: center;">
+                        <div style="font-size: 2.5rem; color: #FFD700; font-weight: bold;">{{ dados.nivel }}</div>
+                        <div style="color: #aaa;">Nível Atual</div>
+                    </div>
+                </div>
+            </section>
+
+            <!-- SEÇÃO DE ATIVIDADES -->
+            <section class="profile-section">
+                <div class="section-header">
+                    <h2><i class="fas fa-history"></i> Atividades Recentes</h2>
+                </div>
+                
+                <ul class="activities-list" id="activitiesList">
+                    {% for atividade in atividades %}
+                    <li class="activity-item">
+                        <div class="activity-header">
+                            <div class="activity-title">{{ atividade.titulo }}</div>
+                            <div class="activity-date">{{ atividade.data }}</div>
+                        </div>
+                        <div class="activity-description">{{ atividade.descricao }}</div>
+                    </li>
+                    {% empty %}
+                    <li style="text-align: center; color: #777; padding: 20px;">
+                        Nenhuma atividade recente.
+                    </li>
+                    {% endfor %}
+                </ul>
+            </section>
+        </div>
+    </main>
+
+    <!-- AÇÕES DO PERFIL -->
+    <div class="profile-actions">
+        <a href="{% url 'usuarios:editar_perfil' %}" class="btn-action btn-edit">
+            <i class="fas fa-edit"></i> Editar Perfil
+        </a>
+        <a href="{% url 'usuarios:alterar_senha' %}" class="btn-action btn-edit">
+            <i class="fas fa-key"></i> Alterar Senha
+        </a>
+        <a href="{% url 'usuarios:configurar_conta' %}" class="btn-action btn-edit">
+            <i class="fas fa-cog"></i> Configurações
+        </a>
+        <a href="{% url 'usuarios:excluir_conta' %}" class="btn-action btn-delete">
+            <i class="fas fa-trash-alt"></i> Excluir Conta
+        </a>
+    </div>
+</div>
+
+<!-- MODAIS -->
+<div id="photoModal" class="modal">
+    <div class="modal-content">
+        <div class="modal-header">
+            <h3><i class="fas fa-camera"></i> Alterar Foto de Perfil</h3>
+            <button class="close-modal" onclick="closeModal('photoModal')">&times;</button>
+        </div>
+        
+        <form id="photoForm" method="POST" enctype="multipart/form-data" action="{% url 'usuarios:perfil' %}">
+            {% csrf_token %}
+            <div class="form-group">
+                <label for="photoUpload">Escolher uma imagem</label>
+                <input type="file" id="photoUpload" accept="image/*" required>
+            </div>
+            
+            <div class="form-group">
+                <label>Pré-visualização</label>
+                <div style="width: 150px; height: 150px; margin: 10px auto; border-radius: 50%; overflow: hidden; border: 2px solid #FFD700;">
+                    <img id="photoPreview" src="https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=774&q=80" 
+                         alt="Pré-visualização" 
+                         style="width: 100%; height: 100%; object-fit: cover;">
+                </div>
+            </div>
+            
+            <div class="form-actions">
+                <button type="button" class="btn-cancel" onclick="closeModal('photoModal')">
+                    Cancelar
+                </button>
+                <button type="submit" class="btn-save">
+                    <i class="fas fa-upload"></i> Atualizar Foto
+                </button>
+            </div>
+        </form>
+    </div>
+</div>
+
+<div id="linkModal" class="modal">
+    <div class="modal-content">
+        <div class="modal-header">
+            <h3><i class="fas fa-plus-circle"></i> Adicionar Link</h3>
+            <button class="close-modal" onclick="closeModal('linkModal')">&times;</button>
+        </div>
+        
+        <form id="linkForm">
+            <div class="form-group">
+                <label for="linkPlatform">Plataforma</label>
+                <select id="linkPlatform" required>
+                    <option value="">Selecione uma plataforma</option>
+                    <option value="linkedin">LinkedIn</option>
+                    <option value="github">GitHub</option>
+                    <option value="instagram">Instagram</option>
+                    <option value="twitter">Twitter</option>
+                    <option value="website">Website Pessoal</option>
+                    <option value="portfolio">Portfólio</option>
+                    <option value="other">Outro</option>
+                </select>
+            </div>
+            
+            <div class="form-group">
+                <label for="linkUrl">URL</label>
+                <input type="url" id="linkUrl" placeholder="https://exemplo.com" required>
+            </div>
+            
+            <div class="form-actions">
+                <button type="button" class="btn-cancel" onclick="closeModal('linkModal')">
+                    Cancelar
+                </button>
+                <button type="submit" class="btn-save">
+                    <i class="fas fa-link"></i> Adicionar Link
+                </button>
+            </div>
+        </form>
+    </div>
+</div>
+
+<!-- NOTIFICAÇÃO -->
+<div id="notification" class="notification" style="display: none;"></div>
+{% endblock %}
+
+{% block extra_js %}
+<script>
+    // ============================
+    // DADOS INICIAIS
+    // ============================
+    let socialLinks = [
+        {% for link in links_sociais %}
+        {
+            id: "{{ link.id }}",
+            platform: "{{ link.nome|lower }}",
+            name: "{{ link.nome }}",
+            url: "{{ link.url }}",
+            icon: "{{ link.icone }}"
+        },
+        {% endfor %}
+    ];
+
+    // ============================
+    // FUNÇÕES DE MANIPULAÇÃO DE MODAIS
+    // ============================
+    function openModal(modalId) {
+        const modal = document.getElementById(modalId);
+        if (modal) {
+            modal.style.display = 'flex';
+            document.body.style.overflow = 'hidden';
+        }
+    }
+
+    function closeModal(modalId) {
+        const modal = document.getElementById(modalId);
+        if (modal) {
+            modal.style.display = 'none';
+            document.body.style.overflow = 'auto';
+        }
+    }
+
+    // Fechar modal ao clicar fora
+    window.onclick = function(event) {
+        const modals = document.querySelectorAll('.modal');
+        modals.forEach(modal => {
+            if (event.target === modal) {
+                modal.style.display = 'none';
+                document.body.style.overflow = 'auto';
+            }
+        });
+    };
+
+    // ============================
+    // FUNÇÕES DE EDIÇÃO
+    // ============================
+    function editField(fieldId) {
+        const fieldElement = document.getElementById(fieldId);
+        const currentValue = fieldElement.textContent;
+        const fieldLabel = fieldElement.previousElementSibling.textContent.replace(':', '');
+        
+        const newValue = prompt(`Editar ${fieldLabel}:`, currentValue);
+        
+        if (newValue !== null && newValue.trim() !== '') {
+            fieldElement.textContent = newValue.trim();
+            showNotification(`${fieldLabel} atualizado com sucesso!`, 'success');
+            
+            // Aqui você faria uma requisição AJAX para salvar no servidor
+            // saveFieldToServer(fieldId, newValue.trim());
+        }
+    }
+
+    // ============================
+    // FUNÇÕES DE FOTOS
+    // ============================
+    function setupPhotoPreview() {
+        const photoUpload = document.getElementById('photoUpload');
+        const photoPreview = document.getElementById('photoPreview');
+        
+        if (photoUpload && photoPreview) {
+            photoUpload.addEventListener('change', function(e) {
+                const file = e.target.files[0];
+                if (file) {
+                    const reader = new FileReader();
+                    reader.onload = function(e) {
+                        photoPreview.src = e.target.result;
+                    };
+                    reader.readAsDataURL(file);
+                }
+            });
+        }
+    }
+
+    function removeProfilePicture() {
+        if (confirm('Tem certeza que deseja remover sua foto de perfil?')) {
+            const defaultPhoto = "https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=774&q=80";
+            document.getElementById('profilePicture').src = defaultPhoto;
+            document.getElementById('photoPreview').src = defaultPhoto;
+            
+            showNotification('Foto de perfil removida!', 'success');
+        }
+    }
+
+    // ============================
+    // FUNÇÕES DE LINKS
+    // ============================
+    function editLink(linkId) {
+        const link = socialLinks.find(l => l.id === linkId);
+        if (link) {
+            const newUrl = prompt(`Editar URL para ${link.name}:`, link.url);
+            if (newUrl !== null && newUrl.trim() !== '') {
+                // Aqui você faria uma requisição AJAX para atualizar o link
+                // updateLinkOnServer(linkId, newUrl.trim());
+                
+                showNotification('Link atualizado com sucesso!', 'success');
+            }
+        }
+    }
+
+    function removeLink(linkId) {
+        if (confirm('Tem certeza que deseja remover este link?')) {
+            // Aqui você faria uma requisição AJAX para remover o link
+            // removeLinkFromServer(linkId);
+            
+            showNotification('Link removido com sucesso!', 'success');
+        }
+    }
+
+    // ============================
+    // FORMULÁRIO DE LINKS
+    // ============================
+    document.addEventListener('DOMContentLoaded', function() {
+        // Configura preview da foto
+        setupPhotoPreview();
+        
+        // Formulário de adição de link
+        const linkForm = document.getElementById('linkForm');
+        if (linkForm) {
+            linkForm.addEventListener('submit', function(e) {
+                e.preventDefault();
+                
+                const platform = document.getElementById('linkPlatform').value;
+                const url = document.getElementById('linkUrl').value;
+                
+                if (platform && url) {
+                    // Aqui você faria uma requisição AJAX para adicionar o link
+                    // addLinkToServer(platform, url);
+                    
+                    // Limpa o formulário
+                    linkForm.reset();
+                    
+                    // Fecha o modal
+                    closeModal('linkModal');
+                    
+                    showNotification('Link adicionado com sucesso!', 'success');
+                }
+            });
+        }
+        
+        // Formulário de alteração de foto
+        const photoForm = document.getElementById('photoForm');
+        if (photoForm) {
+            photoForm.addEventListener('submit', function(e) {
+                e.preventDefault();
+                
+                const fileInput = document.getElementById('photoUpload');
+                if (fileInput.files.length > 0) {
+                    // Aqui você faria o upload real da foto
+                    // uploadProfilePhoto(fileInput.files[0]);
+                    
+                    closeModal('photoModal');
+                    showNotification('Foto de perfil atualizada com sucesso!', 'success');
+                }
+            });
+        }
+    });
+
+    // ============================
+    // FUNÇÃO DE NOTIFICAÇÃO
+    // ============================
+    function showNotification(message, type) {
+        const notification = document.getElementById('notification');
+        
+        // Define o conteúdo e classe da notificação
+        notification.innerHTML = `<i class="fas fa-${type === 'success' ? 'check-circle' : type === 'error' ? 'exclamation-circle' : 'info-circle'}"></i> ${message}`;
+        notification.className = `notification ${type}`;
+        
+        // Mostra a notificação
+        notification.style.display = 'flex';
+        
+        // Esconde após 3 segundos
+        setTimeout(() => {
+            notification.style.display = 'none';
+        }, 3000);
+    }
+</script>
+{% endblock %}

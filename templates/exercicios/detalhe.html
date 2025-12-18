@@ -1,0 +1,112 @@
+<!-- exercicios/templates/exercicios/detalhe.html -->
+{% extends 'base.html' %}
+
+{% block title %}{{ exercicio.titulo }} - CodeUP{% endblock %}
+
+{% block content %}
+<div class="container">
+    <!-- Cabeçalho do exercício -->
+    <div style="background: linear-gradient(135deg, #1a1a1a 0%, #2a2a2a 100%); border-radius: 15px; padding: 30px; margin-bottom: 30px; border-left: 5px solid #FFD700;">
+        <div style="display: flex; justify-content: space-between; align-items: start; margin-bottom: 20px;">
+            <div>
+                <h1 style="color: #FFD700; margin-bottom: 10px; font-size: 2.2rem;">
+                    <i class="fas fa-puzzle-piece"></i> {{ exercicio.titulo }}
+                </h1>
+                <div style="display: flex; gap: 15px; align-items: center;">
+                    <span style="background: {% if exercicio.dificuldade == 'facil' %}#28a745{% elif exercicio.dificuldade == 'medio' %}#ffc107{% else %}#dc3545{% endif %}; 
+                              color: {% if exercicio.dificuldade == 'medio' %}black{% else %}white{% endif %}; 
+                              padding: 5px 15px; border-radius: 20px; font-weight: bold;">
+                        {{ exercicio.dificuldade|capfirst }}
+                    </span>
+                    <span style="background: rgba(255, 215, 0, 0.2); color: #FFD700; padding: 5px 15px; border-radius: 20px; font-weight: bold;">
+                        <i class="fas fa-star"></i> {{ exercicio.pontos }} pontos
+                    </span>
+                    <span style="color: #888888;">
+                        <i class="fas fa-clock"></i> ~30 minutos
+                    </span>
+                </div>
+            </div>
+            
+            <a href="{% url 'exercicios:exercicios_resolver' exercicio.id %}" class="btn" style="font-size: 1.1rem;">
+                <i class="fas fa-play"></i> Resolver Exercício
+            </a>
+        </div>
+        
+        <!-- Informações do módulo/trilha -->
+        <div style="background: rgba(255, 255, 255, 0.05); padding: 15px; border-radius: 10px; margin-bottom: 20px;">
+            <div style="display: flex; gap: 20px;">
+                <div>
+                    <div style="color: #888888; font-size: 0.9rem;">Módulo</div>
+                    <div style="color: #cccccc; font-weight: bold;">
+                        <i class="fas fa-book"></i> {{ exercicio.modulo.titulo }}
+                    </div>
+                </div>
+                <div>
+                    <div style="color: #888888; font-size: 0.9rem;">Trilha</div>
+                    <div style="color: #cccccc; font-weight: bold;">
+                        <i class="fas fa-road"></i> {{ exercicio.modulo.trilha.titulo }}
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    
+    <!-- Conteúdo principal -->
+    <div style="display: grid; grid-template-columns: 1fr; gap: 30px;">
+        <!-- Enunciado -->
+        <div style="background: #1a1a1a; border-radius: 15px; padding: 30px; border: 1px solid #333333;">
+            <h2 style="color: #FFD700; margin-bottom: 20px; font-size: 1.5rem;">
+                <i class="fas fa-file-alt"></i> Enunciado
+            </h2>
+            <div style="color: #cccccc; line-height: 1.6; font-size: 1.1rem;">
+                {{ exercicio.enunciado }}
+            </div>
+        </div>
+        
+        <!-- Exemplos -->
+        {% if exercicio.exemplos %}
+        <div style="background: #1a1a1a; border-radius: 15px; padding: 30px; border: 1px solid #333333;">
+            <h2 style="color: #FFD700; margin-bottom: 20px; font-size: 1.5rem;">
+                <i class="fas fa-code"></i> Exemplos
+            </h2>
+            <div style="display: grid; gap: 15px;">
+                {% for exemplo in exercicio.exemplos %}
+                <div style="background: #111111; padding: 20px; border-radius: 10px; border-left: 3px solid #3498db;">
+                    <div style="color: #3498db; font-weight: bold; margin-bottom: 10px;">
+                        Exemplo {{ forloop.counter }}
+                    </div>
+                    <div style="color: #cccccc; font-family: monospace; white-space: pre-wrap;">
+                        {{ exemplo }}
+                    </div>
+                </div>
+                {% endfor %}
+            </div>
+        </div>
+        {% endif %}
+        
+        <!-- Restrições -->
+        {% if exercicio.restricoes %}
+        <div style="background: #1a1a1a; border-radius: 15px; padding: 30px; border: 1px solid #333333;">
+            <h2 style="color: #FFD700; margin-bottom: 20px; font-size: 1.5rem;">
+                <i class="fas fa-exclamation-triangle"></i> Restrições
+            </h2>
+            <ul style="color: #cccccc; padding-left: 20px; line-height: 1.6;">
+                {% for restricao in exercicio.restricoes %}
+                <li style="margin-bottom: 10px;">{{ restricao }}</li>
+                {% endfor %}
+            </ul>
+        </div>
+        {% endif %}
+    </div>
+    
+    <!-- Botões de navegação -->
+    <div style="display: flex; justify-content: space-between; margin-top: 40px; padding-top: 30px; border-top: 1px solid #333333;">
+        <a href="{% url 'exercicios:lista' %}" class="btn" style="background: #444444;">
+            <i class="fas fa-arrow-left"></i> Voltar para Exercícios
+        </a>
+        <a href="{% url 'exercicios:exercicios_resolver' exercicio.id %}" class="btn" style="font-size: 1.1rem; padding: 15px 30px;">
+            <i class="fas fa-play"></i> Resolver Este Exercício
+        </a>
+    </div>
+</div>
+{% endblock %}

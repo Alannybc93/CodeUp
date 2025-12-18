@@ -1,0 +1,350 @@
+<!-- templates/trilhas/trilhas.html -->
+{% extends 'base.html' %}
+{% load static %}
+
+{% block title %}Trilhas de Aprendizado - CodeUP{% endblock %}
+
+{% block extra_css %}
+<style>
+    /* ESTILOS BÁSICOS - MANTENDO SEU DESIGN */
+    .hero-section {
+        padding: 100px 20px;
+        text-align: center;
+        background: radial-gradient(circle at 20% 50%, rgba(255, 215, 0, 0.1) 0%, transparent 50%);
+        border-bottom: 1px solid #333;
+    }
+    
+    .hero-title {
+        font-size: 3rem;
+        color: #FFD700;
+        margin-bottom: 20px;
+        font-weight: 900;
+    }
+    
+    .hero-subtitle {
+        font-size: 1.3rem;
+        color: #cccccc;
+        max-width: 800px;
+        margin: 0 auto 40px;
+    }
+    
+    .trilhas-section {
+        padding: 60px 20px;
+    }
+    
+    .section-title {
+        text-align: center;
+        color: #FFD700;
+        font-size: 2.5rem;
+        margin-bottom: 50px;
+        position: relative;
+    }
+    
+    .section-title::after {
+        content: '';
+        position: absolute;
+        bottom: -15px;
+        left: 50%;
+        transform: translateX(-50%);
+        width: 100px;
+        height: 3px;
+        background-color: #FFD700;
+    }
+    
+    .trilhas-grid {
+        display: grid;
+        grid-template-columns: repeat(auto-fit, minmax(350px, 1fr));
+        gap: 30px;
+        margin-top: 40px;
+    }
+    
+    .trilha-card {
+        background-color: #111111;
+        border: 2px solid #222222;
+        border-radius: 15px;
+        padding: 30px;
+        transition: all 0.4s;
+        position: relative;
+        overflow: hidden;
+    }
+    
+    .trilha-card:hover {
+        transform: translateY(-10px);
+        border-color: #FFD700;
+        box-shadow: 0 15px 30px rgba(255, 215, 0, 0.1);
+    }
+    
+    .trilha-header {
+        display: flex;
+        align-items: center;
+        gap: 15px;
+        margin-bottom: 20px;
+    }
+    
+    .trilha-icon {
+        width: 60px;
+        height: 60px;
+        background-color: rgba(255, 215, 0, 0.1);
+        border-radius: 12px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        font-size: 1.8rem;
+        color: #FFD700;
+        flex-shrink: 0;
+    }
+    
+    .trilha-title {
+        color: #ffffff;
+        font-size: 1.5rem;
+        font-weight: 600;
+    }
+    
+    .trilha-description {
+        color: #aaaaaa;
+        margin-bottom: 25px;
+        line-height: 1.6;
+    }
+    
+    .trilha-meta {
+        display: flex;
+        justify-content: space-between;
+        color: #888888;
+        font-size: 0.9rem;
+        margin-bottom: 20px;
+        padding-top: 15px;
+        border-top: 1px solid #222;
+    }
+    
+    .trilha-button {
+        display: block;
+        width: 100%;
+        padding: 14px;
+        background-color: #FFD700;
+        color: #000000;
+        text-align: center;
+        text-decoration: none;
+        border-radius: 10px;
+        font-weight: bold;
+        transition: all 0.3s;
+        border: none;
+        cursor: pointer;
+    }
+    
+    .trilha-button:hover {
+        background-color: #FFC000;
+        transform: translateY(-2px);
+    }
+    
+    .progress-bar {
+        height: 6px;
+        background-color: #222;
+        border-radius: 3px;
+        margin: 15px 0;
+        overflow: hidden;
+    }
+    
+    .progress-fill {
+        height: 100%;
+        background-color: #FFD700;
+        border-radius: 3px;
+    }
+    
+    .progress-text {
+        color: #FFD700;
+        font-size: 0.9rem;
+        margin-bottom: 10px;
+        display: flex;
+        justify-content: space-between;
+    }
+    
+    .auth-banner {
+        background: rgba(255, 215, 0, 0.1);
+        border: 2px solid rgba(255, 215, 0, 0.3);
+        border-radius: 15px;
+        padding: 40px;
+        margin: 50px auto 0;
+        text-align: center;
+        max-width: 800px;
+    }
+    
+    .btn {
+        display: inline-block;
+        padding: 12px 25px;
+        background-color: #FFD700;
+        color: #000000;
+        text-decoration: none;
+        border-radius: 10px;
+        font-weight: bold;
+        font-size: 1.1rem;
+        transition: all 0.3s;
+        border: none;
+        cursor: pointer;
+    }
+    
+    .btn:hover {
+        background-color: #FFC000;
+        transform: translateY(-3px);
+        box-shadow: 0 8px 20px rgba(255, 215, 0, 0.3);
+    }
+    
+    .container {
+        max-width: 1200px;
+        margin: 0 auto;
+        padding: 0 20px;
+    }
+</style>
+{% endblock %}
+
+{% block content %}
+<!-- HERO SECTION -->
+<section class="hero-section">
+    <div class="container">
+        <h1 class="hero-title">Trilhas de Aprendizado</h1>
+        <p class="hero-subtitle">
+            Escolha sua jornada na programação. Do básico ao avançado, 
+            temos o caminho ideal para transformar sua carreira em tecnologia.
+        </p>
+        {% if not user.is_authenticated %}
+            <a href="{% url 'usuarios:registrar' %}" class="btn" style="font-size: 1.2rem;">
+                <i class="fas fa-rocket"></i> Começar Agora Gratuitamente
+            </a>
+        {% else %}
+            <a href="{% url 'usuarios:perfil' %}" class="btn" style="font-size: 1.2rem; background: #333; border: 2px solid #FFD700; color: #FFD700;">
+                <i class="fas fa-user"></i> Ver Meu Progresso
+            </a>
+        {% endif %}
+    </div>
+</section>
+
+<!-- TRILHAS -->
+<section class="trilhas-section">
+    <div class="container">
+        <h2 class="section-title">Explore Nossas Trilhas</h2>
+        
+        <div class="trilhas-grid">
+            {% for trilha in trilhas %}
+            <div class="trilha-card">
+                <div class="trilha-header">
+                    <div class="trilha-icon" style="background-color: {{ trilha.cor }}20;">
+                        <i class="{{ trilha.icone }}" style="color: {{ trilha.cor }};"></i>
+                    </div>
+                    <h3 class="trilha-title">{{ trilha.nome }}</h3>
+                </div>
+                <p class="trilha-description">
+                    {{ trilha.descricao }}
+                </p>
+                
+                <!-- Barra de progresso -->
+                {% if trilha.progresso > 0 %}
+                <div class="progress-text">
+                    <span>Progresso</span>
+                    <span>{{ trilha.progresso }}%</span>
+                </div>
+                <div class="progress-bar">
+                    <div class="progress-fill" style="width: {{ trilha.progresso }}%; background-color: {{ trilha.cor }};"></div>
+                </div>
+                {% endif %}
+                
+                <div class="trilha-meta">
+                    <span><i class="fas fa-layer-group"></i> {{ trilha.modulos }} módulos</span>
+                    <span><i class="fas fa-clock"></i> {{ trilha.horas }} horas</span>
+                    <span><i class="fas fa-signal"></i> {{ trilha.dificuldade }}</span>
+                </div>
+                
+                {% if user.is_authenticated %}
+                    {% if trilha.progresso > 0 %}
+                        <a href="{% url trilha.url %}" class="trilha-button">
+                            <i class="fas fa-play"></i> Continuar Trilha
+                        </a>
+                    {% else %}
+                        <a href="{% url trilha.url %}" class="trilha-button">
+                            <i class="fas fa-play-circle"></i> Iniciar Trilha
+                        </a>
+                    {% endif %}
+                {% else %}
+                    <a href="{% url 'usuarios:login' %}" class="trilha-button">
+                        <i class="fas fa-play"></i> Começar Trilha
+                    </a>
+                {% endif %}
+                
+                <div style="text-align: center; margin-top: 15px; color: #777; font-size: 0.9rem;">
+                    <i class="fas fa-users"></i> {{ trilha.alunos }} estudantes
+                </div>
+            </div>
+            {% empty %}
+            <div style="grid-column: 1 / -1; text-align: center; padding: 60px 20px;">
+                <div style="font-size: 4rem; color: #FFD700; margin-bottom: 20px;">
+                    <i class="fas fa-road"></i>
+                </div>
+                <h3 style="color: #FFD700; margin-bottom: 20px;">Trilhas em Desenvolvimento</h3>
+                <p style="color: #aaa; max-width: 600px; margin: 0 auto 30px;">
+                    Nossas trilhas de aprendizado estão sendo preparadas. 
+                    Em breve você poderá explorar conteúdos completos sobre diversas tecnologias.
+                </p>
+            </div>
+            {% endfor %}
+        </div>
+        
+        <!-- Seção para usuários não autenticados -->
+        {% if not user.is_authenticated %}
+        <div class="auth-banner">
+            <h3 style="color: #FFD700; margin-bottom: 15px;">
+                <i class="fas fa-user-plus"></i> Crie sua conta gratuita
+            </h3>
+            <p style="color: #ccc; margin-bottom: 25px; font-size: 1.1rem;">
+                Faça login para salvar seu progresso, ganhar conquistas, desbloquear recompensas e acompanhar sua evolução detalhada!
+            </p>
+            <div style="display: flex; gap: 15px; justify-content: center; flex-wrap: wrap;">
+                <a href="{% url 'usuarios:login' %}" class="btn" style="background: #FFD700; color: black; padding: 12px 30px;">
+                    <i class="fas fa-sign-in-alt"></i> Fazer Login
+                </a>
+                <a href="{% url 'usuarios:registrar' %}" class="btn" style="background: transparent; border: 2px solid #FFD700; color: #FFD700; padding: 12px 30px;">
+                    <i class="fas fa-user-plus"></i> Criar Conta Gratuita
+                </a>
+            </div>
+        </div>
+        {% endif %}
+        
+        <!-- Estatísticas -->
+        <div style="text-align: center; margin-top: 50px; color: #777; font-size: 0.9rem;">
+            <p>
+                <i class="fas fa-info-circle"></i>
+                Mostrando {{ total_trilhas }} trilhas disponíveis. Novas trilhas são adicionadas regularmente.
+            </p>
+        </div>
+    </div>
+</section>
+{% endblock %}
+
+{% block extra_js %}
+<script>
+    // Animações simples
+    document.addEventListener('DOMContentLoaded', function() {
+        const cards = document.querySelectorAll('.trilha-card');
+        cards.forEach((card, index) => {
+            card.style.animationDelay = (index * 0.1) + 's';
+            card.style.animation = 'fadeInUp 0.5s ease forwards';
+            card.style.opacity = '0';
+        });
+        
+        console.log("🚀 Trilhas carregadas: {{ trilhas|length }}");
+    });
+    
+    // Adicionar estilo de animação
+    const style = document.createElement('style');
+    style.textContent = `
+        @keyframes fadeInUp {
+            from {
+                opacity: 0;
+                transform: translateY(20px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+    `;
+    document.head.appendChild(style);
+</script>
+{% endblock %}

@@ -1,0 +1,438 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block title %}Editar Perfil - CodeUP{% endblock %}
+
+{% block extra_css %}
+<style>
+    /* Estilos personalizados para a página de edição */
+    .profile-edit-container {
+        background: linear-gradient(135deg, #1a1a2e 0%, #16213e 100%);
+        border-radius: 20px;
+        padding: 40px;
+        margin-top: 30px;
+        box-shadow: 0 10px 30px rgba(0, 0, 0, 0.3);
+        border: 1px solid rgba(255, 215, 0, 0.1);
+    }
+    
+    .profile-header {
+        text-align: center;
+        margin-bottom: 40px;
+        position: relative;
+    }
+    
+    .profile-header h1 {
+        color: #FFD700;
+        font-size: 2.5rem;
+        margin-bottom: 10px;
+        text-shadow: 0 2px 4px rgba(0,0,0,0.5);
+    }
+    
+    .profile-header::after {
+        content: '';
+        display: block;
+        width: 100px;
+        height: 4px;
+        background: linear-gradient(to right, transparent, #FFD700, transparent);
+        margin: 20px auto;
+    }
+    
+    .profile-avatar-section {
+        text-align: center;
+        margin-bottom: 30px;
+    }
+    
+    .profile-avatar {
+        width: 120px;
+        height: 120px;
+        border-radius: 50%;
+        background: linear-gradient(135deg, #FFD700 0%, #FF8C00 100%);
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        margin: 0 auto 20px;
+        font-size: 48px;
+        color: #000;
+        cursor: pointer;
+        transition: all 0.3s ease;
+        border: 4px solid #1a1a2e;
+        box-shadow: 0 0 20px rgba(255, 215, 0, 0.3);
+    }
+    
+    .profile-avatar:hover {
+        transform: scale(1.05);
+        box-shadow: 0 0 30px rgba(255, 215, 0, 0.5);
+    }
+    
+    .form-group {
+        margin-bottom: 25px;
+        position: relative;
+    }
+    
+    .form-group label {
+        display: block;
+        margin-bottom: 8px;
+        color: #FFD700;
+        font-weight: 600;
+        font-size: 1rem;
+    }
+    
+    .form-control-custom {
+        width: 100%;
+        padding: 14px 20px;
+        background: rgba(255, 255, 255, 0.05);
+        border: 2px solid rgba(255, 215, 0, 0.2);
+        border-radius: 10px;
+        color: white;
+        font-size: 1rem;
+        transition: all 0.3s ease;
+    }
+    
+    .form-control-custom:focus {
+        outline: none;
+        border-color: #FFD700;
+        box-shadow: 0 0 0 3px rgba(255, 215, 0, 0.1);
+        background: rgba(255, 255, 255, 0.08);
+    }
+    
+    .form-control-custom::placeholder {
+        color: rgba(255, 255, 255, 0.4);
+    }
+    
+    .form-icon {
+        position: absolute;
+        left: 15px;
+        top: 40px;
+        color: #FFD700;
+    }
+    
+    .form-control-custom.with-icon {
+        padding-left: 50px;
+    }
+    
+    .btn-group {
+        display: flex;
+        gap: 15px;
+        margin-top: 40px;
+    }
+    
+    .btn-cancel {
+        flex: 1;
+        background: rgba(255, 255, 255, 0.1);
+        border: 2px solid rgba(255, 215, 0, 0.3);
+        color: white;
+        padding: 15px;
+        border-radius: 10px;
+        font-weight: 600;
+        text-align: center;
+        text-decoration: none;
+        transition: all 0.3s ease;
+    }
+    
+    .btn-cancel:hover {
+        background: rgba(255, 255, 255, 0.15);
+        border-color: rgba(255, 215, 0, 0.5);
+        transform: translateY(-2px);
+    }
+    
+    .btn-save {
+        flex: 1;
+        background: linear-gradient(135deg, #FFD700 0%, #FF8C00 100%);
+        border: none;
+        color: #000;
+        padding: 15px;
+        border-radius: 10px;
+        font-weight: 700;
+        cursor: pointer;
+        transition: all 0.3s ease;
+    }
+    
+    .btn-save:hover {
+        transform: translateY(-2px);
+        box-shadow: 0 5px 15px rgba(255, 215, 0, 0.4);
+    }
+    
+    .password-section {
+        background: rgba(255, 215, 0, 0.05);
+        border-radius: 15px;
+        padding: 25px;
+        margin-top: 30px;
+        border-left: 4px solid #FFD700;
+    }
+    
+    .password-section h3 {
+        color: #FFD700;
+        margin-bottom: 20px;
+        font-size: 1.3rem;
+    }
+    
+    .status-message {
+        padding: 15px;
+        border-radius: 10px;
+        margin-bottom: 25px;
+        display: none;
+    }
+    
+    .status-message.success {
+        background: rgba(0, 200, 0, 0.1);
+        border: 1px solid rgba(0, 200, 0, 0.3);
+        color: #4CAF50;
+        display: block;
+    }
+    
+    .status-message.error {
+        background: rgba(255, 0, 0, 0.1);
+        border: 1px solid rgba(255, 0, 0, 0.3);
+        color: #f44336;
+        display: block;
+    }
+    
+    /* Responsividade */
+    @media (max-width: 768px) {
+        .profile-edit-container {
+            padding: 25px;
+            margin: 15px;
+        }
+        
+        .profile-header h1 {
+            font-size: 2rem;
+        }
+        
+        .btn-group {
+            flex-direction: column;
+        }
+        
+        .profile-avatar {
+            width: 100px;
+            height: 100px;
+            font-size: 40px;
+        }
+    }
+</style>
+{% endblock %}
+
+{% block content %}
+<div class="container">
+    <div class="profile-edit-container">
+        <div class="profile-header">
+            <h1><i class="fas fa-user-edit"></i> Editar Perfil</h1>
+            <p class="text-muted">Atualize suas informações pessoais</p>
+        </div>
+        
+        <!-- Mensagens de Status -->
+        {% if messages %}
+            {% for message in messages %}
+                <div class="status-message {{ message.tags }}">
+                    <i class="fas fa-{% if message.tags == 'success' %}check-circle{% else %}exclamation-circle{% endif %}"></i>
+                    {{ message }}
+                </div>
+            {% endfor %}
+        {% endif %}
+        
+        <!-- Avatar do Usuário -->
+        <div class="profile-avatar-section">
+            <div class="profile-avatar" onclick="document.getElementById('avatarInput').click()">
+                {% if usuario.first_name %}
+                    {{ usuario.first_name|first|upper }}{{ usuario.last_name|first|upper }}
+                {% else %}
+                    <i class="fas fa-user"></i>
+                {% endif %}
+            </div>
+            <input type="file" id="avatarInput" accept="image/*" style="display: none;">
+            <p class="text-muted">Clique no avatar para alterar a foto</p>
+        </div>
+        
+        <form method="POST" id="profileForm">
+            {% csrf_token %}
+            
+            <!-- Nome e Sobrenome na mesma linha -->
+            <div class="row">
+                <div class="col-md-6">
+                    <div class="form-group">
+                        <label for="first_name"><i class="fas fa-user"></i> Nome</label>
+                        <input type="text" id="first_name" name="first_name" 
+                               value="{{ usuario.first_name|default:'' }}"
+                               class="form-control-custom"
+                               placeholder="Digite seu nome">
+                    </div>
+                </div>
+                <div class="col-md-6">
+                    <div class="form-group">
+                        <label for="last_name">Sobrenome</label>
+                        <input type="text" id="last_name" name="last_name" 
+                               value="{{ usuario.last_name|default:'' }}"
+                               class="form-control-custom"
+                               placeholder="Digite seu sobrenome">
+                    </div>
+                </div>
+            </div>
+            
+            <!-- Email -->
+            <div class="form-group">
+                <label for="email"><i class="fas fa-envelope"></i> Email</label>
+                <div style="position: relative;">
+                    <i class="fas fa-envelope form-icon"></i>
+                    <input type="email" id="email" name="email" 
+                           value="{{ usuario.email|default:'' }}"
+                           class="form-control-custom with-icon"
+                           placeholder="seu.email@exemplo.com"
+                           required>
+                </div>
+            </div>
+            
+            <!-- Telefone (opcional) -->
+            <div class="form-group">
+                <label for="phone"><i class="fas fa-phone"></i> Telefone (Opcional)</label>
+                <div style="position: relative;">
+                    <i class="fas fa-phone form-icon"></i>
+                    <input type="tel" id="phone" name="phone" 
+                           value="{{ usuario.profile.phone|default:'' }}"
+                           class="form-control-custom with-icon"
+                           placeholder="(11) 99999-9999">
+                </div>
+            </div>
+            
+            <!-- Bio (opcional) -->
+            <div class="form-group">
+                <label for="bio"><i class="fas fa-info-circle"></i> Bio (Opcional)</label>
+                <textarea id="bio" name="bio" 
+                          class="form-control-custom"
+                          rows="3"
+                          placeholder="Conte um pouco sobre você...">{{ usuario.profile.bio|default:'' }}</textarea>
+            </div>
+            
+            <!-- Seção de Senha -->
+            <div class="password-section">
+                <h3><i class="fas fa-lock"></i> Alterar Senha</h3>
+                <p class="text-muted" style="margin-bottom: 20px;">Deixe em branco para manter a senha atual</p>
+                
+                <div class="form-group">
+                    <label for="current_password">Senha Atual</label>
+                    <input type="password" id="current_password" name="current_password" 
+                           class="form-control-custom"
+                           placeholder="Digite sua senha atual">
+                </div>
+                
+                <div class="row">
+                    <div class="col-md-6">
+                        <div class="form-group">
+                            <label for="new_password">Nova Senha</label>
+                            <input type="password" id="new_password" name="new_password" 
+                                   class="form-control-custom"
+                                   placeholder="Nova senha">
+                        </div>
+                    </div>
+                    <div class="col-md-6">
+                        <div class="form-group">
+                            <label for="confirm_password">Confirmar Senha</label>
+                            <input type="password" id="confirm_password" name="confirm_password" 
+                                   class="form-control-custom"
+                                   placeholder="Confirme a nova senha">
+                        </div>
+                    </div>
+                </div>
+            </div>
+            
+            <!-- Botões -->
+            <div class="btn-group">
+                <a href="{% url 'usuarios:perfil' %}" class="btn-cancel">
+                    <i class="fas fa-times"></i> Cancelar
+                </a>
+                <button type="submit" class="btn-save">
+                    <i class="fas fa-save"></i> Salvar Alterações
+                </button>
+            </div>
+        </form>
+    </div>
+</div>
+{% endblock %}
+
+{% block extra_js %}
+<script>
+    // Validação do formulário
+    document.getElementById('profileForm').addEventListener('submit', function(e) {
+        const newPassword = document.getElementById('new_password').value;
+        const confirmPassword = document.getElementById('confirm_password').value;
+        const currentPassword = document.getElementById('current_password').value;
+        
+        // Se tentar alterar senha, verificar se a atual foi informada
+        if (newPassword && !currentPassword) {
+            e.preventDefault();
+            alert('Para alterar a senha, é necessário informar a senha atual.');
+            document.getElementById('current_password').focus();
+            return false;
+        }
+        
+        // Verificar se as novas senhas coincidem
+        if (newPassword !== confirmPassword) {
+            e.preventDefault();
+            alert('As novas senhas não coincidem!');
+            document.getElementById('confirm_password').focus();
+            return false;
+        }
+        
+        // Verificar força da senha (opcional)
+        if (newPassword && newPassword.length < 6) {
+            e.preventDefault();
+            alert('A nova senha deve ter pelo menos 6 caracteres.');
+            return false;
+        }
+        
+        // Mostrar loading no botão de salvar
+        const saveBtn = document.querySelector('.btn-save');
+        saveBtn.innerHTML = '<i class="fas fa-spinner fa-spin"></i> Salvando...';
+        saveBtn.disabled = true;
+    });
+    
+    // Upload de avatar (simulação)
+    document.getElementById('avatarInput').addEventListener('change', function(e) {
+        const file = e.target.files[0];
+        if (file) {
+            // Aqui você poderia implementar o upload real
+            const reader = new FileReader();
+            reader.onload = function(event) {
+                const avatarDiv = document.querySelector('.profile-avatar');
+                avatarDiv.innerHTML = '';
+                avatarDiv.style.backgroundImage = `url(${event.target.result})`;
+                avatarDiv.style.backgroundSize = 'cover';
+                avatarDiv.style.backgroundPosition = 'center';
+                
+                // Aqui você poderia enviar o arquivo para o servidor via AJAX
+                console.log('Avatar selecionado:', file.name);
+            };
+            reader.readAsDataURL(file);
+        }
+    });
+    
+    // Máscara para telefone
+    document.getElementById('phone').addEventListener('input', function(e) {
+        let value = e.target.value.replace(/\D/g, '');
+        
+        if (value.length > 10) {
+            value = value.replace(/^(\d{2})(\d{5})(\d{4}).*/, '($1) $2-$3');
+        } else if (value.length > 6) {
+            value = value.replace(/^(\d{2})(\d{4})(\d{0,4}).*/, '($1) $2-$3');
+        } else if (value.length > 2) {
+            value = value.replace(/^(\d{2})(\d{0,5})/, '($1) $2');
+        } else if (value.length > 0) {
+            value = value.replace(/^(\d*)/, '($1');
+        }
+        
+        e.target.value = value;
+    });
+    
+    // Feedback visual nos campos
+    const inputs = document.querySelectorAll('.form-control-custom');
+    inputs.forEach(input => {
+        input.addEventListener('focus', function() {
+            this.parentElement.classList.add('focused');
+        });
+        
+        input.addEventListener('blur', function() {
+            if (!this.value) {
+                this.parentElement.classList.remove('focused');
+            }
+        });
+    });
+</script>
+{% endblock %}

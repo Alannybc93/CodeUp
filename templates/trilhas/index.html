@@ -1,0 +1,52 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>{{ page_title }} - CodeUp</title>
+    <style>
+        body { font-family: Arial, sans-serif; margin: 0; padding: 20px; background: #f5f5f5; }
+        .container { max-width: 1200px; margin: 0 auto; }
+        h1 { color: #333; }
+        .trilha-card { 
+            background: white; 
+            border-radius: 8px; 
+            padding: 20px; 
+            margin: 15px 0; 
+            box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+            border-left: 4px solid #3498db;
+        }
+        .trilha-card h3 { margin: 0 0 10px 0; color: #3498db; }
+        a { color: #3498db; text-decoration: none; }
+        a:hover { text-decoration: underline; }
+        .nav { background: #2c3e50; padding: 15px; margin-bottom: 20px; }
+        .nav a { color: white; margin: 0 15px; }
+    </style>
+</head>
+<body>
+    <div class="nav">
+        <a href="/">Home</a>
+        <a href="/trilhas/">Trilhas</a>
+        <a href="/exercicios/">Exercícios</a>
+        {% if user.is_authenticated %}
+            <a href="{% url 'logout' %}">Sair</a>
+        {% else %}
+            <a href="{% url 'login' %}">Entrar</a>
+        {% endif %}
+    </div>
+    
+    <div class="container">
+        <h1>{{ page_title }}</h1>
+        
+        {% for trilha in trilhas %}
+        <div class="trilha-card">
+            <h3>{{ trilha.nome }}</h3>
+            <p>{{ trilha.descricao }}</p>
+            <a href="{{ trilha.url }}">Acessar Trilha →</a>
+        </div>
+        {% empty %}
+        <p>Nenhuma trilha disponível no momento.</p>
+        {% endfor %}
+    </div>
+</body>
+</html>

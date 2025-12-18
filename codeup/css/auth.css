@@ -1,0 +1,8 @@
+/* Estilos comuns para login e cadastro */
+.auth-container {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+/* Estilos específicos do formulário */

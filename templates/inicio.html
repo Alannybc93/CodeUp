@@ -1,0 +1,241 @@
+<!-- templates/inicio.html - CÓDIGO COMPLETO CORRIGIDO -->
+{% extends 'base.html' %}
+
+{% block title %}Home - CodeUP{% endblock %}
+
+{% block content %}
+    <!-- HERO SECTION -->
+    <section class="hero" style="padding: 100px 20px; text-align: center; background: radial-gradient(circle at 20% 50%, rgba(255, 215, 0, 0.1) 0%, transparent 50%); border-bottom: 1px solid #333; position: relative; overflow: hidden;">
+        <div class="container">
+            <div class="hero-content" style="position: relative; z-index: 1;">
+                <h1 style="font-size: 3.5rem; color: #FFD700; margin-bottom: 25px; font-weight: 900; text-shadow: 0 5px 15px rgba(255, 215, 0, 0.2);">
+                    Aprenda Programação de Forma Prática
+                </h1>
+                <p class="hero-subtitle" style="font-size: 1.5rem; color: #cccccc; max-width: 800px; margin: 0 auto 40px; line-height: 1.6;">
+                    Domine as tecnologias mais requisitadas do mercado com cursos intensivos. 
+                    Do iniciante ao profissional, temos o caminho certo para sua carreira em tecnologia.
+                </p>
+                
+                <!-- STATUS DE FUNCIONALIDADE -->
+                <div class="status-box" style="background-color: rgba(255, 215, 0, 0.1); border: 2px solid #FFD700; border-radius: 15px; padding: 25px; margin: 40px auto; max-width: 600px; text-align: center; animation: fadeInUp 0.8s ease;">
+                    <div class="status-title" style="color: #FFD700; font-size: 1.5rem; margin-bottom: 15px; display: flex; align-items: center; justify-content: center; gap: 10px;">
+                        <i class="fas fa-check-circle"></i> SISTEMA OPERACIONAL
+                    </div>
+                    <p class="status-text" style="color: #cccccc; margin-bottom: 20px;">
+                        Página Home funcionando perfeitamente. Navegação ativa e todas as funcionalidades operacionais.
+                    </p>
+                    <button onclick="testHomeButton()" class="test-btn" style="background-color: #FFD700; color: #000000; border: none; padding: 12px 25px; border-radius: 10px; font-weight: bold; font-size: 1.1rem; cursor: pointer; transition: all 0.3s; display: inline-flex; align-items: center; gap: 10px;">
+                        <i class="fas fa-sync-alt"></i> Testar Funcionalidade
+                    </button>
+                </div>
+                
+                <div class="cta-buttons" style="margin-top: 40px;">
+                    {% if user.is_authenticated %}
+                        <!-- CORRETO: trilhas:lista -->
+                        <a href="{% url 'trilhas:lista' %}" class="btn pulse" style="font-size: 1.2rem; padding: 15px 35px;">
+                            <i class="fas fa-play"></i> Continuar Aprendendo
+                        </a>
+                    {% else %}
+                        <a href="{% url 'usuarios:registrar' %}" class="btn pulse" style="font-size: 1.2rem; padding: 15px 35px;">
+                            <i class="fas fa-rocket"></i> Começar Agora Gratuitamente
+                        </a>
+                    {% endif %}
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- DESTAQUES -->
+    <section class="destaques" style="padding: 80px 20px; background-color: #0a0a0a;">
+        <div class="container">
+            <h2 class="section-title" style="text-align: center; color: #FFD700; font-size: 2.5rem; margin-bottom: 60px; position: relative;">
+                Por que Escolher a CodeUP?
+                <span style="content: ''; position: absolute; bottom: -15px; left: 50%; transform: translateX(-50%); width: 100px; height: 3px; background-color: #FFD700;"></span>
+            </h2>
+            
+            <div class="destaques-grid" style="display: grid; grid-template-columns: repeat(auto-fit, minmax(350px, 1fr)); gap: 30px; margin-top: 40px;">
+                <!-- Destaque 1 -->
+                <div class="destaque-card" style="background-color: #111111; border: 2px solid #222222; border-radius: 15px; padding: 40px 30px; transition: all 0.4s; position: relative; overflow: hidden;">
+                    <div class="destaque-icon" style="width: 70px; height: 70px; background-color: rgba(255, 215, 0, 0.1); border-radius: 15px; display: flex; align-items: center; justify-content: center; font-size: 2rem; color: #FFD700; margin: 0 auto 25px;">
+                        <i class="fas fa-laptop-code"></i>
+                    </div>
+                    <h3 class="destaque-title" style="color: #ffffff; font-size: 1.8rem; font-weight: 600; text-align: center; margin-bottom: 20px;">Aprendizado Prático</h3>
+                    <p class="destaque-text" style="color: #aaaaaa; text-align: center; line-height: 1.7; font-size: 1.1rem;">
+                        Construa projetos reais que consolidam o conhecimento teórico e desenvolvem 
+                        habilidades exigidas pelo mercado.
+                    </p>
+                </div>
+                
+                <!-- Destaque 2 -->
+                <div class="destaque-card" style="background-color: #111111; border: 2px solid #222222; border-radius: 15px; padding: 40px 30px; transition: all 0.4s; position: relative; overflow: hidden;">
+                    <div class="destaque-icon" style="width: 70px; height: 70px; background-color: rgba(255, 215, 0, 0.1); border-radius: 15px; display: flex; align-items: center; justify-content: center; font-size: 2rem; color: #FFD700; margin: 0 auto 25px;">
+                        <i class="fas fa-chart-line"></i>
+                    </div>
+                    <h3 class="destaque-title" style="color: #ffffff; font-size: 1.8rem; font-weight: 600; text-align: center; margin-bottom: 20px;">Progresso Monitorado</h3>
+                    <p class="destaque-text" style="color: #aaaaaa; text-align: center; line-height: 1.7; font-size: 1.1rem;">
+                        Acompanhe seu desenvolvimento com dashboards intuitivos e métricas 
+                        que mostram sua evolução em tempo real.
+                    </p>
+                </div>
+                
+                <!-- Destaque 3 -->
+                <div class="destaque-card" style="background-color: #111111; border: 2px solid #222222; border-radius: 15px; padding: 40px 30px; transition: all 0.4s; position: relative; overflow: hidden;">
+                    <div class="destaque-icon" style="width: 70px; height: 70px; background-color: rgba(255, 215, 0, 0.1); border-radius: 15px; display: flex; align-items: center; justify-content: center; font-size: 2rem; color: #FFD700; margin: 0 auto 25px;">
+                        <i class="fas fa-users"></i>
+                    </div>
+                    <h3 class="destaque-title" style="color: #ffffff; font-size: 1.8rem; font-weight: 600; text-align: center; margin-bottom: 20px;">Comunidade Ativa</h3>
+                    <p class="destaque-text" style="color: #aaaaaa; text-align: center; line-height: 1.7; font-size: 1.1rem;">
+                        Conecte-se com outros estudantes e profissionais, participe de fóruns 
+                        e grupos de estudo colaborativos.
+                    </p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- SOBRE -->
+    <section class="sobre" style="padding: 80px 20px; background-color: #000000;">
+        <div class="container">
+            <div class="sobre-content" style="max-width: 900px; margin: 0 auto; text-align: center;">
+                <h2 style="color: #FFD700; font-size: 2.5rem; margin-bottom: 30px;">Nossa Missão</h2>
+                <p style="color: #cccccc; font-size: 1.2rem; line-height: 1.8; margin-bottom: 25px;">
+                    A CodeUP nasceu com o propósito de democratizar o acesso ao ensino de programação 
+                    de qualidade. Acreditamos que qualquer pessoa, independentemente de sua formação 
+                    ou background, pode aprender a programar e transformar sua carreira.
+                </p>
+                <p style="color: #cccccc; font-size: 1.2rem; line-height: 1.8; margin-bottom: 25px;">
+                    Com uma metodologia prática e focada em projetos reais, preparamos nossos alunos 
+                    para os desafios do mercado atual. Mais de 10.000 estudantes já transformaram 
+                    suas carreiras através da nossa plataforma.
+                </p>
+            </div>
+        </div>
+    </section>
+
+    <!-- PARCERIAS -->
+    <section class="destaques" style="background-color: #0a0a0a; padding: 80px 20px;">
+        <div class="container">
+            <h2 class="section-title" style="text-align: center; color: #FFD700; font-size: 2.5rem; margin-bottom: 60px; position: relative;">
+                Parcerias e Certificações
+                <span style="content: ''; position: absolute; bottom: -15px; left: 50%; transform: translateX(-50%); width: 100px; height: 3px; background-color: #FFD700;"></span>
+            </h2>
+            
+            <div class="destaques-grid" style="display: grid; grid-template-columns: repeat(auto-fit, minmax(350px, 1fr)); gap: 30px; margin-top: 40px;">
+                <div class="destaque-card" style="background-color: #111111; border: 2px solid #222222; border-radius: 15px; padding: 40px 30px; transition: all 0.4s; position: relative; overflow: hidden;">
+                    <div class="destaque-icon" style="width: 70px; height: 70px; background-color: rgba(255, 215, 0, 0.1); border-radius: 15px; display: flex; align-items: center; justify-content: center; font-size: 2rem; color: #FFD700; margin: 0 auto 25px;">
+                        <i class="fas fa-award"></i>
+                    </div>
+                    <h3 class="destaque-title" style="color: #ffffff; font-size: 1.8rem; font-weight: 600; text-align: center; margin-bottom: 20px;">CORRIP</h3>
+                    <p class="destaque-text" style="color: #aaaaaa; text-align: center; line-height: 1.7; font-size: 1.1rem;">
+                        Certificações reconhecidas internacionalmente desde 2011. 
+                        Nossos cursos são validados por uma das maiores instituições 
+                        de certificação do setor.
+                    </p>
+                </div>
+                
+                <div class="destaque-card" style="background-color: #111111; border: 2px solid #222222; border-radius: 15px; padding: 40px 30px; transition: all 0.4s; position: relative; overflow: hidden;">
+                    <div class="destaque-icon" style="width: 70px; height: 70px; background-color: rgba(255, 215, 0, 0.1); border-radius: 15px; display: flex; align-items: center; justify-content: center; font-size: 2rem; color: #FFD700; margin: 0 auto 25px;">
+                        <i class="fas fa-handshake"></i>
+                    </div>
+                    <h3 class="destaque-title" style="color: #ffffff; font-size: 1.8rem; font-weight: 600; text-align: center; margin-bottom: 20px;">Ltda. Búblias</h3>
+                    <p class="destaque-text" style="color: #aaaaaa; text-align: center; line-height: 1.7; font-size: 1.1rem;">
+                        Em parceria com a <strong>Ltda. Búblias - Loma (Técnica Internacional)</strong>, 
+                        oferecemos os melhores recursos educacionais e metodologias de ensino.
+                    </p>
+                </div>
+            </div>
+            
+            <!-- CONTATO -->
+            <div class="status-box" style="background-color: rgba(255, 215, 0, 0.1); border: 2px solid #FFD700; border-radius: 15px; padding: 25px; margin: 60px auto 0; max-width: 800px; text-align: center; animation: fadeInUp 0.8s ease;">
+                <div class="status-title" style="color: #FFD700; font-size: 1.5rem; margin-bottom: 15px; display: flex; align-items: center; justify-content: center; gap: 10px;">
+                    <i class="fas fa-headset"></i> Entre em Contato
+                </div>
+                <p class="status-text" style="color: #cccccc; margin-bottom: 20px; font-size: 1.2rem;">
+                    <strong>Website:</strong> www.corrip.com/art/219999-0099<br>
+                    <strong>Email:</strong> contato@codeup.com.br<br>
+                    <strong>Telefone:</strong> (11) 99999-0099
+                </p>
+            </div>
+        </div>
+    </section>
+
+    <!-- CALL TO ACTION -->
+    <section class="cta" style="padding: 100px 20px; background: linear-gradient(135deg, rgba(255, 215, 0, 0.1), rgba(255, 215, 0, 0.05)); text-align: center; border-top: 1px solid #333; border-bottom: 1px solid #333;">
+        <div class="container">
+            <h2 style="color: #FFD700; font-size: 2.8rem; margin-bottom: 25px;">Pronto para Transformar Sua Carreira?</h2>
+            <p style="color: #cccccc; font-size: 1.3rem; max-width: 700px; margin: 0 auto 50px; line-height: 1.7;">
+                Junte-se a milhares de estudantes que já descobriram o poder da programação 
+                e estão construindo carreiras de sucesso no mercado de tecnologia.
+            </p>
+            
+            <div style="display: flex; gap: 20px; justify-content: center; flex-wrap: wrap; margin-top: 40px;">
+                {% if not user.is_authenticated %}
+                    <a href="{% url 'usuarios:registrar' %}" class="btn" style="font-size: 1.2rem; padding: 15px 35px;">
+                        <i class="fas fa-user-plus"></i> Criar Conta Gratuita
+                    </a>
+                {% endif %}
+                <!-- CORRETO: trilhas:lista -->
+                <a href="{% url 'trilhas:lista' %}" class="btn" style="font-size: 1.2rem; padding: 15px 35px; background: transparent; border: 3px solid #FFD700; color: #FFD700;">
+                    <i class="fas fa-road"></i> Explorar Trilhas
+                </a>
+            </div>
+        </div>
+    </section>
+{% endblock %}
+
+{% block extra_js %}
+<script>
+    // ============================================
+    // FUNÇÕES ESPECÍFICAS DA HOME
+    // ============================================
+    function testHomeButton() {
+        console.log("🔧 Testando funcionalidade do botão Home...");
+        
+        if (window.location.pathname === '/') {
+            // Mostra mensagem de sucesso
+            showNotification('✅ Você já está na página Home! Funcionando perfeitamente.', 'success');
+            
+            // Feedback visual no botão Home
+            const homeBtn = document.querySelector('.nav-link[href="/"]');
+            if (homeBtn) {
+                homeBtn.style.transform = 'scale(1.1)';
+                homeBtn.style.boxShadow = '0 0 20px rgba(255, 215, 0, 0.5)';
+                
+                setTimeout(() => {
+                    homeBtn.style.transform = '';
+                    homeBtn.style.boxShadow = '';
+                }, 500);
+            }
+            
+        } else {
+            showNotification('⚠️ Redirecionando para a página Home...', 'warning');
+            setTimeout(() => {
+                window.location.href = '/';
+            }, 1500);
+        }
+    }
+    
+    // Adiciona animações aos cards com delay
+    document.addEventListener('DOMContentLoaded', function() {
+        console.log("🏠 Página Home inicializada");
+        
+        // Anima os cards com delay
+        const cards = document.querySelectorAll('.destaque-card');
+        cards.forEach((card, index) => {
+            card.style.animationDelay = `${index * 0.2}s`;
+        });
+        
+        // Configura comportamento do botão Home
+        const homeLink = document.querySelector('.nav-link[href="/"]');
+        if (homeLink) {
+            homeLink.addEventListener('click', function(e) {
+                if (window.location.pathname === '/') {
+                    e.preventDefault();
+                    console.log("🏠 Botão Home clicado - Já está na home");
+                    testHomeButton();
+                }
+            });
+        }
+    });
+</script>
+{% endblock %}

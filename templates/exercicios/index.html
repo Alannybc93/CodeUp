@@ -1,0 +1,442 @@
+<!-- templates/exercicios/index.html -->
+{% extends 'base.html' %}
+{% load static %}
+
+{% block title %}Exercícios - CodeUP{% endblock %}
+
+{% block extra_css %}
+<style>
+    :root {
+        --primary-color: #FFD700;
+        --bg-dark: #000000;
+        --bg-card: #111111;
+        --border-color: #333333;
+        --text-light: #f0f0f0;
+        --text-muted: #777777;
+    }
+    
+    * {
+        margin: 0;
+        padding: 0;
+        box-sizing: border-box;
+        font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    }
+    
+    body {
+        background-color: var(--bg-dark);
+        color: var(--text-light);
+        min-height: 100vh;
+    }
+    
+    .container {
+        max-width: 1200px;
+        margin: 40px auto;
+        padding: 0 20px;
+    }
+    
+    .page-title {
+        color: var(--primary-color);
+        font-size: 2.5rem;
+        margin-bottom: 10px;
+    }
+    
+    .page-subtitle {
+        color: var(--text-muted);
+        font-size: 1.2rem;
+        margin-bottom: 40px;
+    }
+    
+    /* Filtros */
+    .filtros {
+        background-color: var(--bg-card);
+        border: 2px solid var(--border-color);
+        border-radius: 10px;
+        padding: 20px;
+        margin-bottom: 30px;
+        display: flex;
+        gap: 20px;
+        flex-wrap: wrap;
+    }
+    
+    .filtro-group {
+        flex: 1;
+        min-width: 200px;
+    }
+    
+    .filtro-label {
+        display: block;
+        color: var(--primary-color);
+        margin-bottom: 8px;
+        font-weight: 600;
+    }
+    
+    .filtro-select {
+        width: 100%;
+        padding: 10px;
+        background-color: var(--bg-dark);
+        border: 2px solid var(--border-color);
+        border-radius: 5px;
+        color: var(--text-light);
+    }
+    
+    .btn-filtrar {
+        background-color: var(--primary-color);
+        color: #000;
+        border: none;
+        padding: 10px 20px;
+        border-radius: 5px;
+        font-weight: bold;
+        cursor: pointer;
+        align-self: flex-end;
+    }
+    
+    .btn-filtrar:hover {
+        background-color: #FFC000;
+    }
+    
+    /* Grid de exercícios */
+    .exercicios-grid {
+        display: grid;
+        grid-template-columns: repeat(auto-fill, minmax(350px, 1fr));
+        gap: 25px;
+        margin-top: 20px;
+    }
+    
+    .exercicio-card {
+        background-color: var(--bg-card);
+        border: 2px solid var(--border-color);
+        border-radius: 15px;
+        padding: 25px;
+        transition: all 0.3s;
+        position: relative;
+    }
+    
+    .exercicio-card:hover {
+        border-color: var(--primary-color);
+        transform: translateY(-5px);
+        box-shadow: 0 10px 20px rgba(255, 215, 0, 0.1);
+    }
+    
+    .exercicio-card::before {
+        content: '';
+        position: absolute;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 5px;
+        background-color: var(--primary-color);
+    }
+    
+    .exercicio-header {
+        display: flex;
+        justify-content: space-between;
+        align-items: flex-start;
+        margin-bottom: 15px;
+    }
+    
+    .exercicio-titulo {
+        color: var(--primary-color);
+        font-size: 1.3rem;
+        font-weight: bold;
+        flex: 1;
+    }
+    
+    .exercicio-pontos {
+        background-color: var(--primary-color);
+        color: #000;
+        padding: 5px 12px;
+        border-radius: 20px;
+        font-weight: bold;
+        font-size: 0.9rem;
+    }
+    
+    .exercicio-modulo {
+        color: var(--text-muted);
+        font-size: 0.9rem;
+        margin-bottom: 10px;
+        display: flex;
+        align-items: center;
+        gap: 5px;
+    }
+    
+    .exercicio-dificuldade {
+        display: inline-block;
+        padding: 5px 12px;
+        border-radius: 20px;
+        font-size: 0.8rem;
+        font-weight: bold;
+        margin-bottom: 15px;
+    }
+    
+    .dificuldade-facil {
+        background-color: rgba(0, 255, 0, 0.1);
+        color: #00ff00;
+    }
+    
+    .dificuldade-medio {
+        background-color: rgba(255, 215, 0, 0.1);
+        color: #FFD700;
+    }
+    
+    .dificuldade-dificil {
+        background-color: rgba(255, 0, 0, 0.1);
+        color: #ff4444;
+    }
+    
+    .exercicio-descricao {
+        color: var(--text-light);
+        line-height: 1.6;
+        margin-bottom: 20px;
+        min-height: 80px;
+    }
+    
+    .exercicio-actions {
+        display: flex;
+        gap: 10px;
+    }
+    
+    .btn-resolver {
+        background-color: var(--primary-color);
+        color: #000;
+        border: none;
+        padding: 10px 20px;
+        border-radius: 8px;
+        font-weight: bold;
+        cursor: pointer;
+        text-decoration: none;
+        display: inline-flex;
+        align-items: center;
+        gap: 8px;
+        flex: 1;
+        justify-content: center;
+    }
+    
+    .btn-resolver:hover {
+        background-color: #FFC000;
+    }
+    
+    .btn-detalhes {
+        background-color: transparent;
+        color: var(--primary-color);
+        border: 2px solid var(--primary-color);
+        padding: 8px 18px;
+        border-radius: 8px;
+        font-weight: bold;
+        cursor: pointer;
+        text-decoration: none;
+        display: inline-flex;
+        align-items: center;
+        gap: 8px;
+    }
+    
+    .btn-detalhes:hover {
+        background-color: rgba(255, 215, 0, 0.1);
+    }
+    
+    .badge-resolvido {
+        background-color: rgba(0, 255, 0, 0.1);
+        color: #00ff00;
+        padding: 4px 10px;
+        border-radius: 20px;
+        font-size: 0.8rem;
+        display: inline-flex;
+        align-items: center;
+        gap: 5px;
+        margin-left: 10px;
+    }
+    
+    .empty-state {
+        text-align: center;
+        padding: 60px 20px;
+        color: var(--text-muted);
+        grid-column: 1 / -1;
+    }
+    
+    .empty-state i {
+        font-size: 4rem;
+        color: var(--border-color);
+        margin-bottom: 20px;
+    }
+    
+    .stats-bar {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        margin-bottom: 20px;
+        padding: 15px;
+        background-color: var(--bg-card);
+        border-radius: 10px;
+        border: 2px solid var(--border-color);
+    }
+    
+    .stat-item {
+        text-align: center;
+        flex: 1;
+    }
+    
+    .stat-value {
+        color: var(--primary-color);
+        font-size: 2rem;
+        font-weight: bold;
+        display: block;
+    }
+    
+    .stat-label {
+        color: var(--text-muted);
+        font-size: 0.9rem;
+    }
+    
+    @media (max-width: 768px) {
+        .exercicios-grid {
+            grid-template-columns: 1fr;
+        }
+        
+        .filtros {
+            flex-direction: column;
+        }
+        
+        .stats-bar {
+            flex-direction: column;
+            gap: 15px;
+        }
+    }
+</style>
+{% endblock %}
+
+{% block content %}
+<main class="container">
+    <h1 class="page-title">Exercícios Práticos</h1>
+    <p class="page-subtitle">Pratique programação com desafios de diferentes níveis de dificuldade</p>
+    
+    {% if user.is_authenticated %}
+    <div class="stats-bar">
+        <div class="stat-item">
+            <span class="stat-value">0</span>
+            <span class="stat-label">Seus Pontos</span>
+        </div>
+        <div class="stat-item">
+            <span class="stat-value">0</span>
+            <span class="stat-label">Exercícios Resolvidos</span>
+        </div>
+        <div class="stat-item">
+            <a href="{% url 'exercicios:meus_exercicios' %}" style="color: var(--primary-color); text-decoration: none;">
+                <span class="stat-value">
+                    <i class="fas fa-trophy"></i>
+                </span>
+                <span class="stat-label">Meus Exercícios</span>
+            </a>
+        </div>
+    </div>
+    {% endif %}
+    
+    <form method="GET" action="{% url 'exercicios:exercicios_index' %}" class="filtros">
+        <div class="filtro-group">
+            <label class="filtro-label" for="modulo">Filtrar por Módulo</label>
+            <select name="modulo" id="modulo" class="filtro-select">
+                <option value="">Todos os módulos</option>
+                {% for modulo in modulos %}
+                <option value="{{ modulo.id }}" {% if selected_modulo == modulo.id|stringformat:"i" %}selected{% endif %}>
+                    {{ modulo.trilha.titulo }} - {{ modulo.titulo }}
+                </option>
+                {% endfor %}
+            </select>
+        </div>
+        
+        <div class="filtro-group">
+            <label class="filtro-label" for="dificuldade">Filtrar por Dificuldade</label>
+            <select name="dificuldade" id="dificuldade" class="filtro-select">
+                <option value="">Todas as dificuldades</option>
+                <option value="facil" {% if selected_dificuldade == 'facil' %}selected{% endif %}>Fácil</option>
+                <option value="medio" {% if selected_dificuldade == 'medio' %}selected{% endif %}>Médio</option>
+                <option value="dificil" {% if selected_dificuldade == 'dificil' %}selected{% endif %}>Difícil</option>
+            </select>
+        </div>
+        
+        <button type="submit" class="btn-filtrar">
+            <i class="fas fa-filter"></i> Filtrar
+        </button>
+        
+        <a href="{% url 'exercicios:exercicios_index' %}" style="align-self: flex-end; color: var(--text-muted); text-decoration: none;">
+            Limpar filtros
+        </a>
+    </form>
+    
+    {% if exercicios %}
+        <div class="exercicios-grid">
+            {% for exercicio in exercicios %}
+            <div class="exercicio-card">
+                <div class="exercicio-header">
+                    <h3 class="exercicio-titulo">{{ exercicio.titulo }}</h3>
+                    <div class="exercicio-pontos">{{ exercicio.pontos }} pts</div>
+                </div>
+                
+                <div class="exercicio-modulo">
+                    <i class="fas fa-book"></i>
+                    {{ exercicio.modulo.trilha.titulo }} › {{ exercicio.modulo.titulo }}
+                </div>
+                
+                <span class="exercicio-dificuldade dificuldade-{{ exercicio.dificuldade }}">
+                    {% if exercicio.dificuldade == 'facil' %}Fácil
+                    {% elif exercicio.dificuldade == 'medio' %}Médio
+                    {% else %}Difícil{% endif %}
+                </span>
+                
+                <p class="exercicio-descricao">{{ exercicio.enunciado }}</p>
+                
+                <div class="exercicio-actions">
+                    <a href="{% url 'exercicios:exercicios_resolver' exercicio.id %}" class="btn-resolver">
+                        <i class="fas fa-play-circle"></i> Resolver
+                    </a>
+                    <a href="{% url 'exercicios:exercicios_detalhe' exercicio.id %}" class="btn-detalhes">
+                        <i class="fas fa-info-circle"></i> Detalhes
+                    </a>
+                </div>
+                
+                <!-- Removi a verificação de exercícios resolvidos por enquanto -->
+            </div>
+            {% endfor %}
+        </div>
+    {% else %}
+        <div class="empty-state">
+            <i class="fas fa-laptop-code"></i>
+            <h3>Nenhum exercício encontrado</h3>
+            <p>Tente mudar os filtros ou volte mais tarde para novos exercícios.</p>
+        </div>
+    {% endif %}
+</main>
+{% endblock %}
+
+{% block extra_js %}
+<script>
+    document.addEventListener('DOMContentLoaded', function() {
+        // Adicionar animação aos cards
+        const cards = document.querySelectorAll('.exercicio-card');
+        cards.forEach((card, index) => {
+            card.style.opacity = '0';
+            card.style.transform = 'translateY(20px)';
+            
+            setTimeout(() => {
+                card.style.transition = 'all 0.5s ease';
+                card.style.opacity = '1';
+                card.style.transform = 'translateY(0)';
+            }, index * 100);
+        });
+        
+        // Auto-submit do formulário quando selecionar filtro
+        const moduloSelect = document.getElementById('modulo');
+        const dificuldadeSelect = document.getElementById('dificuldade');
+        
+        if (moduloSelect) {
+            moduloSelect.addEventListener('change', function() {
+                this.form.submit();
+            });
+        }
+        
+        if (dificuldadeSelect) {
+            dificuldadeSelect.addEventListener('change', function() {
+                this.form.submit();
+            });
+        }
+    });
+</script>
+{% endblock %}

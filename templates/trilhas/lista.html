@@ -1,0 +1,34 @@
+{% extends 'base.html' %}
+
+{% block title %}Trilhas de Aprendizado - CodeUp{% endblock %}
+
+{% block content %}
+<div class="row">
+    <div class="col-md-12">
+        <h1 class="mb-4">Trilhas de Aprendizado</h1>
+        <p class="lead">Escolha uma trilha para começar sua jornada na programação.</p>
+    </div>
+</div>
+
+<div class="row">
+    {% for trilha in trilhas %}
+    <div class="col-md-4">
+        <div class="card trilha-card">
+            <div class="card-body">
+                <h5 class="card-title">{{ trilha.titulo }}</h5>
+                <p class="card-text">{{ trilha.descricao|truncatewords:20 }}</p>
+                <a href="{% url 'detalhe_trilha' trilha.id %}" class="btn btn-primary">
+                    Começar Trilha
+                </a>
+            </div>
+        </div>
+    </div>
+    {% empty %}
+    <div class="col-md-12">
+        <div class="alert alert-info">
+            Nenhuma trilha disponível no momento.
+        </div>
+    </div>
+    {% endfor %}
+</div>
+{% endblock %}

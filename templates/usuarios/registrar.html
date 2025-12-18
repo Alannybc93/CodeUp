@@ -1,0 +1,668 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>CodeUp - Cadastro</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        }
+        
+        body {
+            background-color: #000000;
+            color: #f0f0f0;
+            min-height: 100vh;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            padding: 20px;
+            background-image: 
+                radial-gradient(circle at 20% 30%, rgba(255, 215, 0, 0.05) 0%, transparent 20%),
+                radial-gradient(circle at 80% 70%, rgba(255, 215, 0, 0.05) 0%, transparent 20%);
+        }
+        
+        .register-container {
+            width: 100%;
+            max-width: 500px;
+            background-color: #111111;
+            border-radius: 20px;
+            border: 3px solid #FFD700;
+            box-shadow: 0 10px 30px rgba(255, 215, 0, 0.2);
+            overflow: hidden;
+            padding: 40px 35px;
+        }
+        
+        .logo-section {
+            text-align: center;
+            margin-bottom: 30px;
+        }
+        
+        .logo {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 15px;
+            margin-bottom: 10px;
+        }
+        
+        .logo-icon {
+            background-color: #FFD700;
+            color: #000000;
+            width: 50px;
+            height: 50px;
+            border-radius: 10px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 2rem;
+            font-weight: bold;
+        }
+        
+        .logo-text {
+            font-size: 2.5rem;
+            font-weight: 900;
+            color: #FFD700;
+            letter-spacing: 2px;
+        }
+        
+        .logo-subtitle {
+            color: #cccccc;
+            font-size: 1rem;
+        }
+        
+        .form-title {
+            color: #FFD700;
+            text-align: center;
+            font-size: 1.8rem;
+            margin-bottom: 30px;
+        }
+        
+        .form-group {
+            margin-bottom: 20px;
+        }
+        
+        .form-label {
+            display: block;
+            color: #FFD700;
+            margin-bottom: 8px;
+            font-weight: 600;
+        }
+        
+        .input-container {
+            position: relative;
+            display: flex;
+            align-items: center;
+        }
+        
+        .input-icon {
+            position: absolute;
+            left: 15px;
+            color: #FFD700;
+            font-size: 1.1rem;
+        }
+        
+        .form-input {
+            width: 100%;
+            padding: 14px 14px 14px 45px;
+            background-color: #1a1a1a;
+            border: 2px solid #333333;
+            border-radius: 10px;
+            color: #ffffff;
+            font-size: 1rem;
+            transition: all 0.3s;
+        }
+        
+        .form-input:focus {
+            outline: none;
+            border-color: #FFD700;
+            box-shadow: 0 0 0 3px rgba(255, 215, 0, 0.2);
+        }
+        
+        .password-strength {
+            margin-top: 5px;
+            height: 5px;
+            background-color: #333;
+            border-radius: 3px;
+            overflow: hidden;
+        }
+        
+        .strength-bar {
+            height: 100%;
+            width: 0%;
+            background-color: #FFD700;
+            transition: width 0.3s;
+        }
+        
+        .strength-text {
+            font-size: 0.8rem;
+            color: #777;
+            margin-top: 3px;
+            text-align: right;
+        }
+        
+        .terms {
+            display: flex;
+            align-items: flex-start;
+            gap: 10px;
+            margin: 25px 0;
+        }
+        
+        .terms-checkbox {
+            margin-top: 3px;
+            appearance: none;
+            width: 20px;
+            height: 20px;
+            background-color: #1a1a1a;
+            border: 2px solid #333333;
+            border-radius: 4px;
+            cursor: pointer;
+            position: relative;
+            flex-shrink: 0;
+        }
+        
+        .terms-checkbox:checked {
+            background-color: #FFD700;
+            border-color: #FFD700;
+        }
+        
+        .terms-checkbox:checked::after {
+            content: "✓";
+            position: absolute;
+            color: #000000;
+            font-weight: bold;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+        }
+        
+        .terms-label {
+            color: #cccccc;
+            font-size: 0.9rem;
+            line-height: 1.4;
+        }
+        
+        .terms-link {
+            color: #FFD700;
+            text-decoration: none;
+        }
+        
+        .terms-link:hover {
+            text-decoration: underline;
+        }
+        
+        .register-button {
+            width: 100%;
+            background-color: #FFD700;
+            color: #000000;
+            border: none;
+            padding: 16px;
+            font-size: 1.2rem;
+            font-weight: bold;
+            border-radius: 10px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            margin-bottom: 25px;
+        }
+        
+        .register-button:hover {
+            background-color: #FFC000;
+            transform: translateY(-2px);
+            box-shadow: 0 8px 20px rgba(255, 215, 0, 0.3);
+        }
+        
+        .login-section {
+            text-align: center;
+            margin-top: 20px;
+        }
+        
+        .login-text {
+            color: #cccccc;
+            margin-bottom: 8px;
+        }
+        
+        .login-link {
+            color: #FFD700;
+            text-decoration: none;
+            font-weight: bold;
+        }
+        
+        .login-link:hover {
+            color: #ffffff;
+            text-decoration: underline;
+        }
+        
+        .back-link {
+            display: block;
+            text-align: center;
+            margin-top: 30px;
+            color: #FFD700;
+            text-decoration: none;
+        }
+        
+        .back-link:hover {
+            text-decoration: underline;
+        }
+        
+        .messages {
+            margin-bottom: 20px;
+        }
+        
+        .message {
+            padding: 12px;
+            border-radius: 8px;
+            margin-bottom: 10px;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+        
+        .message.success {
+            background-color: rgba(0, 255, 0, 0.1);
+            color: #00ff00;
+            border: 1px solid #00ff00;
+        }
+        
+        .message.error {
+            background-color: rgba(255, 68, 68, 0.1);
+            color: #ff4444;
+            border: 1px solid #ff4444;
+        }
+        
+        .message.info {
+            background-color: rgba(255, 215, 0, 0.1);
+            color: #FFD700;
+            border: 1px solid #FFD700;
+        }
+        
+        .user-type {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 10px;
+            margin-top: 10px;
+        }
+        
+        .type-option {
+            text-align: center;
+            padding: 12px;
+            background-color: #1a1a1a;
+            border: 2px solid #333333;
+            border-radius: 8px;
+            cursor: pointer;
+            transition: all 0.3s;
+        }
+        
+        .type-option:hover {
+            border-color: #555;
+        }
+        
+        .type-option.selected {
+            background-color: rgba(255, 215, 0, 0.1);
+            border-color: #FFD700;
+            color: #FFD700;
+        }
+        
+        .type-icon {
+            font-size: 1.5rem;
+            margin-bottom: 5px;
+            display: block;
+        }
+        
+        @media (max-width: 500px) {
+            .register-container {
+                padding: 30px 25px;
+            }
+            
+            .logo {
+                flex-direction: column;
+                gap: 10px;
+            }
+            
+            .logo-text {
+                font-size: 2rem;
+            }
+            
+            .user-type {
+                grid-template-columns: 1fr;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="register-container">
+        <div class="logo-section">
+            <div class="logo">
+                <div class="logo-icon">
+                    <i class="fas fa-code"></i>
+                </div>
+                <div class="logo-text">CODEUP</div>
+            </div>
+            <div class="logo-subtitle">Crie sua conta gratuitamente</div>
+        </div>
+        
+        <h1 class="form-title">C A D A S T R O</h1>
+        
+        {% if messages %}
+        <div class="messages">
+            {% for message in messages %}
+            <div class="message {{ message.tags }}">
+                {% if message.tags == 'success' %}
+                    <i class="fas fa-check-circle"></i>
+                {% elif message.tags == 'error' %}
+                    <i class="fas fa-exclamation-circle"></i>
+                {% else %}
+                    <i class="fas fa-info-circle"></i>
+                {% endif %}
+                {{ message }}
+            </div>
+            {% endfor %}
+        </div>
+        {% endif %}
+        
+        <form method="POST" id="registerForm">
+            {% csrf_token %}
+            
+            <div class="form-group">
+                <label class="form-label" for="username">
+                    <i class="fas fa-user"></i> Nome de Usuário
+                </label>
+                <div class="input-container">
+                    <i class="fas fa-user input-icon"></i>
+                    <input type="text" 
+                           id="username" 
+                           name="username" 
+                           class="form-input" 
+                           placeholder="Escolha um nome de usuário" 
+                           required
+                           minlength="3"
+                           maxlength="30"
+                           value="{{ username|default:'' }}">
+                </div>
+                <div class="strength-text" id="username-feedback"></div>
+            </div>
+            
+            <div class="form-group">
+                <label class="form-label" for="email">
+                    <i class="fas fa-envelope"></i> E-mail
+                </label>
+                <div class="input-container">
+                    <i class="fas fa-envelope input-icon"></i>
+                    <input type="email" 
+                           id="email" 
+                           name="email" 
+                           class="form-input" 
+                           placeholder="seu@email.com" 
+                           required
+                           value="{{ email|default:'' }}">
+                </div>
+            </div>
+            
+            <div class="form-group">
+                <label class="form-label">Tipo de Conta</label>
+                <div class="user-type" id="userType">
+                    <div class="type-option" data-type="ALUNO">
+                        <span class="type-icon"><i class="fas fa-graduation-cap"></i></span>
+                        <span>Aluno</span>
+                    </div>
+                    <div class="type-option" data-type="PROFESSOR">
+                        <span class="type-icon"><i class="fas fa-chalkboard-teacher"></i></span>
+                        <span>Professor</span>
+                    </div>
+                    <div class="type-option" data-type="ADMIN">
+                        <span class="type-icon"><i class="fas fa-user-shield"></i></span>
+                        <span>Administrador</span>
+                    </div>
+                </div>
+                <input type="hidden" name="tipo" id="tipo" value="{{ tipo|default:'ALUNO' }}">
+            </div>
+            
+            <div class="form-group">
+                <label class="form-label" for="password">
+                    <i class="fas fa-lock"></i> Senha
+                </label>
+                <div class="input-container">
+                    <i class="fas fa-lock input-icon"></i>
+                    <input type="password" 
+                           id="password" 
+                           name="password1" 
+                           class="form-input" 
+                           placeholder="••••••••" 
+                           required
+                           minlength="6">
+                </div>
+                <div class="password-strength">
+                    <div class="strength-bar" id="strengthBar"></div>
+                </div>
+                <div class="strength-text" id="password-feedback"></div>
+            </div>
+            
+            <div class="form-group">
+                <label class="form-label" for="confirmPassword">
+                    <i class="fas fa-lock"></i> Confirmar Senha
+                </label>
+                <div class="input-container">
+                    <i class="fas fa-lock input-icon"></i>
+                    <input type="password" 
+                           id="confirmPassword" 
+                           name="password2" 
+                           class="form-input" 
+                           placeholder="••••••••" 
+                           required>
+                </div>
+                <div class="strength-text" id="confirm-feedback"></div>
+            </div>
+            
+            <div class="terms">
+                <input type="checkbox" id="terms" name="terms" class="terms-checkbox" required>
+                <label for="terms" class="terms-label">
+                    Concordo com os <a href="#" class="terms-link" id="termsLink">Termos de Serviço</a> e 
+                    <a href="#" class="terms-link" id="privacyLink">Política de Privacidade</a> da CodeUp
+                </label>
+            </div>
+            
+            <button type="submit" class="register-button">
+                <i class="fas fa-user-plus"></i> CRIAR CONTA
+            </button>
+        </form>
+        
+        <div class="login-section">
+            <div class="login-text">Já tem uma conta?</div>
+            <a href="{% url 'usuarios:login' %}" class="login-link">FAÇA LOGIN AQUI</a>
+        </div>
+        
+        <a href="/" class="back-link">
+            <i class="fas fa-arrow-left"></i> Voltar para página inicial
+        </a>
+    </div>
+
+    <script>
+        // Seleção do tipo de usuário
+        document.querySelectorAll('.type-option').forEach(option => {
+            option.addEventListener('click', function() {
+                // Remove seleção de todos
+                document.querySelectorAll('.type-option').forEach(opt => {
+                    opt.classList.remove('selected');
+                });
+                
+                // Adiciona seleção ao clicado
+                this.classList.add('selected');
+                
+                // Atualiza o campo hidden
+                const tipo = this.getAttribute('data-type');
+                document.getElementById('tipo').value = tipo;
+            });
+        });
+        
+        // Seleciona o tipo salvo ou "Aluno" por padrão
+        document.addEventListener('DOMContentLoaded', function() {
+            const savedTipo = document.getElementById('tipo').value || 'ALUNO';
+            const tipoOption = document.querySelector(`.type-option[data-type="${savedTipo}"]`);
+            if (tipoOption) {
+                tipoOption.classList.add('selected');
+            } else {
+                // Fallback para ALUNO se o tipo salvo não existir
+                document.querySelector('.type-option[data-type="ALUNO"]').classList.add('selected');
+                document.getElementById('tipo').value = 'ALUNO';
+            }
+        });
+        
+        // Validação de força da senha
+        document.getElementById('password').addEventListener('input', function() {
+            const password = this.value;
+            const strengthBar = document.getElementById('strengthBar');
+            const feedback = document.getElementById('password-feedback');
+            
+            let strength = 0;
+            let feedbackText = '';
+            
+            // Verificações
+            if (password.length >= 8) strength += 25;
+            if (/[A-Z]/.test(password)) strength += 25;
+            if (/[0-9]/.test(password)) strength += 25;
+            if (/[^A-Za-z0-9]/.test(password)) strength += 25;
+            
+            // Atualiza barra
+            strengthBar.style.width = strength + '%';
+            
+            // Feedback textual
+            if (strength < 25) {
+                strengthBar.style.backgroundColor = '#ff4444';
+                feedbackText = 'Muito fraca';
+            } else if (strength < 50) {
+                strengthBar.style.backgroundColor = '#ffaa00';
+                feedbackText = 'Fraca';
+            } else if (strength < 75) {
+                strengthBar.style.backgroundColor = '#FFD700';
+                feedbackText = 'Boa';
+            } else {
+                strengthBar.style.backgroundColor = '#00ff00';
+                feedbackText = 'Excelente';
+            }
+            
+            feedback.textContent = `Força: ${feedbackText} (${strength}%)`;
+            feedback.style.color = strengthBar.style.backgroundColor;
+        });
+        
+        // Verificação de confirmação de senha
+        document.getElementById('confirmPassword').addEventListener('input', function() {
+            const password = document.getElementById('password').value;
+            const confirmPassword = this.value;
+            const feedback = document.getElementById('confirm-feedback');
+            
+            if (!confirmPassword) {
+                feedback.textContent = '';
+                return;
+            }
+            
+            if (password === confirmPassword) {
+                feedback.textContent = '✓ Senhas coincidem';
+                feedback.style.color = '#00ff00';
+            } else {
+                feedback.textContent = '✗ Senhas não coincidem';
+                feedback.style.color = '#ff4444';
+            }
+        });
+        
+        // Verificação de nome de usuário
+        document.getElementById('username').addEventListener('input', function() {
+            const username = this.value;
+            const feedback = document.getElementById('username-feedback');
+            
+            if (username.length < 3) {
+                feedback.textContent = 'Mínimo 3 caracteres';
+                feedback.style.color = '#ff4444';
+            } else if (username.length > 30) {
+                feedback.textContent = 'Máximo 30 caracteres';
+                feedback.style.color = '#ff4444';
+            } else if (!/^[a-zA-Z0-9_]+$/.test(username)) {
+                feedback.textContent = 'Apenas letras, números e _';
+                feedback.style.color = '#ff4444';
+            } else {
+                feedback.textContent = '✓ Nome de usuário válido';
+                feedback.style.color = '#00ff00';
+            }
+        });
+        
+        // Validação do formulário
+        document.getElementById('registerForm').addEventListener('submit', function(e) {
+            const username = document.getElementById('username').value;
+            const email = document.getElementById('email').value;
+            const password = document.getElementById('password').value;
+            const confirmPassword = document.getElementById('confirmPassword').value;
+            const terms = document.getElementById('terms').checked;
+            const tipo = document.getElementById('tipo').value;
+            
+            // Validações básicas
+            if (!username || !email || !password || !confirmPassword) {
+                e.preventDefault();
+                alert('Por favor, preencha todos os campos!');
+                return false;
+            }
+            
+            if (username.length < 3) {
+                e.preventDefault();
+                alert('O nome de usuário deve ter pelo menos 3 caracteres!');
+                return false;
+            }
+            
+            if (!email.includes('@')) {
+                e.preventDefault();
+                alert('Por favor, insira um e-mail válido!');
+                return false;
+            }
+            
+            if (password.length < 6) {
+                e.preventDefault();
+                alert('A senha deve ter pelo menos 6 caracteres!');
+                return false;
+            }
+            
+            if (password !== confirmPassword) {
+                e.preventDefault();
+                alert('As senhas não coincidem!');
+                return false;
+            }
+            
+            if (!terms) {
+                e.preventDefault();
+                alert('Você precisa aceitar os termos de serviço!');
+                return false;
+            }
+            
+            // Botão de loading
+            const submitBtn = document.querySelector('.register-button');
+            const originalText = submitBtn.innerHTML;
+            submitBtn.innerHTML = '<i class="fas fa-spinner fa-spin"></i> CRIANDO CONTA...';
+            submitBtn.disabled = true;
+            
+            // Reativar após 5 segundos (caso haja erro)
+            setTimeout(() => {
+                submitBtn.innerHTML = originalText;
+                submitBtn.disabled = false;
+            }, 5000);
+            
+            return true;
+        });
+        
+        // Links para termos
+        document.getElementById('termsLink').addEventListener('click', function(e) {
+            e.preventDefault();
+            alert('TERMOS DE SERVIÇO\n\n1. Uso da plataforma para fins educacionais\n2. Respeito à comunidade\n3. Proibição de cópia de conteúdo\n4. Responsabilidade pelo uso da conta\n\nEstes são termos de demonstração.');
+        });
+        
+        document.getElementById('privacyLink').addEventListener('click', function(e) {
+            e.preventDefault();
+            alert('POLÍTICA DE PRIVACIDADE\n\n1. Seus dados são protegidos\n2. Não compartilhamos informações pessoais\n3. Cookies apenas para funcionalidade\n4. Direito de exclusão de conta\n\nEsta é uma política de demonstração.');
+        });
+        
+        // Auto-focus no primeiro campo
+        document.addEventListener('DOMContentLoaded', function() {
+            document.getElementById('username').focus();
+        });
+    </script>
+</body>
+</html>

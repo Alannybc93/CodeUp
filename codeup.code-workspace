@@ -1,0 +1,13 @@
+{
+	"folders": [
+		{
+			"path": "codeup"
+		},
+		{
+			"path": "migrations"
+		},
+		{
+			"path": "venv"
+		}
+	]
+}

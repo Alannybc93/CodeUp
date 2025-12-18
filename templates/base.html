@@ -1,0 +1,389 @@
+<!-- templates/base.html -->
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>{% block title %}CodeUP{% endblock %}</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        /* ===== ESTILO IDÊNTICO AO TEMPLATE HOME ===== */
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        }
+        
+        body {
+            background-color: #000000;
+            color: #f0f0f0;
+            min-height: 100vh;
+        }
+        
+        /* HEADER - EXATAMENTE IGUAL */
+        .header {
+            background-color: #111111;
+            border-bottom: 3px solid #FFD700;
+            padding: 20px 0;
+            position: sticky;
+            top: 0;
+            z-index: 1000;
+            box-shadow: 0 5px 20px rgba(0, 0, 0, 0.5);
+        }
+        
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 20px;
+        }
+        
+        .nav-container {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+        
+        .logo {
+            display: flex;
+            align-items: center;
+            gap: 15px;
+            text-decoration: none;
+        }
+        
+        .logo-icon {
+            background-color: #FFD700;
+            color: #000000;
+            width: 50px;
+            height: 50px;
+            border-radius: 10px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.8rem;
+            font-weight: bold;
+            box-shadow: 0 5px 15px rgba(255, 215, 0, 0.3);
+        }
+        
+        .logo-text {
+            font-size: 2.2rem;
+            font-weight: 900;
+            color: #FFD700;
+            letter-spacing: 1.5px;
+        }
+        
+        .nav-links {
+            display: flex;
+            gap: 30px;
+            align-items: center;
+        }
+        
+        .nav-link {
+            color: #ffffff;
+            text-decoration: none;
+            font-weight: 600;
+            font-size: 1.1rem;
+            transition: all 0.3s;
+            padding: 8px 15px;
+            border-radius: 8px;
+        }
+        
+        .nav-link:hover {
+            color: #FFD700;
+            background-color: rgba(255, 215, 0, 0.1);
+        }
+        
+        .nav-link.active {
+            color: #FFD700;
+            background-color: rgba(255, 215, 0, 0.1);
+        }
+        
+        .btn {
+            display: inline-block;
+            padding: 12px 25px;
+            background-color: #FFD700;
+            color: #000000;
+            text-decoration: none;
+            border-radius: 10px;
+            font-weight: bold;
+            font-size: 1.1rem;
+            transition: all 0.3s;
+            border: none;
+            cursor: pointer;
+        }
+        
+        .btn:hover {
+            background-color: #FFC000;
+            transform: translateY(-3px);
+            box-shadow: 0 8px 20px rgba(255, 215, 0, 0.3);
+        }
+        
+        /* MENSAGENS */
+        .messages {
+            max-width: 1200px;
+            margin: 20px auto;
+            padding: 0 20px;
+        }
+        
+        .alert {
+            padding: 15px 25px;
+            margin: 10px 0;
+            border-radius: 10px;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            animation: fadeInUp 0.5s ease;
+        }
+        
+        .alert-success {
+            background-color: rgba(40, 167, 69, 0.2);
+            color: #28a745;
+            border: 1px solid rgba(40, 167, 69, 0.5);
+        }
+        
+        .alert-error {
+            background-color: rgba(220, 53, 69, 0.2);
+            color: #dc3545;
+            border: 1px solid rgba(220, 53, 69, 0.5);
+        }
+        
+        .alert-info {
+            background-color: rgba(23, 162, 184, 0.2);
+            color: #17a2b8;
+            border: 1px solid rgba(23, 162, 184, 0.5);
+        }
+        
+        .alert-warning {
+            background-color: rgba(255, 193, 7, 0.2);
+            color: #ffc107;
+            border: 1px solid rgba(255, 193, 7, 0.5);
+        }
+        
+        /* ANIMAÇÕES */
+        @keyframes fadeInUp {
+            from {
+                opacity: 0;
+                transform: translateY(20px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+        
+        @keyframes pulse {
+            0% { transform: scale(1); }
+            50% { transform: scale(1.05); }
+            100% { transform: scale(1); }
+        }
+        
+        .pulse {
+            animation: pulse 2s infinite;
+        }
+        
+        /* RESPONSIVE */
+        @media (max-width: 768px) {
+            .nav-container {
+                flex-direction: column;
+                gap: 20px;
+            }
+            
+            .nav-links {
+                flex-wrap: wrap;
+                justify-content: center;
+            }
+        }
+        
+        /* CONTEÚDO PRINCIPAL */
+        .main-content {
+            min-height: calc(100vh - 400px);
+            padding: 40px 0;
+        }
+    </style>
+    
+    {% block extra_css %}{% endblock %}
+</head>
+<body>
+    <!-- HEADER -->
+    <header class="header">
+        <div class="container">
+            <div class="nav-container">
+                <a href="{% url 'inicio' %}" class="logo">
+                    <div class="logo-icon">
+                        <i class="fas fa-code"></i>
+                    </div>
+                    <div class="logo-text">CODEUP</div>
+                </a>
+                
+                <div class="nav-links">
+                    <a href="{% url 'inicio' %}" class="nav-link {% if request.path == '/' %}active{% endif %}">
+                        <i class="fas fa-home"></i> Home
+                    </a>
+                    <a href="{% url 'trilhas:lista' %}" class="nav-link">
+                        <i class="fas fa-road"></i> Trilhas
+                    </a>
+                    <a href="{% url 'exercicios:lista' %}" class="nav-link">
+                        <i class="fas fa-laptop-code"></i> Exercícios
+                    </a>
+                    {% if user.is_authenticated %}
+                        <a href="{% url 'usuarios:perfil' %}" class="btn" style="padding: 10px 20px;">
+                            <i class="fas fa-user"></i> {{ user.username }}
+                        </a>
+                        <a href="{% url 'usuarios:logout' %}" class="nav-link">
+                            <i class="fas fa-sign-out-alt"></i> Sair
+                        </a>
+                    {% else %}
+                        <a href="{% url 'usuarios:login' %}" class="nav-link">
+                            <i class="fas fa-sign-in-alt"></i> Entrar
+                        </a>
+                        <a href="{% url 'usuarios:registrar' %}" class="btn">
+                            <i class="fas fa-user-plus"></i> Cadastrar
+                        </a>
+                    {% endif %}
+                </div>
+            </div>
+        </div>
+    </header>
+
+    <!-- MENSAGENS -->
+    {% if messages %}
+        <div class="messages">
+            {% for message in messages %}
+                <div class="alert alert-{{ message.tags }}">
+                    <i class="fas fa-{% if message.tags == 'success' %}check-circle{% elif message.tags == 'error' %}exclamation-circle{% elif message.tags == 'info' %}info-circle{% else %}exclamation-triangle{% endif %}"></i>
+                    {{ message }}
+                </div>
+            {% endfor %}
+        </div>
+    {% endif %}
+
+    <!-- CONTEÚDO PRINCIPAL -->
+    <main class="main-content">
+        {% block content %}
+        {% endblock %}
+    </main>
+
+    <!-- FOOTER -->
+    <footer class="footer" style="background-color: #111111; padding: 60px 20px 30px; border-top: 3px solid #222222;">
+        <div class="container">
+            <div class="footer-content" style="display: grid; grid-template-columns: repeat(auto-fit, minmax(250px, 1fr)); gap: 40px; margin-bottom: 40px;">
+                <div class="footer-about">
+                    <div class="footer-logo" style="font-size: 2rem; color: #FFD700; font-weight: bold; margin-bottom: 15px;">CODEUP</div>
+                    <p class="footer-description" style="color: #aaaaaa; margin-bottom: 20px; line-height: 1.6;">
+                        Plataforma de aprendizado de programação interativa. 
+                        Transformamos iniciantes em desenvolvedores profissionais.
+                    </p>
+                </div>
+                
+                <div class="footer-section">
+                    <h3 style="color: #ffffff; margin-bottom: 20px; font-size: 1.3rem;">Plataforma</h3>
+                    <div class="footer-links">
+                        <a href="{% url 'inicio' %}" style="color: #aaaaaa; text-decoration: none; display: block; margin-bottom: 10px; transition: color 0.3s;">Home</a>
+                        <a href="{% url 'trilhas:lista' %}" style="color: #aaaaaa; text-decoration: none; display: block; margin-bottom: 10px; transition: color 0.3s;">Trilhas</a>
+                        <a href="{% url 'exercicios:lista' %}" style="color: #aaaaaa; text-decoration: none; display: block; margin-bottom: 10px; transition: color 0.3s;">Exercícios</a>
+                        <a href="#" style="color: #aaaaaa; text-decoration: none; display: block; margin-bottom: 10px; transition: color 0.3s;">Projetos</a>
+                    </div>
+                </div>
+                
+                <div class="footer-section">
+                    <h3 style="color: #ffffff; margin-bottom: 20px; font-size: 1.3rem;">Recursos</h3>
+                    <div class="footer-links">
+                        <a href="#" style="color: #aaaaaa; text-decoration: none; display: block; margin-bottom: 10px; transition: color 0.3s;">Blog</a>
+                        <a href="#" style="color: #aaaaaa; text-decoration: none; display: block; margin-bottom: 10px; transition: color 0.3s;">Tutoriais</a>
+                        <a href="#" style="color: #aaaaaa; text-decoration: none; display: block; margin-bottom: 10px; transition: color 0.3s;">Documentação</a>
+                        <a href="#" style="color: #aaaaaa; text-decoration: none; display: block; margin-bottom: 10px; transition: color 0.3s;">FAQ</a>
+                    </div>
+                </div>
+                
+                <div class="footer-section">
+                    <h3 style="color: #ffffff; margin-bottom: 20px; font-size: 1.3rem;">Legal</h3>
+                    <div class="footer-links">
+                        <a href="#" style="color: #aaaaaa; text-decoration: none; display: block; margin-bottom: 10px; transition: color 0.3s;">Termos de Uso</a>
+                        <a href="#" style="color: #aaaaaa; text-decoration: none; display: block; margin-bottom: 10px; transition: color 0.3s;">Política de Privacidade</a>
+                        <a href="#" style="color: #aaaaaa; text-decoration: none; display: block; margin-bottom: 10px; transition: color 0.3s;">Cookies</a>
+                        <a href="#" style="color: #aaaaaa; text-decoration: none; display: block; margin-bottom: 10px; transition: color 0.3s;">Contato</a>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="copyright" style="text-align: center; color: #666666; margin-top: 50px; padding-top: 30px; border-top: 1px solid #222222; font-size: 0.9rem;">
+                <p>© 2024 CodeUP - Plataforma de Programação. Todos os direitos reservados.</p>
+            </div>
+        </div>
+    </footer>
+
+    <!-- SCRIPTS GLOBAIS -->
+    <script>
+        // Configuração inicial
+        document.addEventListener('DOMContentLoaded', function() {
+            console.log("🚀 CodeUP inicializado");
+            
+            // Adiciona animações CSS
+            const style = document.createElement('style');
+            style.textContent = `
+                @keyframes slideInRight {
+                    from { transform: translateX(100%); opacity: 0; }
+                    to { transform: translateX(0); opacity: 1; }
+                }
+                @keyframes slideOutRight {
+                    from { transform: translateX(0); opacity: 1; }
+                    to { transform: translateX(100%); opacity: 0; }
+                }
+            `;
+            document.head.appendChild(style);
+            
+            // Efeito de scroll no header
+            window.addEventListener('scroll', function() {
+                const header = document.querySelector('.header');
+                if (window.scrollY > 50) {
+                    header.style.boxShadow = '0 10px 30px rgba(0, 0, 0, 0.7)';
+                } else {
+                    header.style.boxShadow = '0 5px 20px rgba(0, 0, 0, 0.5)';
+                }
+            });
+        });
+        
+        // Função para mostrar notificações
+        function showNotification(message, type = 'info') {
+            const notification = document.createElement('div');
+            notification.style.cssText = `
+                position: fixed;
+                top: 100px;
+                right: 20px;
+                background: ${type === 'success' ? '#28a745' : type === 'warning' ? '#ffc107' : '#17a2b8'};
+                color: ${type === 'warning' ? '#000' : 'white'};
+                padding: 15px 25px;
+                border-radius: 10px;
+                box-shadow: 0 10px 25px rgba(0,0,0,0.3);
+                z-index: 9999;
+                animation: slideInRight 0.3s ease;
+                display: flex;
+                align-items: center;
+                gap: 10px;
+                font-weight: 600;
+                max-width: 400px;
+            `;
+            
+            const icon = type === 'success' ? 'check-circle' : 
+                         type === 'warning' ? 'exclamation-triangle' : 'info-circle';
+            
+            notification.innerHTML = `
+                <i class="fas fa-${icon}"></i>
+                ${message}
+            `;
+            
+            document.body.appendChild(notification);
+            
+            // Remove após 3 segundos
+            setTimeout(() => {
+                notification.style.animation = 'slideOutRight 0.3s ease';
+                setTimeout(() => {
+                    document.body.removeChild(notification);
+                }, 300);
+            }, 3000);
+        }
+    </script>
+    
+    {% block extra_js %}{% endblock %}
+</body>
+</html>

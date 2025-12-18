@@ -1,0 +1,134 @@
+<!-- exercicios/templates/exercicios/resolver.html -->
+{% extends 'base.html' %}
+
+{% block title %}Resolver: {{ exercicio.titulo }} - CodeUP{% endblock %}
+
+{% block content %}
+<div class="container">
+    <!-- Cabeçalho -->
+    <div style="background: linear-gradient(135deg, #1a1a1a 0%, #2a2a2a 100%); border-radius: 15px; padding: 25px; margin-bottom: 30px;">
+        <h1 style="color: #FFD700; margin-bottom: 15px;">
+            <i class="fas fa-code"></i> Resolver: {{ exercicio.titulo }}
+        </h1>
+        <div style="color: #cccccc;">
+            <a href="{% url 'exercicios:exercicios_detalhe' exercicio.id %}" style="color: #FFD700; text-decoration: none;">
+                <i class="fas fa-arrow-left"></i> Voltar aos detalhes
+            </a>
+        </div>
+    </div>
+    
+    <!-- Layout principal -->
+    <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 30px; margin-bottom: 40px;">
+        <!-- Painel de código -->
+        <div style="background: #1a1a1a; border-radius: 15px; padding: 30px; border: 1px solid #333333; height: fit-content;">
+            <h2 style="color: #FFD700; margin-bottom: 20px; font-size: 1.3rem;">
+                <i class="fas fa-keyboard"></i> Seu Código
+            </h2>
+            
+            <form method="post">
+                {% csrf_token %}
+                
+                <!-- Seletor de linguagem -->
+                <div style="margin-bottom: 20px;">
+                    <label style="display: block; color: #cccccc; margin-bottom: 10px; font-weight: bold;">
+                        <i class="fas fa-language"></i> Linguagem de Programação
+                    </label>
+                    <select name="linguagem" style="width: 100%; padding: 12px; border-radius: 8px; background: #222222; color: white; border: 1px solid #444444; font-family: monospace;">
+                        {% for lang in exercicio.linguagens %}
+                        <option value="{{ lang }}">{{ lang|title }}</option>
+                        {% endfor %}
+                    </select>
+                </div>
+                
+                <!-- Editor de código -->
+                <div style="margin-bottom: 25px;">
+                    <label style="display: block; color: #cccccc; margin-bottom: 10px; font-weight: bold;">
+                        <i class="fas fa-code"></i> Escreva sua solução
+                    </label>
+                    <textarea name="codigo" rows="15" 
+                        style="width: 100%; padding: 20px; border-radius: 10px; background: #0d0d0d; color: #00ff00; font-family: 'Courier New', monospace; font-size: 1rem; border: 1px solid #444444; resize: vertical;"
+                        placeholder="// Escreva seu código aqui&#10;// Use este espaço para resolver o exercício"># Sua solução aqui
+def solucao():
+    # Implemente sua solução
+    pass</textarea>
+                </div>
+                
+                <!-- Botão de envio -->
+                <button type="submit" class="btn" style="width: 100%; padding: 15px; font-size: 1.1rem;">
+                    <i class="fas fa-paper-plane"></i> Enviar Solução
+                </button>
+            </form>
+        </div>
+        
+        <!-- Painel de informações -->
+        <div>
+            <!-- Enunciado -->
+            <div style="background: #1a1a1a; border-radius: 15px; padding: 25px; margin-bottom: 20px; border: 1px solid #333333;">
+                <h3 style="color: #FFD700; margin-bottom: 15px;">
+                    <i class="fas fa-file-alt"></i> Enunciado
+                </h3>
+                <div style="color: #cccccc; line-height: 1.6;">
+                    {{ exercicio.enunciado }}
+                </div>
+            </div>
+            
+            <!-- Testes de exemplo -->
+            <div style="background: #1a1a1a; border-radius: 15px; padding: 25px; border: 1px solid #333333;">
+                <h3 style="color: #FFD700; margin-bottom: 15px;">
+                    <i class="fas fa-vial"></i> Testes de Exemplo
+                </h3>
+                <div style="display: grid; gap: 15px;">
+                    {% for teste in exercicio.testes %}
+                    <div style="background: #111111; padding: 15px; border-radius: 8px;">
+                        <div style="color: #888888; font-size: 0.9rem; margin-bottom: 5px;">
+                            Teste {{ forloop.counter }}
+                        </div>
+                        <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 10px;">
+                            <div>
+                                <div style="color: #3498db; font-size: 0.9rem;">Entrada</div>
+                                <div style="color: #cccccc; font-family: monospace; background: #000000; padding: 8px; border-radius: 5px; margin-top: 5px;">
+                                    {{ teste.entrada }}
+                                </div>
+                            </div>
+                            <div>
+                                <div style="color: #2ecc71; font-size: 0.9rem;">Saída Esperada</div>
+                                <div style="color: #cccccc; font-family: monospace; background: #000000; padding: 8px; border-radius: 5px; margin-top: 5px;">
+                                    {{ teste.saida }}
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    {% endfor %}
+                </div>
+            </div>
+        </div>
+    </div>
+    
+    <!-- Dicas -->
+    <div style="background: rgba(255, 215, 0, 0.1); border-radius: 15px; padding: 25px; border: 1px solid rgba(255, 215, 0, 0.3);">
+        <h3 style="color: #FFD700; margin-bottom: 15px;">
+            <i class="fas fa-lightbulb"></i> Dicas
+        </h3>
+        <ul style="color: #cccccc; padding-left: 20px;">
+            <li style="margin-bottom: 10px;">Leia cuidadosamente o enunciado antes de começar</li>
+            <li style="margin-bottom: 10px;">Teste seu código localmente antes de enviar</li>
+            <li style="margin-bottom: 10px;">Verifique se está usando a linguagem correta</li>
+            <li>Certifique-se de que seu código funcione com os exemplos fornecidos</li>
+        </ul>
+    </div>
+</div>
+
+<style>
+    textarea:focus {
+        outline: none;
+        border-color: #FFD700 !important;
+        box-shadow: 0 0 0 2px rgba(255, 215, 0, 0.2);
+    }
+    
+    select:focus {
+        outline: none;
+        border-color: #FFD700 !important;
+        box-shadow: 0 0 0 2px rgba(255, 215, 0, 0.2);
+    }
+</style>
+{% endblock %}

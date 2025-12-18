@@ -1,0 +1,47 @@
+{% extends 'base.html' %}
+
+{% block title %}Excluir Conta - CodeUP{% endblock %}
+
+{% block content %}
+<div class="container" style="text-align: center; max-width: 600px; margin: 50px auto;">
+    <div style="font-size: 4rem; color: #ff6b6b; margin-bottom: 20px;">
+        <i class="fas fa-exclamation-triangle"></i>
+    </div>
+    
+    <h1 style="color: #ff6b6b;">Excluir Conta</h1>
+    
+    <div style="background: rgba(255, 107, 107, 0.1); border: 2px solid #ff6b6b; border-radius: 10px; padding: 25px; margin: 30px 0;">
+        <p style="color: #ccc; margin-bottom: 15px;">
+            <strong>Atenção:</strong> Esta ação é irreversível. Todos os seus dados serão permanentemente excluídos.
+        </p>
+        <ul style="text-align: left; color: #aaa; margin: 20px 0; padding-left: 20px;">
+            <li>Seu perfil será removido</li>
+            <li>Seu progresso será perdido</li>
+            <li>Seus exercícios serão deletados</li>
+            <li>Esta ação não pode ser desfeita</li>
+        </ul>
+    </div>
+    
+    <form method="POST" style="margin-top: 30px;">
+        {% csrf_token %}
+        
+        <div style="margin-bottom: 25px;">
+            <label for="confirmacao" style="display: block; margin-bottom: 10px; color: #ccc;">
+                Digite <strong style="color: #ff6b6b;">EXCLUIR</strong> para confirmar:
+            </label>
+            <input type="text" id="confirmacao" name="confirmacao" 
+                   style="width: 100%; padding: 12px; background: #111; border: 2px solid #ff6b6b; color: white; border-radius: 5px; text-transform: uppercase;"
+                   placeholder="Digite EXCLUIR aqui">
+        </div>
+        
+        <div style="display: flex; gap: 15px; justify-content: center;">
+            <a href="{% url 'usuarios:perfil' %}" class="btn" style="background: #333; padding: 12px 30px;">
+                <i class="fas fa-times"></i> Cancelar
+            </a>
+            <button type="submit" class="btn" style="background: #ff6b6b; color: white; padding: 12px 30px;">
+                <i class="fas fa-trash-alt"></i> Excluir Conta Permanentemente
+            </button>
+        </div>
+    </form>
+</div>
+{% endblock %}

@@ -1,0 +1,379 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>CodeUp - Plataforma de Programação</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        }
+        
+        body {
+            background-color: #000000;
+            color: #f0f0f0;
+            min-height: 100vh;
+            background-image: 
+                radial-gradient(circle at 20% 30%, rgba(255, 215, 0, 0.05) 0%, transparent 20%),
+                radial-gradient(circle at 80% 70%, rgba(255, 215, 0, 0.05) 0%, transparent 20%);
+        }
+        
+        /* Cabeçalho */
+        header {
+            background-color: #000000;
+            padding: 20px 40px;
+            border-bottom: 3px solid #FFD700;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            box-shadow: 0 4px 12px rgba(255, 215, 0, 0.1);
+        }
+        
+        .logo {
+            display: flex;
+            align-items: center;
+            gap: 15px;
+        }
+        
+        .logo-icon {
+            background-color: #FFD700;
+            color: #000000;
+            width: 50px;
+            height: 50px;
+            border-radius: 10px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 2rem;
+            font-weight: bold;
+        }
+        
+        .logo-text {
+            font-size: 2.2rem;
+            font-weight: 900;
+            color: #FFD700;
+            letter-spacing: 2px;
+        }
+        
+        .logo-subtitle {
+            color: #cccccc;
+            font-size: 0.9rem;
+            margin-top: 5px;
+        }
+        
+        /* Navegação */
+        nav ul {
+            display: flex;
+            gap: 30px;
+            list-style: none;
+        }
+        
+        nav a {
+            color: #FFD700;
+            text-decoration: none;
+            font-weight: 600;
+            font-size: 1.1rem;
+            padding: 8px 16px;
+            border-radius: 5px;
+            transition: all 0.3s;
+        }
+        
+        nav a:hover {
+            background-color: rgba(255, 215, 0, 0.1);
+        }
+        
+        .auth-buttons {
+            display: flex;
+            gap: 15px;
+        }
+        
+        .btn {
+            padding: 10px 25px;
+            border-radius: 8px;
+            font-weight: bold;
+            cursor: pointer;
+            transition: all 0.3s;
+            border: none;
+            font-size: 1rem;
+        }
+        
+        .btn-login {
+            background-color: transparent;
+            color: #FFD700;
+            border: 2px solid #FFD700;
+        }
+        
+        .btn-login:hover {
+            background-color: rgba(255, 215, 0, 0.1);
+        }
+        
+        .btn-register {
+            background-color: #FFD700;
+            color: #000000;
+        }
+        
+        .btn-register:hover {
+            background-color: #FFC000;
+            transform: translateY(-2px);
+        }
+        
+        /* Conteúdo principal */
+        .hero {
+            padding: 100px 40px;
+            text-align: center;
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+        
+        .hero h1 {
+            font-size: 3.5rem;
+            color: #FFD700;
+            margin-bottom: 20px;
+            text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.5);
+        }
+        
+        .hero p {
+            font-size: 1.3rem;
+            color: #cccccc;
+            max-width: 800px;
+            margin: 0 auto 40px;
+            line-height: 1.6;
+        }
+        
+        .features {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 30px;
+            padding: 60px 40px;
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+        
+        .feature-card {
+            background-color: #111111;
+            border: 2px solid #333333;
+            border-radius: 15px;
+            padding: 30px;
+            text-align: center;
+            transition: all 0.3s;
+            border-top: 5px solid #FFD700;
+        }
+        
+        .feature-card:hover {
+            transform: translateY(-10px);
+            border-color: #FFD700;
+            box-shadow: 0 10px 25px rgba(255, 215, 0, 0.1);
+        }
+        
+        .feature-icon {
+            font-size: 3rem;
+            color: #FFD700;
+            margin-bottom: 20px;
+        }
+        
+        .feature-card h3 {
+            color: #FFD700;
+            margin-bottom: 15px;
+            font-size: 1.5rem;
+        }
+        
+        /* Rodapé */
+        footer {
+            background-color: #000000;
+            border-top: 3px solid #FFD700;
+            padding: 40px;
+            text-align: center;
+            margin-top: 60px;
+        }
+        
+        .footer-content {
+            max-width: 1200px;
+            margin: 0 auto;
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: space-between;
+            gap: 40px;
+        }
+        
+        .footer-section h3 {
+            color: #FFD700;
+            margin-bottom: 20px;
+        }
+        
+        .footer-section p {
+            color: #cccccc;
+            line-height: 1.6;
+        }
+        
+        .copyright {
+            margin-top: 40px;
+            color: #777777;
+            font-size: 0.9rem;
+        }
+        
+        /* Responsivo */
+        @media (max-width: 768px) {
+            header {
+                flex-direction: column;
+                gap: 20px;
+                padding: 20px;
+            }
+            
+            nav ul {
+                flex-wrap: wrap;
+                justify-content: center;
+                gap: 15px;
+            }
+            
+            .hero h1 {
+                font-size: 2.5rem;
+            }
+            
+            .hero {
+                padding: 60px 20px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <header>
+        <div class="logo">
+            <div class="logo-icon">
+                <i class="fas fa-code"></i>
+            </div>
+            <div>
+                <div class="logo-text">CODEUP</div>
+                <div class="logo-subtitle">Plataforma de Programação</div>
+            </div>
+        </div>
+        
+        <nav>
+            <ul>
+                <li><a href="#"><i class="fas fa-home"></i> Início</a></li>
+                <li><a href="#"><i class="fas fa-graduation-cap"></i> Cursos</a></li>
+                <li><a href="#"><i class="fas fa-users"></i> Comunidade</a></li>
+                <li><a href="#"><i class="fas fa-question-circle"></i> Suporte</a></li>
+            </ul>
+        </nav>
+        
+        <div class="auth-buttons">
+            <button class="btn btn-login" onclick="window.location.href='login.html'">
+                <i class="fas fa-sign-in-alt"></i> Login
+            </button>
+            <button class="btn btn-register" onclick="window.location.href='cadastro.html'">
+                <i class="fas fa-user-plus"></i> Cadastre-se
+            </button>
+        </div>
+    </header>
+    
+    <main>
+        <section class="hero">
+            <h1>Aprenda Programação de Forma Prática</h1>
+            <p>Domine as tecnologias mais requisitadas do mercado com nossa plataforma interativa. 
+               Do básico ao avançado, temos o caminho certo para sua carreira em tecnologia.</p>
+            <div style="margin-top: 40px;">
+                <button class="btn btn-register" style="padding: 15px 40px; font-size: 1.2rem;">
+                    Começar Agora <i class="fas fa-arrow-right"></i>
+                </button>
+            </div>
+        </section>
+        
+        <section class="features">
+            <div class="feature-card">
+                <div class="feature-icon">
+                    <i class="fas fa-laptop-code"></i>
+                </div>
+                <h3>Aprendizado Prático</h3>
+                <p>Exercícios interativos e projetos reais para aplicar seu conhecimento.</p>
+            </div>
+            
+            <div class="feature-card">
+                <div class="feature-icon">
+                    <i class="fas fa-chart-line"></i>
+                </div>
+                <h3>Monitoramento de Progresso</h3>
+                <p>Acompanhe sua evolução com métricas detalhadas e relatórios personalizados.</p>
+            </div>
+            
+            <div class="feature-card">
+                <div class="feature-icon">
+                    <i class="fas fa-comments"></i>
+                </div>
+                <h3>Comunidade Ativa</h3>
+                <p>Conecte-se com outros programadores e tire dúvidas em tempo real.</p>
+            </div>
+        </section>
+    </main>
+    
+    <footer>
+        <div class="footer-content">
+            <div class="footer-section">
+                <h3>CODEUP</h3>
+                <p>Transformando aspirantes em programadores profissionais desde 2023.</p>
+            </div>
+            
+            <div class="footer-section">
+                <h3>Links Rápidos</h3>
+                <p><a href="login.html" style="color: #FFD700;">Login</a> | <a href="cadastro.html" style="color: #FFD700;">Cadastro</a></p>
+                <p><a href="admin.html" style="color: #FFD700;">Administração</a></p>
+            </div>
+            
+            <div class="footer-section">
+                <h3>Contato</h3>
+                <p>suporte@codeup.com</p>
+                <p>(11) 99999-9999</p>
+            </div>
+        </div>
+        
+        <div class="copyright">
+            © 2023 CodeUp. Todos os direitos reservados.
+        </div>
+    </footer>
+
+    <script>
+        // Efeito de digitação no título
+        const heroTitle = document.querySelector('.hero h1');
+        const originalTitle = heroTitle.textContent;
+        heroTitle.textContent = '';
+        
+        let i = 0;
+        function typeWriter() {
+            if (i < originalTitle.length) {
+                heroTitle.textContent += originalTitle.charAt(i);
+                i++;
+                setTimeout(typeWriter, 50);
+            }
+        }
+        
+        // Iniciar quando a página carregar
+        window.addEventListener('load', function() {
+            setTimeout(typeWriter, 500);
+            
+            // Adicionar animação aos cards
+            const cards = document.querySelectorAll('.feature-card');
+            cards.forEach((card, index) => {
+                card.style.opacity = '0';
+                card.style.transform = 'translateY(20px)';
+                
+                setTimeout(() => {
+                    card.style.transition = 'all 0.5s ease';
+                    card.style.opacity = '1';
+                    card.style.transform = 'translateY(0)';
+                }, 300 + (index * 200));
+            });
+        });
+        
+        // Navegação suave
+        document.querySelectorAll('nav a').forEach(anchor => {
+            anchor.addEventListener('click', function(e) {
+                e.preventDefault();
+                alert('Navegação para: ' + this.textContent);
+            });
+        });
+    </script>
+</body>
+</html>
