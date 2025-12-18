@@ -1,4 +1,4 @@
-<!-- templates/base.html -->
+﻿<!-- templates/base.html -->
 <!DOCTYPE html>
 <html lang="pt-BR">
 <head>
@@ -7,7 +7,7 @@
     <title>{% block title %}CodeUP{% endblock %}</title>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <style>
-        /* ===== ESTILO IDÊNTICO AO TEMPLATE HOME ===== */
+        /* ===== ESTILO IDÃŠNTICO AO TEMPLATE HOME ===== */
         * {
             margin: 0;
             padding: 0;
@@ -159,7 +159,7 @@
             border: 1px solid rgba(255, 193, 7, 0.5);
         }
         
-        /* ANIMAÇÕES */
+        /* ANIMAÃ‡Ã•ES */
         @keyframes fadeInUp {
             from {
                 opacity: 0;
@@ -194,7 +194,7 @@
             }
         }
         
-        /* CONTEÚDO PRINCIPAL */
+        /* CONTEÃšDO PRINCIPAL */
         .main-content {
             min-height: calc(100vh - 400px);
             padding: 40px 0;
@@ -223,7 +223,7 @@
                         <i class="fas fa-road"></i> Trilhas
                     </a>
                     <a href="{% url 'exercicios:lista' %}" class="nav-link">
-                        <i class="fas fa-laptop-code"></i> Exercícios
+                        <i class="fas fa-laptop-code"></i> ExercÃ­cios
                     </a>
                     {% if user.is_authenticated %}
                         <a href="{% url 'usuarios:perfil' %}" class="btn" style="padding: 10px 20px;">
@@ -257,7 +257,7 @@
         </div>
     {% endif %}
 
-    <!-- CONTEÚDO PRINCIPAL -->
+    <!-- CONTEÃšDO PRINCIPAL -->
     <main class="main-content">
         {% block content %}
         {% endblock %}
@@ -270,7 +270,7 @@
                 <div class="footer-about">
                     <div class="footer-logo" style="font-size: 2rem; color: #FFD700; font-weight: bold; margin-bottom: 15px;">CODEUP</div>
                     <p class="footer-description" style="color: #aaaaaa; margin-bottom: 20px; line-height: 1.6;">
-                        Plataforma de aprendizado de programação interativa. 
+                        Plataforma de aprendizado de programaÃ§Ã£o interativa. 
                         Transformamos iniciantes em desenvolvedores profissionais.
                     </p>
                 </div>
@@ -280,7 +280,7 @@
                     <div class="footer-links">
                         <a href="{% url 'inicio' %}" style="color: #aaaaaa; text-decoration: none; display: block; margin-bottom: 10px; transition: color 0.3s;">Home</a>
                         <a href="{% url 'trilhas:lista' %}" style="color: #aaaaaa; text-decoration: none; display: block; margin-bottom: 10px; transition: color 0.3s;">Trilhas</a>
-                        <a href="{% url 'exercicios:lista' %}" style="color: #aaaaaa; text-decoration: none; display: block; margin-bottom: 10px; transition: color 0.3s;">Exercícios</a>
+                        <a href="{% url 'exercicios:lista' %}" style="color: #aaaaaa; text-decoration: none; display: block; margin-bottom: 10px; transition: color 0.3s;">ExercÃ­cios</a>
                         <a href="#" style="color: #aaaaaa; text-decoration: none; display: block; margin-bottom: 10px; transition: color 0.3s;">Projetos</a>
                     </div>
                 </div>
@@ -290,7 +290,7 @@
                     <div class="footer-links">
                         <a href="#" style="color: #aaaaaa; text-decoration: none; display: block; margin-bottom: 10px; transition: color 0.3s;">Blog</a>
                         <a href="#" style="color: #aaaaaa; text-decoration: none; display: block; margin-bottom: 10px; transition: color 0.3s;">Tutoriais</a>
-                        <a href="#" style="color: #aaaaaa; text-decoration: none; display: block; margin-bottom: 10px; transition: color 0.3s;">Documentação</a>
+                        <a href="#" style="color: #aaaaaa; text-decoration: none; display: block; margin-bottom: 10px; transition: color 0.3s;">DocumentaÃ§Ã£o</a>
                         <a href="#" style="color: #aaaaaa; text-decoration: none; display: block; margin-bottom: 10px; transition: color 0.3s;">FAQ</a>
                     </div>
                 </div>
@@ -299,7 +299,7 @@
                     <h3 style="color: #ffffff; margin-bottom: 20px; font-size: 1.3rem;">Legal</h3>
                     <div class="footer-links">
                         <a href="#" style="color: #aaaaaa; text-decoration: none; display: block; margin-bottom: 10px; transition: color 0.3s;">Termos de Uso</a>
-                        <a href="#" style="color: #aaaaaa; text-decoration: none; display: block; margin-bottom: 10px; transition: color 0.3s;">Política de Privacidade</a>
+                        <a href="#" style="color: #aaaaaa; text-decoration: none; display: block; margin-bottom: 10px; transition: color 0.3s;">PolÃ­tica de Privacidade</a>
                         <a href="#" style="color: #aaaaaa; text-decoration: none; display: block; margin-bottom: 10px; transition: color 0.3s;">Cookies</a>
                         <a href="#" style="color: #aaaaaa; text-decoration: none; display: block; margin-bottom: 10px; transition: color 0.3s;">Contato</a>
                     </div>
@@ -307,18 +307,18 @@
             </div>
             
             <div class="copyright" style="text-align: center; color: #666666; margin-top: 50px; padding-top: 30px; border-top: 1px solid #222222; font-size: 0.9rem;">
-                <p>© 2024 CodeUP - Plataforma de Programação. Todos os direitos reservados.</p>
+                <p>Â© 2024 CodeUP - Plataforma de ProgramaÃ§Ã£o. Todos os direitos reservados.</p>
             </div>
         </div>
     </footer>
 
     <!-- SCRIPTS GLOBAIS -->
     <script>
-        // Configuração inicial
+        // ConfiguraÃ§Ã£o inicial
         document.addEventListener('DOMContentLoaded', function() {
-            console.log("🚀 CodeUP inicializado");
+            console.log("ðŸš€ CodeUP inicializado");
             
-            // Adiciona animações CSS
+            // Adiciona animaÃ§Ãµes CSS
             const style = document.createElement('style');
             style.textContent = `
                 @keyframes slideInRight {
@@ -343,7 +343,7 @@
             });
         });
         
-        // Função para mostrar notificações
+        // FunÃ§Ã£o para mostrar notificaÃ§Ãµes
         function showNotification(message, type = 'info') {
             const notification = document.createElement('div');
             notification.style.cssText = `
@@ -374,7 +374,7 @@
             
             document.body.appendChild(notification);
             
-            // Remove após 3 segundos
+            // Remove apÃ³s 3 segundos
             setTimeout(() => {
                 notification.style.animation = 'slideOutRight 0.3s ease';
                 setTimeout(() => {
@@ -385,5 +385,29 @@
     </script>
     
     {% block extra_js %}{% endblock %}
-</body>
+<!-- Adicionar antes do </body> no base.html -->
+<footer class="footer mt-5 py-3 bg-dark text-light">
+    <div class="container">
+        <div class="row">
+            <div class="col-md-4">
+                <h5>CodeUp</h5>
+                <p>Plataforma de aprendizado de programação</p>
+            </div>
+            <div class="col-md-4">
+                <h5>Links</h5>
+                <ul class="list-unstyled">
+                    <li><a href="/" class="text-light">Início</a></li>
+                    <li><a href="/trilhas/" class="text-light">Trilhas</a></li>
+                    <li><a href="/exercicios/" class="text-light">Exercícios</a></li>
+                </ul>
+            </div>
+            <div class="col-md-4">
+                <h5>Contato</h5>
+                <p>Email: contato@codeup.com</p>
+            </div>
+        </div>
+        <hr class="bg-light">
+        <p class="text-center mb-0">&copy; 2024 CodeUp. Todos os direitos reservados.</p>
+    </div>
+</footer></body>
 </html>
