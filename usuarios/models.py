@@ -132,3 +132,21 @@ def salvar_perfil_usuario(sender, instance, **kwargs):
         instance.perfil.save()
     except Perfil.DoesNotExist:
         Perfil.objects.create(usuario=instance)
+    def ganhar_xp(self, quantidade):
+        """Adiciona XP ao perfil e verifica level up"""
+        self.xp_atual += quantidade
+        while self.xp_atual >= self.xp_para_proximo_nivel():
+            self.xp_atual -= self.xp_para_proximo_nivel()
+            self.nivel += 1
+        self.save()
+        return self.nivel
+    
+    def xp_para_proximo_nivel(self):
+        """Calcula XP necessário para próximo nível"""
+        return 100 * (self.nivel ** 2) + 100
+    
+    def progresso_nivel(self):
+        """Retorna progresso atual no nível (0-100)"""
+        xp_necessario = self.xp_para_proximo_nivel()
+        return (self.xp_atual / xp_necessario) * 100
+
