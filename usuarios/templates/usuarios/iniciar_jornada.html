@@ -1,0 +1,193 @@
+<!-- usuarios/templates/usuarios/iniciar_jornada.html -->
+{% extends 'base.html' %}
+{% load static %}
+
+{% block title %}Iniciar Jornada - CodeUP{% endblock %}
+
+{% block content %}
+<div class="container mt-5">
+    <div class="row justify-content-center">
+        <div class="col-md-8">
+            <div class="card shadow-lg">
+                <div class="card-header bg-primary text-white">
+                    <h3 class="mb-0">🚀 Iniciar Sua Jornada</h3>
+                </div>
+                <div class="card-body">
+                    {% if messages %}
+                    <div class="mb-3">
+                        {% for message in messages %}
+                        <div class="alert alert-{{ message.tags }} alert-dismissible fade show">
+                            {{ message }}
+                            <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
+                        </div>
+                        {% endfor %}
+                    </div>
+                    {% endif %}
+                    
+                    <div class="text-center mb-4">
+                        <h4>Bem-vindo(a), {{ user.username }}!</h4>
+                        <p class="text-muted">Vamos configurar sua jornada de aprendizado.</p>
+                    </div>
+                    
+                    <form method="POST" action="{% url 'usuarios:iniciar_jornada' %}">
+                        {% csrf_token %}
+                        
+                        <div class="mb-4">
+                            <h5 class="border-bottom pb-2">🎯 Seu Objetivo Principal</h5>
+                            <p class="text-muted">Nos conte o que você busca com a programação:</p>
+                            
+                            <div class="form-group mb-3">
+                                <label for="objetivo" class="form-label fw-bold">Qual seu principal objetivo?</label>
+                                <select class="form-select form-select-lg" id="objetivo" name="objetivo" required>
+                                    <option value="" selected disabled>Selecione uma opção</option>
+                                    {% for valor, texto in objetivos %}
+                                    <option value="{{ valor }}">{{ texto }}</option>
+                                    {% endfor %}
+                                </select>
+                            </div>
+                        </div>
+                        
+                        <div class="mb-4">
+                            <h5 class="border-bottom pb-2">⏰ Disponibilidade</h5>
+                            <p class="text-muted">Para personalizar sua experiência:</p>
+                            
+                            <div class="form-group mb-3">
+                                <label for="tempo_diario" class="form-label fw-bold">Quanto tempo pode dedicar por dia?</label>
+                                <select class="form-select form-select-lg" id="tempo_diario" name="tempo_diario" required>
+                                    <option value="" selected disabled>Selecione uma opção</option>
+                                    {% for valor, texto in tempos_diarios %}
+                                    <option value="{{ valor }}">{{ texto }}</option>
+                                    {% endfor %}
+                                </select>
+                            </div>
+                            
+                            <div class="form-group mb-3">
+                                <label class="form-label fw-bold">Em quais horários costuma estudar?</label>
+                                <div class="form-check">
+                                    <input class="form-check-input" type="checkbox" name="horarios[]" value="manha" id="manha">
+                                    <label class="form-check-label" for="manha">Manhã (8h-12h)</label>
+                                </div>
+                                <div class="form-check">
+                                    <input class="form-check-input" type="checkbox" name="horarios[]" value="tarde" id="tarde">
+                                    <label class="form-check-label" for="tarde">Tarde (13h-18h)</label>
+                                </div>
+                                <div class="form-check">
+                                    <input class="form-check-input" type="checkbox" name="horarios[]" value="noite" id="noite">
+                                    <label class="form-check-label" for="noite">Noite (19h-23h)</label>
+                                </div>
+                                <div class="form-check">
+                                    <input class="form-check-input" type="checkbox" name="horarios[]" value="madrugada" id="madrugada">
+                                    <label class="form-check-label" for="madrugada">Madrugada (0h-7h)</label>
+                                </div>
+                            </div>
+                        </div>
+                        
+                        <div class="mb-4">
+                            <h5 class="border-bottom pb-2">💡 Experiência Prévia</h5>
+                            <p class="text-muted">Nos ajude a entender seu nível:</p>
+                            
+                            <div class="form-group mb-3">
+                                <label class="form-label fw-bold">Você já tem experiência com programação?</label>
+                                <div class="form-check">
+                                    <input class="form-check-input" type="radio" name="experiencia" value="nenhuma" id="exp_nenhuma" checked>
+                                    <label class="form-check-label" for="exp_nenhuma">Nenhuma experiência</label>
+                                </div>
+                                <div class="form-check">
+                                    <input class="form-check-input" type="radio" name="experiencia" value="basica" id="exp_basica">
+                                    <label class="form-check-label" for="exp_basica">Básica (conheço alguns conceitos)</label>
+                                </div>
+                                <div class="form-check">
+                                    <input class="form-check-input" type="radio" name="experiencia" value="intermediaria" id="exp_intermediaria">
+                                    <label class="form-check-label" for="exp_intermediaria">Intermediária (já programei antes)</label>
+                                </div>
+                                <div class="form-check">
+                                    <input class="form-check-input" type="radio" name="experiencia" value="avancada" id="exp_avancada">
+                                    <label class="form-check-label" for="exp_avancada">Avançada (programo regularmente)</label>
+                                </div>
+                            </div>
+                        </div>
+                        
+                        <div class="mb-4">
+                            <h5 class="border-bottom pb-2">🌐 Áreas de Interesse</h5>
+                            <p class="text-muted">Selecione as áreas que mais te interessam:</p>
+                            
+                            <div class="row">
+                                <div class="col-md-6">
+                                    <div class="form-check mb-2">
+                                        <input class="form-check-input" type="checkbox" name="areas[]" value="web" id="area_web">
+                                        <label class="form-check-label" for="area_web">Desenvolvimento Web</label>
+                                    </div>
+                                    <div class="form-check mb-2">
+                                        <input class="form-check-input" type="checkbox" name="areas[]" value="mobile" id="area_mobile">
+                                        <label class="form-check-label" for="area_mobile">Desenvolvimento Mobile</label>
+                                    </div>
+                                    <div class="form-check mb-2">
+                                        <input class="form-check-input" type="checkbox" name="areas[]" value="games" id="area_games">
+                                        <label class="form-check-label" for="area_games">Desenvolvimento de Games</label>
+                                    </div>
+                                </div>
+                                <div class="col-md-6">
+                                    <div class="form-check mb-2">
+                                        <input class="form-check-input" type="checkbox" name="areas[]" value="data" id="area_data">
+                                        <label class="form-check-label" for="area_data">Ciência de Dados</label>
+                                    </div>
+                                    <div class="form-check mb-2">
+                                        <input class="form-check-input" type="checkbox" name="areas[]" value="ai" id="area_ai">
+                                        <label class="form-check-label" for="area_ai">Inteligência Artificial</label>
+                                    </div>
+                                    <div class="form-check mb-2">
+                                        <input class="form-check-input" type="checkbox" name="areas[]" value="outros" id="area_outros">
+                                        <label class="form-check-label" for="area_outros">Outros</label>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        
+                        <div class="alert alert-info">
+                            <h6>📝 Importante:</h6>
+                            <p class="mb-0">Você poderá alterar essas configurações a qualquer momento nas configurações da sua conta.</p>
+                        </div>
+                        
+                        <div class="d-grid gap-3 mt-4">
+                            <button type="submit" class="btn btn-success btn-lg py-3">
+                                <i class="fas fa-rocket me-2"></i> Iniciar Minha Jornada!
+                            </button>
+                            <a href="{% url 'usuarios:dashboard' %}" class="btn btn-outline-secondary btn-lg">
+                                Pular e ir para o Dashboard
+                            </a>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<style>
+    .card {
+        border: none;
+        border-radius: 15px;
+    }
+    
+    .card-header {
+        border-radius: 15px 15px 0 0 !important;
+        padding: 1.5rem;
+    }
+    
+    .form-check-input:checked {
+        background-color: #198754;
+        border-color: #198754;
+    }
+    
+    .btn-success {
+        background: linear-gradient(135deg, #198754, #20c997);
+        border: none;
+        transition: all 0.3s ease;
+    }
+    
+    .btn-success:hover {
+        transform: translateY(-2px);
+        box-shadow: 0 5px 15px rgba(25, 135, 84, 0.3);
+    }
+</style>
+{% endblock %}

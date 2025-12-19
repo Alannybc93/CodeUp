@@ -1,0 +1,233 @@
+<!-- usuarios/templates/usuarios/dashboard.html - VERSÃO MELHORADA -->
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Dashboard - CodeUP</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        body {
+            background: #000;
+            color: white;
+            font-family: Arial, sans-serif;
+            padding: 20px;
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+        
+        .header {
+            background: linear-gradient(135deg, #FFD700, #FFA500);
+            color: #000;
+            padding: 30px;
+            border-radius: 15px;
+            margin-bottom: 30px;
+            text-align: center;
+        }
+        
+        .header h1 {
+            margin-bottom: 10px;
+            font-size: 2.5rem;
+        }
+        
+        .stats-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 20px;
+            margin: 30px 0;
+        }
+        
+        .stat-card {
+            background: #111;
+            padding: 25px;
+            border-radius: 10px;
+            text-align: center;
+            border: 2px solid #222;
+            transition: all 0.3s;
+        }
+        
+        .stat-card:hover {
+            border-color: #FFD700;
+            transform: translateY(-5px);
+        }
+        
+        .stat-value {
+            font-size: 3rem;
+            color: #FFD700;
+            font-weight: bold;
+            margin-bottom: 10px;
+        }
+        
+        .stat-label {
+            color: #aaa;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+        }
+        
+        .actions {
+            display: flex;
+            gap: 15px;
+            margin-top: 40px;
+            flex-wrap: wrap;
+        }
+        
+        .action-btn {
+            flex: 1;
+            min-width: 150px;
+            background: rgba(255, 215, 0, 0.1);
+            color: #FFD700;
+            border: 2px solid rgba(255, 215, 0, 0.3);
+            padding: 20px;
+            border-radius: 10px;
+            text-align: center;
+            text-decoration: none;
+            font-weight: bold;
+            transition: all 0.3s;
+        }
+        
+        .action-btn:hover {
+            background: rgba(255, 215, 0, 0.2);
+            transform: translateY(-3px);
+        }
+        
+        .action-btn.logout {
+            background: rgba(231, 76, 60, 0.1);
+            color: #e74c3c;
+            border-color: rgba(231, 76, 60, 0.3);
+        }
+        
+        .action-btn.logout:hover {
+            background: rgba(231, 76, 60, 0.2);
+        }
+        
+        .user-info {
+            background: #111;
+            padding: 20px;
+            border-radius: 10px;
+            margin-bottom: 20px;
+            border-left: 5px solid #FFD700;
+        }
+        
+        .xp-progress {
+            margin: 30px 0;
+        }
+        
+        .xp-bar {
+            height: 20px;
+            background: #222;
+            border-radius: 10px;
+            overflow: hidden;
+        }
+        
+        .xp-fill {
+            height: 100%;
+            background: linear-gradient(90deg, #FFD700, #FFA500);
+            width: 75%; /* Exemplo: 75% */
+        }
+    </style>
+</head>
+<body>
+    <div class="header">
+        <h1><i class="fas fa-trophy"></i> DASHBOARD CODEUP</h1>
+        <p>Sua jornada de programação em um só lugar</p>
+    </div>
+    
+    <div class="user-info">
+        <h2><i class="fas fa-user"></i> Olá, <strong>{{ user.username }}</strong>!</h2>
+        <p>Email: {{ user.email }}</p>
+        <p>Membro desde: {{ user.date_joined|date:"d/m/Y" }}</p>
+    </div>
+    
+    <h3 style="color: #FFD700; margin-bottom: 20px;">
+        <i class="fas fa-chart-line"></i> Seu Progresso
+    </h3>
+    
+    <div class="stats-grid">
+        <div class="stat-card">
+            <div class="stat-value">{{ perfil.xp }}</div>
+            <div class="stat-label">Pontos XP</div>
+        </div>
+        
+        <div class="stat-card">
+            <div class="stat-value">{{ perfil.nivel }}</div>
+            <div class="stat-label">Nível</div>
+        </div>
+        
+        <div class="stat-card">
+            <div class="stat-value">{{ perfil.exercicios_resolvidos }}</div>
+            <div class="stat-label">Exercícios</div>
+        </div>
+        
+        <div class="stat-card">
+            <div class="stat-value">{{ perfil.trilhas_concluidas }}</div>
+            <div class="stat-label">Trilhas</div>
+        </div>
+    </div>
+    
+    <div class="xp-progress">
+        <h4>Progresso para o próximo nível</h4>
+        <div class="xp-bar">
+            <div class="xp-fill"></div>
+        </div>
+        <p style="text-align: center; margin-top: 10px;">
+            {{ perfil.xp }} / 200 XP (75%)
+        </p>
+    </div>
+    
+    <div class="actions">
+        <a href="/trilhas/" class="action-btn">
+            <i class="fas fa-road"></i><br>
+            Trilhas
+        </a>
+        
+        <a href="/exercicios/" class="action-btn">
+            <i class="fas fa-code"></i><br>
+            Exercícios
+        </a>
+        
+        <a href="{% url 'usuarios:perfil' %}" class="action-btn">
+            <i class="fas fa-user-cog"></i><br>
+            Perfil
+        </a>
+        
+        <a href="{% url 'usuarios:logout' %}" class="action-btn logout">
+            <i class="fas fa-sign-out-alt"></i><br>
+            Sair
+        </a>
+    </div>
+    
+    <div style="margin-top: 40px; padding: 20px; background: #111; border-radius: 10px;">
+        <h3><i class="fas fa-bolt"></i> Atividade Recente</h3>
+        <p style="color: #777; text-align: center; padding: 20px;">
+            <i class="fas fa-inbox" style="font-size: 3rem; opacity: 0.3;"></i><br>
+            Nenhuma atividade recente.
+        </p>
+    </div>
+    
+    <script>
+        // Anima a barra de XP
+        document.addEventListener('DOMContentLoaded', function() {
+            const xpFill = document.querySelector('.xp-fill');
+            xpFill.style.width = '0';
+            
+            setTimeout(() => {
+                xpFill.style.transition = 'width 1s ease';
+                xpFill.style.width = '75%';
+            }, 300);
+            
+            // Anima os cards
+            const cards = document.querySelectorAll('.stat-card');
+            cards.forEach((card, index) => {
+                card.style.opacity = '0';
+                card.style.transform = 'translateY(20px)';
+                
+                setTimeout(() => {
+                    card.style.transition = 'opacity 0.5s ease, transform 0.5s ease';
+                    card.style.opacity = '1';
+                    card.style.transform = 'translateY(0)';
+                }, index * 100);
+            });
+        });
+    </script>
+</body>
+</html>
