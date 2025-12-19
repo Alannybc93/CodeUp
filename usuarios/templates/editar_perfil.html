@@ -1,0 +1,387 @@
+<!-- usuarios/templates/usuarios/editar_perfil.html -->
+{% extends 'base.html' %}
+{% load static %}
+
+{% block title %}Editar Perfil - CodeUP{% endblock %}
+
+{% block extra_css %}
+<style>
+    /* Estilos personalizados para a página de edição */
+    .profile-edit-container {
+        background: linear-gradient(135deg, #1a1a2e 0%, #16213e 100%);
+        border-radius: 20px;
+        padding: 40px;
+        margin-top: 30px;
+        box-shadow: 0 10px 30px rgba(0, 0, 0, 0.3);
+        border: 1px solid rgba(255, 215, 0, 0.1);
+    }
+    
+    .profile-header {
+        text-align: center;
+        margin-bottom: 40px;
+        position: relative;
+    }
+    
+    .profile-header h1 {
+        color: #FFD700;
+        font-size: 2.5rem;
+        margin-bottom: 10px;
+        text-shadow: 0 2px 4px rgba(0,0,0,0.5);
+    }
+    
+    .profile-header::after {
+        content: '';
+        display: block;
+        width: 100px;
+        height: 4px;
+        background: linear-gradient(to right, transparent, #FFD700, transparent);
+        margin: 20px auto;
+    }
+    
+    .form-group {
+        margin-bottom: 25px;
+    }
+    
+    .form-group label {
+        display: block;
+        margin-bottom: 8px;
+        color: #FFD700;
+        font-weight: 600;
+        font-size: 1rem;
+    }
+    
+    .form-control-custom {
+        width: 100%;
+        padding: 14px 20px;
+        background: rgba(255, 255, 255, 0.05);
+        border: 2px solid rgba(255, 215, 0, 0.2);
+        border-radius: 10px;
+        color: white;
+        font-size: 1rem;
+        transition: all 0.3s ease;
+    }
+    
+    .form-control-custom:focus {
+        outline: none;
+        border-color: #FFD700;
+        box-shadow: 0 0 0 3px rgba(255, 215, 0, 0.1);
+        background: rgba(255, 255, 255, 0.08);
+    }
+    
+    .form-control-custom::placeholder {
+        color: rgba(255, 255, 255, 0.4);
+    }
+    
+    .error-message {
+        color: #ff6b6b;
+        font-size: 0.9rem;
+        margin-top: 5px;
+        padding-left: 5px;
+    }
+    
+    .btn-group {
+        display: flex;
+        gap: 15px;
+        margin-top: 40px;
+    }
+    
+    .btn-cancel {
+        flex: 1;
+        background: rgba(255, 255, 255, 0.1);
+        border: 2px solid rgba(255, 215, 0, 0.3);
+        color: white;
+        padding: 15px;
+        border-radius: 10px;
+        font-weight: 600;
+        text-align: center;
+        text-decoration: none;
+        transition: all 0.3s ease;
+    }
+    
+    .btn-cancel:hover {
+        background: rgba(255, 255, 255, 0.15);
+        border-color: rgba(255, 215, 0, 0.5);
+        transform: translateY(-2px);
+    }
+    
+    .btn-save {
+        flex: 1;
+        background: linear-gradient(135deg, #FFD700 0%, #FF8C00 100%);
+        border: none;
+        color: #000;
+        padding: 15px;
+        border-radius: 10px;
+        font-weight: 700;
+        cursor: pointer;
+        transition: all 0.3s ease;
+    }
+    
+    .btn-save:hover {
+        transform: translateY(-2px);
+        box-shadow: 0 5px 15px rgba(255, 215, 0, 0.4);
+    }
+    
+    .status-message {
+        padding: 15px;
+        border-radius: 10px;
+        margin-bottom: 25px;
+    }
+    
+    .status-message.success {
+        background: rgba(0, 200, 0, 0.1);
+        border: 1px solid rgba(0, 200, 0, 0.3);
+        color: #4CAF50;
+    }
+    
+    .status-message.error {
+        background: rgba(255, 0, 0, 0.1);
+        border: 1px solid rgba(255, 0, 0, 0.3);
+        color: #f44336;
+    }
+    
+    .avatar-preview {
+        text-align: center;
+        margin-bottom: 30px;
+    }
+    
+    .avatar-placeholder {
+        width: 150px;
+        height: 150px;
+        border-radius: 50%;
+        background: linear-gradient(135deg, #FFD700 0%, #FF8C00 100%);
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        margin: 0 auto 20px;
+        font-size: 60px;
+        color: #000;
+        cursor: pointer;
+        transition: all 0.3s ease;
+        border: 4px solid #1a1a2e;
+        box-shadow: 0 0 20px rgba(255, 215, 0, 0.3);
+    }
+    
+    .avatar-placeholder:hover {
+        transform: scale(1.05);
+        box-shadow: 0 0 30px rgba(255, 215, 0, 0.5);
+    }
+</style>
+{% endblock %}
+
+{% block content %}
+<div class="container">
+    <div class="profile-edit-container">
+        <div class="profile-header">
+            <h1><i class="fas fa-user-edit"></i> Editar Perfil</h1>
+            <p class="text-muted">Atualize suas informações pessoais</p>
+        </div>
+        
+        <!-- Mensagens -->
+        {% if messages %}
+            {% for message in messages %}
+                <div class="status-message {{ message.tags }}">
+                    <i class="fas fa-{% if message.tags == 'success' %}check-circle{% else %}exclamation-circle{% endif %}"></i>
+                    {{ message }}
+                </div>
+            {% endfor %}
+        {% endif %}
+        
+        <!-- Avatar -->
+        <div class="avatar-preview">
+            <div class="avatar-placeholder">
+                {% if usuario.first_name %}
+                    {{ usuario.first_name|first|upper }}{{ usuario.last_name|first|upper }}
+                {% else %}
+                    <i class="fas fa-user"></i>
+                {% endif %}
+            </div>
+            <p class="text-muted">Clique no avatar para alterar a foto (em breve)</p>
+        </div>
+        
+        <!-- Formulário -->
+        <form method="POST" id="profileForm">
+            {% csrf_token %}
+            
+            <!-- Nome e Sobrenome -->
+            <div class="row">
+                <div class="col-md-6">
+                    <div class="form-group">
+                        <label for="first_name"><i class="fas fa-user"></i> Nome</label>
+                        <input type="text" 
+                               id="first_name" 
+                               name="first_name" 
+                               value="{{ usuario.first_name|default:'' }}"
+                               class="form-control-custom"
+                               placeholder="Digite seu nome"
+                               required>
+                    </div>
+                </div>
+                <div class="col-md-6">
+                    <div class="form-group">
+                        <label for="last_name"><i class="fas fa-user"></i> Sobrenome</label>
+                        <input type="text" 
+                               id="last_name" 
+                               name="last_name" 
+                               value="{{ usuario.last_name|default:'' }}"
+                               class="form-control-custom"
+                               placeholder="Digite seu sobrenome"
+                               required>
+                    </div>
+                </div>
+            </div>
+            
+            <!-- Email -->
+            <div class="form-group">
+                <label for="email"><i class="fas fa-envelope"></i> Email</label>
+                <input type="email" 
+                       id="email" 
+                       name="email" 
+                       value="{{ usuario.email|default:'' }}"
+                       class="form-control-custom"
+                       placeholder="seu.email@exemplo.com"
+                       required>
+            </div>
+            
+            <!-- Data de Nascimento -->
+            <div class="form-group">
+                <label for="data_nascimento"><i class="fas fa-birthday-cake"></i> Data de Nascimento</label>
+                <input type="date" 
+                       id="data_nascimento" 
+                       name="data_nascimento" 
+                       value="{{ perfil.data_nascimento|date:'Y-m-d'|default:'' }}"
+                       class="form-control-custom">
+            </div>
+            
+            <!-- Bio -->
+            <div class="form-group">
+                <label for="bio"><i class="fas fa-info-circle"></i> Bio</label>
+                <textarea id="bio" 
+                          name="bio" 
+                          class="form-control-custom"
+                          rows="4"
+                          placeholder="Conte um pouco sobre você...">{{ perfil.bio|default:'' }}</textarea>
+                <small class="text-muted">Máximo de 500 caracteres</small>
+            </div>
+            
+            <!-- Links Sociais -->
+            <h4 style="color: #FFD700; margin: 30px 0 20px; padding-bottom: 10px; border-bottom: 1px solid rgba(255,215,0,0.2);">
+                <i class="fas fa-share-alt"></i> Links Sociais
+            </h4>
+            
+            <div class="row">
+                <div class="col-md-6">
+                    <div class="form-group">
+                        <label for="github"><i class="fab fa-github"></i> GitHub</label>
+                        <input type="url" 
+                               id="github" 
+                               name="github" 
+                               value="{{ perfil.github|default:'' }}"
+                               class="form-control-custom"
+                               placeholder="https://github.com/seu-usuario">
+                    </div>
+                </div>
+                <div class="col-md-6">
+                    <div class="form-group">
+                        <label for="linkedin"><i class="fab fa-linkedin"></i> LinkedIn</label>
+                        <input type="url" 
+                               id="linkedin" 
+                               name="linkedin" 
+                               value="{{ perfil.linkedin|default:'' }}"
+                               class="form-control-custom"
+                               placeholder="https://linkedin.com/in/seu-perfil">
+                    </div>
+                </div>
+            </div>
+            
+            <div class="row">
+                <div class="col-md-6">
+                    <div class="form-group">
+                        <label for="website"><i class="fas fa-globe"></i> Website</label>
+                        <input type="url" 
+                               id="website" 
+                               name="website" 
+                               value="{{ perfil.website|default:'' }}"
+                               class="form-control-custom"
+                               placeholder="https://seu-site.com">
+                    </div>
+                </div>
+                <div class="col-md-6">
+                    <div class="form-group">
+                        <label for="instagram"><i class="fab fa-instagram"></i> Instagram</label>
+                        <input type="url" 
+                               id="instagram" 
+                               name="instagram" 
+                               value="{{ perfil.instagram|default:'' }}"
+                               class="form-control-custom"
+                               placeholder="https://instagram.com/seu-usuario">
+                    </div>
+                </div>
+            </div>
+            
+            <!-- Botões -->
+            <div class="btn-group">
+                <a href="{% url 'usuarios:perfil' %}" class="btn-cancel">
+                    <i class="fas fa-times"></i> Cancelar
+                </a>
+                <button type="submit" class="btn-save">
+                    <i class="fas fa-save"></i> Salvar Alterações
+                </button>
+            </div>
+        </form>
+    </div>
+</div>
+{% endblock %}
+
+{% block extra_js %}
+<script>
+    // Validação do formulário
+    document.getElementById('profileForm').addEventListener('submit', function(e) {
+        const bio = document.getElementById('bio').value;
+        
+        // Verificar tamanho da bio
+        if (bio.length > 500) {
+            e.preventDefault();
+            alert('A biografia não pode ter mais de 500 caracteres.');
+            document.getElementById('bio').focus();
+            return false;
+        }
+        
+        // Mostrar loading no botão de salvar
+        const saveBtn = document.querySelector('.btn-save');
+        const originalText = saveBtn.innerHTML;
+        saveBtn.innerHTML = '<i class="fas fa-spinner fa-spin"></i> Salvando...';
+        saveBtn.disabled = true;
+        
+        // Reverter após 5 segundos se houver erro
+        setTimeout(() => {
+            saveBtn.innerHTML = originalText;
+            saveBtn.disabled = false;
+        }, 5000);
+    });
+    
+    // Contador de caracteres para bio
+    const bioTextarea = document.getElementById('bio');
+    if (bioTextarea) {
+        const counter = document.createElement('small');
+        counter.className = 'text-muted float-end';
+        counter.id = 'bioCounter';
+        bioTextarea.parentNode.appendChild(counter);
+        
+        function updateCounter() {
+            const length = bioTextarea.value.length;
+            counter.textContent = `${length}/500 caracteres`;
+            
+            if (length > 450) {
+                counter.style.color = '#FFD700';
+            } else if (length > 500) {
+                counter.style.color = '#ff6b6b';
+            } else {
+                counter.style.color = '';
+            }
+        }
+        
+        bioTextarea.addEventListener('input', updateCounter);
+        updateCounter(); // Inicializar
+    }
+</script>
+{% endblock %}

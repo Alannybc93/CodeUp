@@ -1,0 +1,125 @@
+﻿<!-- usuarios/templates/usuarios/alterar_senha.html -->
+{% extends 'base.html' %}
+{% load static %}
+
+{% block title %}Alterar Senha - CodeUP{% endblock %}
+
+{% block content %}
+<div class="container" style="max-width: 600px; margin: 40px auto; padding: 0 20px;">
+    <!-- Cabeçalho -->
+    <div style="background: linear-gradient(135deg, rgba(52, 152, 219, 0.2), rgba(52, 152, 219, 0.05));
+                color: #3498db; padding: 30px; border-radius: 15px; text-align: center;
+                margin-bottom: 30px; border: 1px solid rgba(52, 152, 219, 0.2);">
+        <h1 style="margin: 0; font-size: 2.2rem;">
+            <i class="fas fa-key"></i> Alterar Senha
+        </h1>
+        <p style="margin: 10px 0 0; opacity: 0.9;">
+            Crie uma nova senha para sua conta
+        </p>
+    </div>
+
+    <!-- Mensagens -->
+    {% if messages %}
+        {% for message in messages %}
+            <div style="background: {% if message.tags == 'success' %}rgba(46, 204, 113, 0.1){% else %}rgba(231, 76, 60, 0.1){% endif %};
+                        border: 1px solid {% if message.tags == 'success' %}rgba(46, 204, 113, 0.3){% else %}rgba(231, 76, 60, 0.3){% endif %};
+                        color: {% if message.tags == 'success' %}#2ecc71{% else %}#e74c3c{% endif %};
+                        padding: 15px; border-radius: 10px; margin-bottom: 20px;">
+                <i class="fas fa-{% if message.tags == 'success' %}check-circle{% else %}exclamation-circle{% endif %}"></i>
+                {{ message }}
+            </div>
+        {% endfor %}
+    {% endif %}
+
+    <!-- Formulário -->
+    <div style="background: #111; border-radius: 15px; padding: 30px; border: 1px solid #222;">
+        <form method="POST">
+            {% csrf_token %}
+            
+            {% if form.errors %}
+                <div style="background: rgba(231, 76, 60, 0.1); border: 1px solid rgba(231, 76, 60, 0.3);
+                            color: #e74c3c; padding: 15px; border-radius: 10px; margin-bottom: 20px;">
+                    <i class="fas fa-exclamation-circle"></i>
+                    Por favor, corrija os erros abaixo.
+                </div>
+            {% endif %}
+            
+            <div style="margin-bottom: 20px;">
+                <label style="display: block; margin-bottom: 8px; color: #3498db; font-weight: 600;">
+                    <i class="fas fa-lock"></i> Senha Atual
+                </label>
+                {{ form.old_password }}
+                {% if form.old_password.errors %}
+                    <div style="color: #e74c3c; font-size: 0.9rem; margin-top: 5px;">
+                        {{ form.old_password.errors }}
+                    </div>
+                {% endif %}
+            </div>
+            
+            <div style="margin-bottom: 20px;">
+                <label style="display: block; margin-bottom: 8px; color: #3498db; font-weight: 600;">
+                    Nova Senha
+                </label>
+                {{ form.new_password1 }}
+                {% if form.new_password1.errors %}
+                    <div style="color: #e74c3c; font-size: 0.9rem; margin-top: 5px;">
+                        {{ form.new_password1.errors }}
+                    </div>
+                {% endif %}
+            </div>
+            
+            <div style="margin-bottom: 30px;">
+                <label style="display: block; margin-bottom: 8px; color: #3498db; font-weight: 600;">
+                    Confirmar Nova Senha
+                </label>
+                {{ form.new_password2 }}
+                {% if form.new_password2.errors %}
+                    <div style="color: #e74c3c; font-size: 0.9rem; margin-top: 5px;">
+                        {{ form.new_password2.errors }}
+                    </div>
+                {% endif %}
+            </div>
+            
+            <!-- Botões -->
+            <div style="display: flex; gap: 15px; justify-content: center; margin-top: 40px;">
+                <a href="{% url 'usuarios:perfil' %}" 
+                   style="background: rgba(255, 255, 255, 0.1); color: white; padding: 14px 30px;
+                          border-radius: 10px; text-decoration: none; font-weight: 600; border: 1px solid #333;">
+                    <i class="fas fa-times"></i> Cancelar
+                </a>
+                
+                <button type="submit" 
+                        style="background: linear-gradient(135deg, #3498db 0%, #2980b9 100%); 
+                               color: white; padding: 14px 30px; border-radius: 10px; 
+                               font-weight: 700; border: none; cursor: pointer;">
+                    <i class="fas fa-save"></i> Alterar Senha
+                </button>
+            </div>
+        </form>
+    </div>
+</div>
+
+<style>
+    /* Estilizar os campos do formulário Django */
+    input[type="password"] {
+        width: 100%;
+        padding: 12px;
+        background: rgba(255, 255, 255, 0.05);
+        border: 1px solid rgba(52, 152, 219, 0.2);
+        border-radius: 8px;
+        color: white;
+        font-size: 1rem;
+        box-sizing: border-box;
+    }
+    
+    input[type="password"]:focus {
+        outline: none;
+        border-color: #3498db;
+        box-shadow: 0 0 0 2px rgba(52, 152, 219, 0.1);
+    }
+    
+    input[type="password"]::placeholder {
+        color: rgba(255, 255, 255, 0.4);
+    }
+</style>
+{% endblock %}

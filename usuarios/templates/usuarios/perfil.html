@@ -1,0 +1,159 @@
+﻿<!-- usuarios/templates/usuarios/perfil.html -->
+{% extends 'base.html' %}
+
+{% block title %}Meu Perfil - CodeUP{% endblock %}
+
+{% block content %}
+<div class="container" style="max-width: 1200px; margin: 0 auto; padding: 20px;">
+    <!-- HEADER DO PERFIL -->
+    <div style="background: linear-gradient(135deg, rgba(255, 215, 0, 0.2), rgba(255, 215, 0, 0.05));
+                color: #FFD700; padding: 40px; border-radius: 15px; text-align: center; 
+                margin-bottom: 30px; border: 2px solid rgba(255, 215, 0, 0.2);">
+        <h1 style="font-size: 2.5rem; margin-bottom: 10px;">
+            <i class="fas fa-user-circle"></i> Meu Perfil
+        </h1>
+        <p style="font-size: 1.1rem; opacity: 0.9; max-width: 600px; margin: 0 auto;">
+            Gerencie suas informações e acompanhe seu progresso
+        </p>
+    </div>
+
+    <!-- LAYOUT PRINCIPAL -->
+    <div style="display: grid; grid-template-columns: 1fr 2fr; gap: 30px; margin-bottom: 40px;">
+        <!-- COLUNA ESQUERDA - INFORMAÇÕES -->
+        <div style="background-color: #111111; border-radius: 15px; padding: 30px; 
+                    border: 1px solid #222222; box-shadow: 0 10px 30px rgba(0, 0, 0, 0.2);">
+            <!-- FOTO DE PERFIL -->
+            <div style="position: relative; width: 200px; height: 200px; margin: 0 auto 25px;
+                        border-radius: 50%; overflow: hidden; border: 4px solid rgba(255, 215, 0, 0.2);
+                        background-color: #222;">
+                <img src="https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?ixlib=rb-4.0.3&auto=format&fit=crop&w=774&q=80" 
+                     alt="Foto de perfil" 
+                     style="width: 100%; height: 100%; object-fit: cover;">
+            </div>
+
+            <!-- INFORMAÇÕES DO USUÁRIO -->
+            <div>
+                <h2 style="color: #FFD700; margin-bottom: 25px; padding-bottom: 10px; 
+                           border-bottom: 1px solid rgba(255, 215, 0, 0.2);">
+                    <i class="fas fa-id-card"></i> Informações
+                </h2>
+                
+                <div style="margin-bottom: 15px; display: flex; align-items: center; padding: 10px 0;">
+                    <i class="fas fa-user" style="margin-right: 15px; color: #FFD700;"></i>
+                    <span style="font-weight: 600; color: #aaa; min-width: 120px;">Nome:</span>
+                    <span style="color: #fff; flex-grow: 1;">
+                        {% if user.get_full_name %}
+                            {{ user.get_full_name }}
+                        {% else %}
+                            {{ user.username }}
+                        {% endif %}
+                    </span>
+                </div>
+                
+                <div style="margin-bottom: 15px; display: flex; align-items: center; padding: 10px 0;">
+                    <i class="fas fa-envelope" style="margin-right: 15px; color: #FFD700;"></i>
+                    <span style="font-weight: 600; color: #aaa; min-width: 120px;">Email:</span>
+                    <span style="color: #fff; flex-grow: 1;">
+                        {{ user.email|default:"Não informado" }}
+                    </span>
+                </div>
+                
+                <div style="margin-bottom: 15px; display: flex; align-items: center; padding: 10px 0;">
+                    <i class="fas fa-calendar-alt" style="margin-right: 15px; color: #FFD700;"></i>
+                    <span style="font-weight: 600; color: #aaa; min-width: 120px;">Membro desde:</span>
+                    <span style="color: #fff; flex-grow: 1;">
+                        {{ user.date_joined|date:"d/m/Y" }}
+                    </span>
+                </div>
+            </div>
+        </div>
+
+        <!-- COLUNA DIREITA - ESTATÍSTICAS -->
+        <div style="display: flex; flex-direction: column; gap: 30px;">
+            <!-- ESTATÍSTICAS -->
+            <div style="background-color: #111111; border-radius: 15px; padding: 30px; border: 1px solid #222222;">
+                <h2 style="color: #FFD700; margin-bottom: 25px; padding-bottom: 10px; 
+                           border-bottom: 1px solid rgba(255, 215, 0, 0.2);">
+                    <i class="fas fa-chart-bar"></i> Minhas Estatísticas
+                </h2>
+                
+                <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 20px;">
+                    <div style="background: rgba(255, 215, 0, 0.1); padding: 20px; border-radius: 10px; text-align: center;">
+                        <div style="font-size: 2.5rem; color: #FFD700; font-weight: bold;">0</div>
+                        <div style="color: #aaa;">Exercícios Resolvidos</div>
+                    </div>
+                    
+                    <div style="background: rgba(255, 215, 0, 0.1); padding: 20px; border-radius: 10px; text-align: center;">
+                        <div style="font-size: 2.5rem; color: #2ecc71; font-weight: bold;">0</div>
+                        <div style="color: #aaa;">Pontos</div>
+                    </div>
+                    
+                    <div style="background: rgba(255, 215, 0, 0.1); padding: 20px; border-radius: 10px; text-align: center;">
+                        <div style="font-size: 2.5rem; color: #3498db; font-weight: bold;">0</div>
+                        <div style="color: #aaa;">Trilhas Concluídas</div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- AÇÕES RÁPIDAS -->
+            <div style="background-color: #111111; border-radius: 15px; padding: 30px; border: 1px solid #222222;">
+                <h2 style="color: #FFD700; margin-bottom: 25px; padding-bottom: 10px; 
+                           border-bottom: 1px solid rgba(255, 215, 0, 0.2);">
+                    <i class="fas fa-bolt"></i> Ações Rápidas
+                </h2>
+                
+                <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 15px;">
+                    <a href="{% url 'exercicios:index' %}" 
+                       style="background: rgba(255, 215, 0, 0.1); color: #FFD700; padding: 15px; 
+                              border-radius: 10px; text-decoration: none; text-align: center;
+                              border: 1px solid rgba(255, 215, 0, 0.3); transition: all 0.3s;">
+                        <i class="fas fa-code"></i>
+                        <div style="margin-top: 10px; font-weight: bold;">Continuar Estudando</div>
+                    </a>
+                    
+                    <a href="{% url 'trilhas:lista' %}" 
+                       style="background: rgba(52, 152, 219, 0.1); color: #3498db; padding: 15px; 
+                              border-radius: 10px; text-decoration: none; text-align: center;
+                              border: 1px solid rgba(52, 152, 219, 0.3); transition: all 0.3s;">
+                        <i class="fas fa-road"></i>
+                        <div style="margin-top: 10px; font-weight: bold;">Ver Trilhas</div>
+                    </a>
+                    
+                    <a href="/" 
+                       style="background: rgba(255, 255, 255, 0.1); color: #fff; padding: 15px; 
+                              border-radius: 10px; text-decoration: none; text-align: center;
+                              border: 1px solid rgba(255, 255, 255, 0.2); transition: all 0.3s;">
+                        <i class="fas fa-home"></i>
+                        <div style="margin-top: 10px; font-weight: bold;">Voltar para Home</div>
+                    </a>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- BOTÕES DE AÇÃO -->
+    <div style="display: flex; gap: 15px; justify-content: center; margin-top: 40px; flex-wrap: wrap;">
+        <a href="{% url 'exercicios:index' %}" 
+           style="background: linear-gradient(135deg, #FFD700 0%, #FFA500 100%); 
+                  color: #000; padding: 15px 30px; border-radius: 10px; 
+                  text-decoration: none; font-weight: bold; display: flex; 
+                  align-items: center; gap: 10px;">
+            <i class="fas fa-play"></i> Voltar aos Exercícios
+        </a>
+        
+        <a href="#" 
+           style="background: rgba(255, 215, 0, 0.2); color: #FFD700; padding: 15px 30px; 
+                  border-radius: 10px; text-decoration: none; font-weight: bold; display: flex; 
+                  align-items: center; gap: 10px;">
+            <i class="fas fa-edit"></i> Editar Perfil
+        </a>
+        
+        <a href="#" 
+           style="background: rgba(52, 152, 219, 0.2); color: #3498db; padding: 15px 30px; 
+                  border-radius: 10px; text-decoration: none; font-weight: bold; display: flex; 
+                  align-items: center; gap: 10px;">
+            <i class="fas fa-cog"></i> Configurações
+        </a>
+    </div>
+</div>
+{% endblock %}

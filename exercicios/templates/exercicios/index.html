@@ -311,11 +311,11 @@
     {% if user.is_authenticated %}
     <div class="stats-bar">
         <div class="stat-item">
-            <span class="stat-value">0</span>
+            <span class="stat-value">{{ pontos_totais|default:"0" }}</span>
             <span class="stat-label">Seus Pontos</span>
         </div>
         <div class="stat-item">
-            <span class="stat-value">0</span>
+            <span class="stat-value">{{ exercicios_resolvidos_count|default:"0" }}</span>
             <span class="stat-label">Exercícios Resolvidos</span>
         </div>
         <div class="stat-item">
@@ -329,14 +329,18 @@
     </div>
     {% endif %}
     
-    <form method="GET" action="{% url 'exercicios:exercicios_index' %}" class="filtros">
+    <form method="GET" action="{% url 'exercicios:index' %}" class="filtros">
         <div class="filtro-group">
             <label class="filtro-label" for="modulo">Filtrar por Módulo</label>
             <select name="modulo" id="modulo" class="filtro-select">
                 <option value="">Todos os módulos</option>
                 {% for modulo in modulos %}
                 <option value="{{ modulo.id }}" {% if selected_modulo == modulo.id|stringformat:"i" %}selected{% endif %}>
-                    {{ modulo.trilha.titulo }} - {{ modulo.titulo }}
+                    {% if modulo.trilha %}
+                        {{ modulo.trilha.titulo }} - {{ modulo.titulo }}
+                    {% else %}
+                        {{ modulo.titulo }}
+                    {% endif %}
                 </option>
                 {% endfor %}
             </select>
@@ -356,7 +360,7 @@
             <i class="fas fa-filter"></i> Filtrar
         </button>
         
-        <a href="{% url 'exercicios:exercicios_index' %}" style="align-self: flex-end; color: var(--text-muted); text-decoration: none;">
+        <a href="{% url 'exercicios:index' %}" style="align-self: flex-end; color: var(--text-muted); text-decoration: none;">
             Limpar filtros
         </a>
     </form>
@@ -372,7 +376,10 @@
                 
                 <div class="exercicio-modulo">
                     <i class="fas fa-book"></i>
-                    {{ exercicio.modulo.trilha.titulo }} › {{ exercicio.modulo.titulo }}
+                    {% if exercicio.modulo.trilha %}
+                        {{ exercicio.modulo.trilha.titulo }} › 
+                    {% endif %}
+                    {{ exercicio.modulo.titulo }}
                 </div>
                 
                 <span class="exercicio-dificuldade dificuldade-{{ exercicio.dificuldade }}">
@@ -381,18 +388,24 @@
                     {% else %}Difícil{% endif %}
                 </span>
                 
-                <p class="exercicio-descricao">{{ exercicio.enunciado }}</p>
+                <p class="exercicio-descricao">{{ exercicio.enunciado|truncatewords:30 }}</p>
                 
                 <div class="exercicio-actions">
-                    <a href="{% url 'exercicios:exercicios_resolver' exercicio.id %}" class="btn-resolver">
+                    <a href="{% url 'exercicios:resolver' exercicio.id %}" class="btn-resolver">
                         <i class="fas fa-play-circle"></i> Resolver
                     </a>
-                    <a href="{% url 'exercicios:exercicios_detalhe' exercicio.id %}" class="btn-detalhes">
+                    <a href="{% url 'exercicios:detalhe' exercicio.id %}" class="btn-detalhes">
                         <i class="fas fa-info-circle"></i> Detalhes
                     </a>
                 </div>
                 
-                <!-- Removi a verificação de exercícios resolvidos por enquanto -->
+                {% if exercicio.id in exercicios_resolvidos_ids %}
+                <div style="margin-top: 10px;">
+                    <span class="badge-resolvido">
+                        <i class="fas fa-check-circle"></i> Resolvido
+                    </span>
+                </div>
+                {% endif %}
             </div>
             {% endfor %}
         </div>

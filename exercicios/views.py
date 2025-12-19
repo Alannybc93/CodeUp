@@ -1,199 +1,307 @@
-﻿# exercicios/views.py
-from django.shortcuts import render, get_object_or_404
+﻿# exercicios/views.py - VERSÃO COMPLETA CORRIGIDA
+import time
+from django.shortcuts import render, get_object_or_404, redirect
 from django.contrib.auth.decorators import login_required
 from django.contrib import messages
+from django.utils import timezone
+from django.db.models import Count, Sum
+
+# Importe os modelos CORRETAMENTE
+from .models import Exercicio, RespostaAluno
+# Modulo e Trilha estão em trilhas.models
+try:
+    from trilhas.models import Modulo, Trilha
+    TRILHA_EXISTS = True
+except ImportError:
+    # Se não existir, crie placeholders
+    TRILHA_EXISTS = False
+    class Modulo:
+        objects = None
+    class Trilha:
+        objects = None
+
+# ============ VIEWS PRINCIPAIS ============
 
 def index(request):
-    """Página principal de exercícios"""
-    # Dados de exemplo (substitua por dados reais do seu banco)
-    exercicios = [
-        {
-            'id': 1,
-            'titulo': 'Hello World em Python',
-            'enunciado': 'Crie um programa que imprima "Hello, World!" na tela.',
-            'dificuldade': 'facil',
-            'pontos': 10,
-            'modulo': {
-                'titulo': 'Introdução ao Python',
-                'trilha': {
-                    'titulo': 'Python Fundamentals'
-                }
-            }
-        },
-        {
-            'id': 2,
-            'titulo': 'Calculadora Simples',
-            'enunciado': 'Crie uma calculadora que some dois números fornecidos pelo usuário.',
-            'dificuldade': 'facil',
-            'pontos': 15,
-            'modulo': {
-                'titulo': 'Operadores e Entrada',
-                'trilha': {
-                    'titulo': 'Python Fundamentals'
-                }
-            }
-        },
-        {
-            'id': 3,
-            'titulo': 'Verificador de Números Primos',
-            'enunciado': 'Escreva uma função que verifique se um número é primo.',
-            'dificuldade': 'medio',
-            'pontos': 25,
-            'modulo': {
-                'titulo': 'Estruturas de Controle',
-                'trilha': {
-                    'titulo': 'Python Fundamentals'
-                }
-            }
-        },
-        {
-            'id': 4,
-            'titulo': 'Ordenação de Lista',
-            'enunciado': 'Implemente o algoritmo de ordenação bubble sort.',
-            'dificuldade': 'medio',
-            'pontos': 30,
-            'modulo': {
-                'titulo': 'Algoritmos Básicos',
-                'trilha': {
-                    'titulo': 'Algoritmos & Estruturas'
-                }
-            }
-        },
-        {
-            'id': 5,
-            'titulo': 'Manipulação de Arrays',
-            'enunciado': 'Crie funções para manipular arrays em JavaScript.',
-            'dificuldade': 'facil',
-            'pontos': 12,
-            'modulo': {
-                'titulo': 'Arrays e Objetos',
-                'trilha': {
-                    'titulo': 'JavaScript Moderno'
-                }
-            }
-        },
-        {
-            'id': 6,
-            'titulo': 'Consulta SQL Complexa',
-            'enunciado': 'Escreva uma consulta SQL para encontrar dados específicos.',
-            'dificuldade': 'dificil',
-            'pontos': 40,
-            'modulo': {
-                'titulo': 'Joins e Subqueries',
-                'trilha': {
-                    'titulo': 'Banco de Dados SQL'
-                }
-            }
-        },
-    ]
+    """Lista todos os exercícios com filtros"""
+    # Obter todos os exercícios
+    exercicios = Exercicio.objects.all()
     
-    # Filtros
-    modulo_selecionado = request.GET.get('modulo', '')
-    dificuldade_selecionada = request.GET.get('dificuldade', '')
+    # Tentar usar select_related se Trilha existir
+    if TRILHA_EXISTS:
+        exercicios = exercicios.select_related('modulo__trilha')
+    else:
+        exercicios = exercicios.select_related('modulo')
+    
+    # Obter parâmetros de filtro da URL
+    modulo_id = request.GET.get('modulo', '')
+    dificuldade = request.GET.get('dificuldade', '')
     
     # Aplicar filtros
-    if modulo_selecionado:
-        exercicios = [e for e in exercicios if str(e.get('modulo_id', '')) == modulo_selecionado]
+    if modulo_id:
+        exercicios = exercicios.filter(modulo_id=modulo_id)
     
-    if dificuldade_selecionada:
-        exercicios = [e for e in exercicios if e['dificuldade'] == dificuldade_selecionada]
+    if dificuldade:
+        exercicios = exercicios.filter(dificuldade=dificuldade)
     
-    # Módulos para o filtro
-    modulos = [
-        {'id': 1, 'titulo': 'Introdução ao Python', 'trilha': {'titulo': 'Python Fundamentals'}},
-        {'id': 2, 'titulo': 'Operadores e Entrada', 'trilha': {'titulo': 'Python Fundamentals'}},
-        {'id': 3, 'titulo': 'Estruturas de Controle', 'trilha': {'titulo': 'Python Fundamentals'}},
-        {'id': 4, 'titulo': 'Algoritmos Básicos', 'trilha': {'titulo': 'Algoritmos & Estruturas'}},
-        {'id': 5, 'titulo': 'Arrays e Objetos', 'trilha': {'titulo': 'JavaScript Moderno'}},
-        {'id': 6, 'titulo': 'Joins e Subqueries', 'trilha': {'titulo': 'Banco de Dados SQL'}},
-    ]
+    # Obter todos os módulos para o filtro
+    modulos = []
+    if TRILHA_EXISTS:
+        modulos = Modulo.objects.all().select_related('trilha')
+    elif Modulo.objects is not None:
+        modulos = Modulo.objects.all()
+    
+    # Verificar quais exercícios o usuário já resolveu (se autenticado)
+    exercicios_resolvidos_ids = []
+    pontos_totais = 0
+    exercicios_resolvidos_count = 0
+    
+    if request.user.is_authenticated:
+        exercicios_resolvidos_ids = RespostaAluno.objects.filter(
+            aluno=request.user,
+            status='correto'
+        ).values_list('exercicio_id', flat=True)
+        
+        # Calcular estatísticas
+        respostas_corretas = RespostaAluno.objects.filter(
+            aluno=request.user,
+            status='correto'
+        )
+        exercicios_resolvidos_count = respostas_corretas.count()
+        
+        # Calcular pontos totais
+        for resposta in respostas_corretas:
+            pontos_totais += resposta.exercicio.pontos
     
     context = {
         'exercicios': exercicios,
         'modulos': modulos,
-        'selected_modulo': modulo_selecionado,
-        'selected_dificuldade': dificuldade_selecionada,
-        'user': request.user,
+        'selected_modulo': modulo_id,
+        'selected_dificuldade': dificuldade,
+        'exercicios_resolvidos_ids': list(exercicios_resolvidos_ids),
+        'TRILHA_EXISTS': TRILHA_EXISTS,
+        'pontos_totais': pontos_totais,
+        'exercicios_resolvidos_count': exercicios_resolvidos_count,
     }
     
     return render(request, 'exercicios/index.html', context)
 
 @login_required
 def meus_exercicios(request):
-    """Exercícios do usuário"""
-    # Em uma implementação real, você buscaria os exercícios do usuário do banco
-    exercicios_resolvidos = []
+    """Mostra exercícios do usuário - resolvidos, em progresso, etc."""
+    # Exercícios resolvidos
+    exercicios_resolvidos = RespostaAluno.objects.filter(
+        aluno=request.user,
+        status='correto'
+    )
+    
+    # Tentar usar select_related se Trilha existir
+    if TRILHA_EXISTS:
+        exercicios_resolvidos = exercicios_resolvidos.select_related('exercicio__modulo__trilha')
+    else:
+        exercicios_resolvidos = exercicios_resolvidos.select_related('exercicio__modulo')
+    
+    # Exercícios com tentativas (mas não resolvidos)
+    exercicios_tentados = RespostaAluno.objects.filter(
+        aluno=request.user,
+        status__in=['incorreto', 'parcial']
+    )
+    
+    if TRILHA_EXISTS:
+        exercicios_tentados = exercicios_tentados.select_related('exercicio__modulo__trilha')
+    else:
+        exercicios_tentados = exercicios_tentados.select_related('exercicio__modulo')
+    
+    # IDs de exercícios já resolvidos
+    resolvidos_ids = exercicios_resolvidos.values_list('exercicio_id', flat=True)
+    
+    # Exercícios recomendados (não resolvidos)
+    exercicios_recomendados = Exercicio.objects.exclude(
+        id__in=resolvidos_ids
+    )
+    
+    if TRILHA_EXISTS:
+        exercicios_recomendados = exercicios_recomendados.select_related('modulo__trilha')
+    else:
+        exercicios_recomendados = exercicios_recomendados.select_related('modulo')
+    
+    exercicios_recomendados = exercicios_recomendados.order_by('dificuldade', 'modulo__ordem')[:6]
+    
+    # Estatísticas
+    total_pontos = sum(res.exercicio.pontos for res in exercicios_resolvidos)
     
     context = {
         'exercicios_resolvidos': exercicios_resolvidos,
-        'user': request.user,
+        'exercicios_tentados': exercicios_tentados,
+        'exercicios_recomendados': exercicios_recomendados,
+        'total_resolvidos': exercicios_resolvidos.count(),
+        'total_pontos': total_pontos,
+        'total_tentados': exercicios_tentados.count(),
+        'sequencia_atual': 0,  # Adicionado para o template
+        'conquistas': 0,  # Adicionado para o template
     }
     
+    # CORREÇÃO: O template se chama 'meus.html', não 'meus_exercicios.html'
     return render(request, 'exercicios/meus.html', context)
 
 def detalhe(request, exercicio_id):
-    """Detalhes de um exercício específico"""
-    # Dados de exemplo (substitua por dados reais)
-    exercicio = {
-        'id': exercicio_id,
-        'titulo': f'Exercício #{exercicio_id}',
-        'enunciado': 'Descrição detalhada do exercício...',
-        'dificuldade': 'medio',
-        'pontos': 20,
-        'modulo': {
-            'titulo': 'Módulo de Exemplo',
-            'trilha': {
-                'titulo': 'Trilha de Exemplo'
-            }
-        },
-        'exemplos': [
-            'Exemplo de entrada: [1, 2, 3]',
-            'Exemplo de saída: 6'
-        ],
-        'restricoes': [
-            '0 <= n <= 100',
-            'Use apenas loops for'
-        ]
-    }
+    """Mostra detalhes de um exercício"""
+    exercicio = get_object_or_404(Exercicio, id=exercicio_id)
+    
+    # Tentar usar select_related se Trilha existir
+    if TRILHA_EXISTS:
+        exercicio = get_object_or_404(
+            Exercicio.objects.select_related('modulo__trilha'), 
+            id=exercicio_id
+        )
+    
+    # Verificar se usuário já resolveu
+    resolvido = False
+    if request.user.is_authenticated:
+        resolvido = RespostaAluno.objects.filter(
+            aluno=request.user,
+            exercicio=exercicio,
+            status='correto'
+        ).exists()
     
     context = {
         'exercicio': exercicio,
-        'user': request.user,
+        'resolvido': resolvido,
     }
     
     return render(request, 'exercicios/detalhe.html', context)
 
 @login_required
-def resolver(request, exercicio_id):
-    """Resolver um exercício"""
-    # Dados de exemplo
-    exercicio = {
-        'id': exercicio_id,
-        'titulo': f'Exercício #{exercicio_id}',
-        'enunciado': 'Escreva uma função que resolva o problema descrito abaixo.',
-        'linguagens': ['python', 'javascript', 'java'],
-        'testes': [
-            {'entrada': '5', 'saida': '25'},
-            {'entrada': '10', 'saida': '100'}
-        ]
-    }
+def resolver_exercicio(request, exercicio_id):
+    """Página para resolver um exercício"""
+    exercicio = get_object_or_404(Exercicio, id=exercicio_id)
+    
+    # Verificar se já existe resposta
+    resposta_existente = RespostaAluno.objects.filter(
+        aluno=request.user, 
+        exercicio=exercicio
+    ).first()
     
     if request.method == 'POST':
-        # Aqui você processaria a solução enviada
-        codigo = request.POST.get('codigo', '')
-        linguagem = request.POST.get('linguagem', 'python')
+        resposta_texto = request.POST.get('resposta', '').strip()
         
-        # Simular processamento
-        messages.success(request, 'Solução enviada com sucesso! Em breve você terá o resultado.')
+        if not resposta_texto:
+            messages.error(request, 'Digite uma resposta antes de verificar!')
+            return render(request, 'exercicios/resolver_exercicio.html', {
+                'exercicio': exercicio,
+                'resposta_existente': resposta_existente,
+            })
+        
+        # Calcular tempo gasto
+        tempo_gasto = 0
+        if 'start_time' in request.session:
+            tempo_gasto = int(time.time() - request.session['start_time'])
+        
+        # Criar ou atualizar resposta
+        if resposta_existente:
+            resposta = resposta_existente
+            resposta.tentativas += 1
+        else:
+            resposta = RespostaAluno(
+                aluno=request.user,
+                exercicio=exercicio,
+                tentativas=1
+            )
+        
+        resposta.resposta = resposta_texto
+        resposta.tempo_gasto = tempo_gasto
+        
+        # Verificar resposta
+        resultado = verificar_resposta(resposta_texto, exercicio.resposta_correta)
+        
+        # Atualizar status e pontos
+        resposta.status = resultado['status']
+        resposta.pontos_ganhos = resultado['pontos']
+        resposta.save()
+        
+        # Atualizar XP do perfil se correto
+        if resultado['status'] == 'correto':
+            try:
+                perfil = request.user.perfil
+                perfil.ganhar_xp(exercicio.pontos)
+                perfil.exercicios_resolvidos += 1
+                perfil.save()
+                messages.success(request, f'? Parabéns! Resposta correta! +{exercicio.pontos} XP')
+            except:
+                messages.success(request, '? Parabéns! Resposta correta!')
+        
+        # Redirecionar para página de resultado
         return render(request, 'exercicios/resultado.html', {
             'exercicio': exercicio,
-            'user': request.user,
-            'sucesso': True
+            'resposta': resposta,
+            'resultado': resultado
         })
     
-    context = {
-        'exercicio': exercicio,
-        'user': request.user,
+    else:
+        # GET request - iniciar timer
+        request.session['start_time'] = time.time()
+        return render(request, 'exercicios/resolver_exercicio.html', {
+            'exercicio': exercicio,
+            'resposta_existente': resposta_existente,
+        })
+
+@login_required
+def ver_resultado(request, resposta_id):
+    """Visualizar resultado de uma resposta específica"""
+    resposta = get_object_or_404(RespostaAluno, id=resposta_id)
+    
+    # Verificar se o usuário tem permissão para ver esta resposta
+    if resposta.aluno != request.user:
+        messages.error(request, 'Você não tem permissão para ver este resultado.')
+        return redirect('exercicios:index')
+    
+    return render(request, 'exercicios/resultado.html', {
+        'exercicio': resposta.exercicio,
+        'resposta': resposta,
+    })
+
+# ============ FUNÇÕES AUXILIARES ============
+
+def verificar_resposta(resposta_aluno, resposta_correta):
+    """Verifica se a resposta do aluno está correta"""
+    resultado = {
+        'status': 'incorreto',
+        'pontos': 0,
+        'feedback': ''
     }
     
-    return render(request, 'exercicios/resolver.html', context)
+    # Converter para minúsculas e remover espaços extras
+    resposta = resposta_aluno.strip().lower()
+    correta = resposta_correta.strip().lower()
+    
+    print(f"DEBUG: Resposta aluno: '{resposta}'")
+    print(f"DEBUG: Resposta correta: '{correta}'")
+    
+    # Verificação EXATA
+    if resposta == correta:
+        resultado['status'] = 'correto'
+        resultado['pontos'] = 10
+        resultado['feedback'] = 'Resposta perfeitamente correta!'
+    else:
+        # Verificação PARCIAL
+        resposta_palavras = set(resposta.split())
+        correta_palavras = set(correta.split())
+        
+        palavras_comuns = resposta_palavras.intersection(correta_palavras)
+        
+        if palavras_comuns:
+            similaridade = len(palavras_comuns) / max(len(resposta_palavras), len(correta_palavras), 1)
+            
+            if similaridade > 0.6:
+                resultado['status'] = 'parcial'
+                resultado['pontos'] = int(10 * similaridade)
+                resultado['feedback'] = f'Quase lá! ({similaridade:.0%} similar)'
+            else:
+                resultado['status'] = 'incorreto'
+                resultado['feedback'] = 'Resposta incorreta'
+        else:
+            resultado['status'] = 'incorreto'
+            resultado['feedback'] = 'Resposta incorreta'
+    
+    print(f"DEBUG: Resultado: {resultado}")
+    return resultado

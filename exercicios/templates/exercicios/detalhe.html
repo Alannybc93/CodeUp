@@ -13,13 +13,13 @@
                     <i class="fas fa-puzzle-piece"></i> {{ exercicio.titulo }}
                 </h1>
                 <div style="display: flex; gap: 15px; align-items: center;">
-                    <span style="background: {% if exercicio.dificuldade == 'facil' %}#28a745{% elif exercicio.dificuldade == 'medio' %}#ffc107{% else %}#dc3545{% endif %}; 
-                              color: {% if exercicio.dificuldade == 'medio' %}black{% else %}white{% endif %}; 
+                    <span style="background: {% if exercicio.dificuldade == 'iniciante' %}#28a745{% elif exercicio.dificuldade == 'basico' %}#ffc107{% elif exercicio.dificuldade == 'intermediario' %}#fd7e14{% elif exercicio.dificuldade == 'avancado' %}#dc3545{% else %}#6f42c1{% endif %}; 
+                              color: {% if exercicio.dificuldade == 'basico' %}black{% else %}white{% endif %}; 
                               padding: 5px 15px; border-radius: 20px; font-weight: bold;">
-                        {{ exercicio.dificuldade|capfirst }}
+                        {{ exercicio.dificuldade|title }}
                     </span>
                     <span style="background: rgba(255, 215, 0, 0.2); color: #FFD700; padding: 5px 15px; border-radius: 20px; font-weight: bold;">
-                        <i class="fas fa-star"></i> {{ exercicio.pontos }} pontos
+                        <i class="fas fa-star"></i> {{ exercicio.pontos }} pts
                     </span>
                     <span style="color: #888888;">
                         <i class="fas fa-clock"></i> ~30 minutos
@@ -27,7 +27,8 @@
                 </div>
             </div>
             
-            <a href="{% url 'exercicios:exercicios_resolver' exercicio.id %}" class="btn" style="font-size: 1.1rem;">
+            <!-- CORREÇÃO: Usar URL sem namespace -->
+            <a href="{% url 'exercicios_resolver' exercicio.id %}" class="btn" style="font-size: 1.1rem;">
                 <i class="fas fa-play"></i> Resolver Exercício
             </a>
         </div>
@@ -58,53 +59,45 @@
             <h2 style="color: #FFD700; margin-bottom: 20px; font-size: 1.5rem;">
                 <i class="fas fa-file-alt"></i> Enunciado
             </h2>
-            <div style="color: #cccccc; line-height: 1.6; font-size: 1.1rem;">
+            <div style="color: #cccccc; line-height: 1.6; font-size: 1.1rem; white-space: pre-line;">
                 {{ exercicio.enunciado }}
             </div>
         </div>
         
-        <!-- Exemplos -->
-        {% if exercicio.exemplos %}
+        <!-- Código Inicial -->
+        {% if exercicio.codigo_inicial %}
         <div style="background: #1a1a1a; border-radius: 15px; padding: 30px; border: 1px solid #333333;">
             <h2 style="color: #FFD700; margin-bottom: 20px; font-size: 1.5rem;">
-                <i class="fas fa-code"></i> Exemplos
+                <i class="fas fa-code"></i> Código Inicial
             </h2>
-            <div style="display: grid; gap: 15px;">
-                {% for exemplo in exercicio.exemplos %}
-                <div style="background: #111111; padding: 20px; border-radius: 10px; border-left: 3px solid #3498db;">
-                    <div style="color: #3498db; font-weight: bold; margin-bottom: 10px;">
-                        Exemplo {{ forloop.counter }}
-                    </div>
-                    <div style="color: #cccccc; font-family: monospace; white-space: pre-wrap;">
-                        {{ exemplo }}
-                    </div>
-                </div>
-                {% endfor %}
-            </div>
+            <pre style="background: #111111; padding: 20px; border-radius: 10px; border-left: 3px solid #3498db; color: #cccccc; font-family: 'Courier New', monospace; white-space: pre-wrap; overflow-x: auto;">
+{{ exercicio.codigo_inicial }}
+            </pre>
         </div>
         {% endif %}
         
-        <!-- Restrições -->
-        {% if exercicio.restricoes %}
+        <!-- Dicas -->
         <div style="background: #1a1a1a; border-radius: 15px; padding: 30px; border: 1px solid #333333;">
             <h2 style="color: #FFD700; margin-bottom: 20px; font-size: 1.5rem;">
-                <i class="fas fa-exclamation-triangle"></i> Restrições
+                <i class="fas fa-lightbulb"></i> Como Resolver
             </h2>
-            <ul style="color: #cccccc; padding-left: 20px; line-height: 1.6;">
-                {% for restricao in exercicio.restricoes %}
-                <li style="margin-bottom: 10px;">{{ restricao }}</li>
-                {% endfor %}
-            </ul>
+            <div style="color: #cccccc; line-height: 1.6;">
+                <p><strong>Passo 1:</strong> Leia atentamente o enunciado</p>
+                <p><strong>Passo 2:</strong> Analise o código inicial (se houver)</p>
+                <p><strong>Passo 3:</strong> Escreva sua solução na área de código</p>
+                <p><strong>Passo 4:</strong> Clique em "Enviar Solução"</p>
+                <p><strong>Passo 5:</strong> Veja o feedback e corrija se necessário</p>
+            </div>
         </div>
-        {% endif %}
     </div>
     
     <!-- Botões de navegação -->
     <div style="display: flex; justify-content: space-between; margin-top: 40px; padding-top: 30px; border-top: 1px solid #333333;">
-        <a href="{% url 'exercicios:lista' %}" class="btn" style="background: #444444;">
-            <i class="fas fa-arrow-left"></i> Voltar para Exercícios
+        <a href="{% url 'exercicios_lista' %}" class="btn" style="background: #444444;">
+            <i class="fas fa-arrow-left"></i> Voltar para Lista
         </a>
-        <a href="{% url 'exercicios:exercicios_resolver' exercicio.id %}" class="btn" style="font-size: 1.1rem; padding: 15px 30px;">
+        <!-- CORREÇÃO: URL sem namespace -->
+        <a href="{% url 'exercicios_resolver' exercicio.id %}" class="btn" style="font-size: 1.1rem; padding: 15px 30px;">
             <i class="fas fa-play"></i> Resolver Este Exercício
         </a>
     </div>

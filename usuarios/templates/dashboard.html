@@ -87,7 +87,8 @@
             <a href="/">Home</a>
             <a href="/trilhas/">Trilhas</a>
             <a href="/exercicios/">Exercícios</a>
-            <a href="{% url 'logout' %}">Sair</a>
+            <!-- LINHA CORRIGIDA ABAIXO -->
+            <a href="{% url 'usuarios:logout' %}">Sair</a>
         </div>
     </div>
 </body>

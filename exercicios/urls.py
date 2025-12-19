@@ -1,13 +1,23 @@
+# exercicios/urls.py
 from django.urls import path
 from . import views
 
 app_name = 'exercicios'
 
 urlpatterns = [
-    path('', views.index, name='exercicios_index'),
-    path('', views.index, name='index'),  # Alias mais simples
-    path('', views.index, name='lista'),  # Alias para compatibilidade
+    # Página principal
+    path('', views.index, name='index'),
+    path('lista/', views.index, name='lista'),
+    
+    # Página do usuário
     path('meus/', views.meus_exercicios, name='meus_exercicios'),
-    path('<int:exercicio_id>/', views.detalhe, name='exercicios_detalhe'),
-    path('<int:exercicio_id>/resolver/', views.resolver, name='exercicios_resolver'),
+    
+    # Detalhes do exercício
+    path('<int:exercicio_id>/', views.detalhe, name='detalhe'),
+    
+    # Resolver exercício
+    path('<int:exercicio_id>/resolver/', views.resolver_exercicio, name='resolver'),
+    
+    # Ver resultado
+    path('resposta/<int:resposta_id>/resultado/', views.ver_resultado, name='resultado'),
 ]

@@ -1,0 +1,44 @@
+﻿<!-- trilhas/templates/trilhas/detalhe.html -->
+{% extends 'base.html' %}
+
+{% block title %}{{ trilha.titulo }} - CodeUP{% endblock %}
+
+{% block content %}
+<div class="container" style="padding: 30px;">
+    <h1 style="color: #FFD700;">{{ trilha.titulo }}</h1>
+    
+    <div style="color: #cccccc; font-size: 1.1rem; margin-bottom: 30px;">
+        {{ trilha.descricao }}
+    </div>
+    
+    <!-- Módulos da trilha -->
+    {% if modulos %}
+    <div style="margin-top: 30px;">
+        <h3 style="color: #FFD700; margin-bottom: 20px;">Módulos</h3>
+        <div style="display: grid; gap: 15px;">
+            {% for modulo in modulos %}
+            <div style="background: #1a1a1a; border-radius: 10px; padding: 20px; border-left: 4px solid #3498db;">
+                <h4 style="color: #3498db; margin-bottom: 10px;">{{ modulo.titulo }}</h4>
+                <p style="color: #cccccc; margin-bottom: 15px;">{{ modulo.descricao }}</p>
+                <a href="{% url 'exercicios:index' %}?modulo={{ modulo.id }}" 
+                   style="color: #FFD700; text-decoration: none;">
+                    Ver exercícios deste módulo →
+                </a>
+            </div>
+            {% endfor %}
+        </div>
+    </div>
+    {% endif %}
+    
+    <!-- Botões de navegação -->
+    <div style="display: flex; gap: 15px; margin-top: 40px; padding-top: 30px; border-top: 1px solid #333;">
+        <!-- CORREÇÃO: usando trilhas:lista -->
+        <a href="{% url 'trilhas:lista' %}" style="background: #444; color: #fff; padding: 12px 25px; border-radius: 8px; text-decoration: none;">
+            ← Voltar para Trilhas
+        </a>
+        <a href="{% url 'exercicios:index' %}" style="background: #FFD700; color: #1a1a1a; padding: 12px 25px; border-radius: 8px; text-decoration: none;">
+            Ver Todos os Exercícios
+        </a>
+    </div>
+</div>
+{% endblock %}
